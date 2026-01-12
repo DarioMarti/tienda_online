@@ -9,8 +9,8 @@ $password = "";
 
 
 try{
-$conn= new PDO("mysqli:host=$host; dbname=$basedatos", $usuario, $password);
-$conn->setAttribute(PDO:ATTR_ERRMODE, PDO:ERRMODE_EXCEPTION);
+$conn= new PDO("mysql:host=$host; dbname=$basedatos", $usuario, $password);
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 return $conn;
 

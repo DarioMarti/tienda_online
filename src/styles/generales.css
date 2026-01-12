@@ -14,6 +14,9 @@
     color: white;
 }
 
+nav a {
+    font-family: var(--font-titulos);
+}
 
 /*FORMULARIO DE LOGIN*/
 .sidebar-lateral {
