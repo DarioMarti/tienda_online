@@ -1,0 +1,275 @@
+/* ESTILOS GLOBALES */
+.bton {
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bton:hover {
+    background-color: rgb(212 175 55 / var(--tw-text-opacity, 1));
+    color: white;
+}
+
+
+/*FORMULARIO DE LOGIN*/
+.sidebar-lateral {
+    position: fixed;
+    background-color: white;
+    right: 0;
+    padding: 20px;
+    height: 100vh;
+    width: 100%;
+    max-width: 400px;
+    z-index: 50;
+    transition-property: transform;
+    transition-duration: 500ms;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-abierto {
+    transform: translateX(0);
+}
+
+.sidebar-cerrado {
+    transform: translateX(100%);
+}
+
+/* MENÚ MÓVIL A PANTALLA COMPLETA */
+#sidebar-menu-movil {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* CARRITO A PANTALLA COMPLETA EN MÓVIL */
+@media (max-width: 1023px) {
+    #sidebar-carrito {
+        max-width: none !important;
+        width: 100% !important;
+    }
+}
+
+/* CHECKOUT GRID LAYOUT */
+.checkout-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1.2fr 0.8fr !important;
+        gap: 3rem;
+    }
+}
+
+/* CUSTOM SCROLLBAR */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+}
+
+
+#sidebar-login #campo-pass,
+#sidebar-login #campo-email {
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+}
+
+
+
+/*PÁGINA USUARIO REGISTRADO*/
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+
+@keyframes checkDraw {
+    0% {
+        stroke-dasharray: 0, 100;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        stroke-dasharray: 100, 0;
+        opacity: 1;
+    }
+}
+
+.animate-check {
+    animation: checkDraw 0.8s ease-out 0.3s both;
+}
+
+
+@keyframes pingSlow {
+    0% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.1;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+.animate-ping-slow {
+    animation: pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* PREMIUM ABOUT US STYLES */
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.text-reveal {
+    overflow: hidden;
+}
+
+.text-reveal span {
+    display: inline-block;
+    transform: translateY(100%);
+    animation: revealText 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes revealText {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.parallax-container {
+    perspective: 1px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.scroll-indicator-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: scrollLine 2s infinite;
+}
+
+@keyframes scrollLine {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    50% {
+        transform: scaleY(1);
+        transform-origin: top;
+    }
+
+    51% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+
+    100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+}
+
+.editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+
+.stats-gradient {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #111111 100%);
+}
+
+.hover-lift {
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-10px);
+}
+
+/* MARQUESINA ANIMADA */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.marquee-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 30s linear infinite;
+}
+
+.marquee-content span {
+    display: inline-block;
+    padding-right: 2rem;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+
+/* ESTILOS PARA OCULTAR FLECHAS DE INPUTS NUMÉRICOS */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

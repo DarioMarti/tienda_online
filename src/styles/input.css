@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "./generales.css";
+
+@theme {
+    --color-fashion-black: #1a1a1a;
+    --color-fashion-accent: #D4AF37;
+    --color-fashion-gray: #F5F5F5;
+    --font-family-editorial: 'Bodoni Moda', serif;
+    --font-family-sans: 'Jost', sans-serif;
+    --tracking-widest: 0.2em;
+
+
+}
