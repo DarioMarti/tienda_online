@@ -1,21 +1,22 @@
 <?php
 
-function conectar(){
+function conectar()
+{
 
-$host = "localhost";
-$basedatos = "tienda_muebles";
-$usuario = "root";
-$password = "";
+    $host = "localhost";
+    $basedatos = "tienda_muebles";
+    $usuario = "root";
+    $password = "";
 
 
-try{
-$conn= new PDO("mysql:host=$host; dbname=$basedatos", $usuario, $password);
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    try {
+        $conn = new PDO("mysql:host=$host; dbname=$basedatos", $usuario, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-return $conn;
+        return $conn;
 
-}catch(PDOException $error){
-    echo "Error: " . $error->getMessage();
+    } catch (PDOException $error) {
+        echo "Error: " . $error->getMessage();
+    }
 }
-
 ?>
