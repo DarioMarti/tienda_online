@@ -1,4 +1,17 @@
 /* ESTILOS GLOBALES */
+* {
+    font-family: "Inter", sans-serif;
+}
+
+/* CLASES DE UTILIDAD PARA FUENTES */
+.font-general {
+    font-family: "Montserrat", sans-serif;
+}
+
+.font-titulos {
+    font-family: "Inter", sans-serif;
+}
+
 .bton {
     padding: 10px;
     background-color: black;
@@ -16,7 +29,11 @@
 }
 
 nav a {
-    font-family: var(--font-titulos);
+    font-family: "Inter", sans-serif;
+}
+
+nav li {
+    cursor: pointer;
 }
 
 /*FORMULARIO DE LOGIN*/
@@ -35,11 +52,11 @@ nav a {
 
 }
 
-.sidebar-abierto {
+.barra-lateral-abierto {
     transform: translateX(0);
 }
 
-.sidebar-cerrado {
+.barra-lateral-cerrado {
     transform: translateX(100%);
 }
 

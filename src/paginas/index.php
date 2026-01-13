@@ -1,7 +1,8 @@
 <?php
-
+$titulo = "Inicio - Aetheria";
 require '../plantillas/cabecera.php';
 $heroImage = "../../img/Hero-Imagen.jpg";
+
 ?>
 <!-- HERO IMAGE -->
 <section class="flex flex-col justify-center items-center h-[60vh] w-full overflow-hidden text-center text-white px-4 "

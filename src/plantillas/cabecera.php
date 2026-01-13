@@ -69,12 +69,40 @@ session_start();
 
             <!-- ICONOS DE LA DERECHA -->
             <div class="flex items-center space-x-6 text-xl">
-                <!--USUARIO NO REGISTRADO-->
-                <span
-                    class="text-xs uppercase tracking-widest hidden md:block cursor-pointer font-medium mr-2 login font-titulos"
-                    id="btn-login">
-                    Login
-                </span>
+
+                <?php
+                if (isset($_SESSION['usuario'])): ?>
+                    <div class="relative group">
+                        <span
+                            class="text-xs uppercase tracking-widest hidden md:flex cursor-pointer font-medium mr-2 items-center gap-2">
+                            <i class="ph ph-user-circle text-2xl "></i>
+                            <?php echo htmlspecialchars($_SESSION['usuario']['nombre']) ?>
+                        </span>
+                        <div
+                            class="hidden group-hover:block absolute right-0  w-48 bg-white shadow-lg rounded-lg py-2 z-50">
+                            <a href="perfil-page.php"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mi
+                                Perfil</a>
+                            <a href="mis-pedidos-page.php"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mis
+                                Pedidos</a>
+                            <?php if ($_SESSION['usuario']['rol'] === "admin"): ?>
+                                <a href="../paginas/panel-administrador.php"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">
+                                    Panel de <?= $_SESSION['usuario']['rol'] === 'admin' ? 'administrador' : 'empleado' ?>
+                                </a>
+                            <?php endif ?>
+                            <hr class="my-2">
+                            <a href="../../modelos/usuario/sesion/cerrar-sesion-usuario.php"
+                                class="block px-4 py-2 text-sm text-red-600 hover:bg-fashion-gray transition-colors">Cerrar
+                                Sesión</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <!--USUARIO NO REGISTRADO-->
+                    <span class="text-xs uppercase tracking-widest hidden md:block cursor-pointer font-medium mr-2 login"
+                        id="btn-login">Login</span>
+                <?php endif ?>
                 <i class="ph ph-magnifying-glass cursor-pointer hover:scale-110 transition-transform search"
                     id="disparador-busqueda"></i>
                 <div class="relative cursor-pointer" id="icono-carrito">
@@ -92,7 +120,8 @@ session_start();
 
 
     <!-- LOGIN BARRA LATERAL -->
-    <div id="barra-lateral-login" class="barra-lateral barra-cerrada">
+    <div id="barra-lateral-login" class="barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['error']))
+        echo 'data-comprobar-error="true"'; ?>>
         <div class="flex justify-between items-center mb-10">
             <h2 class="editorial-font text-3xl font-semibold">Iniciar Sesión</h2>
             <button id="cerrar-login" class="text-gray-400 hover:text-fashion-black transition-colors">
@@ -101,7 +130,8 @@ session_start();
         </div>
 
         <!-- FORMULARIO LOGIN -->
-        <form class="space-y-6 flex-1" method="POST" action="../../modelos/usuarios/crear-usuario.php">
+        <form class="space-y-6 flex-1" method="POST" action="../../modelos/usuario/sesion/sesion-usuario.php">
+            <input type="hidden" name="ruta-actual-login" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <div class="space-y-2">
                 <label class="text-xs uppercase tracking-widest font-semibold text-gray-500 mb-4">Correo
                     Electronico</label>
@@ -121,9 +151,17 @@ session_start();
                     <input type="checkbox" class="rounded border-gray-300 text-fashion-black focus:ring-fashion-black ">
                     <span>Recordarme</span>
                 </label>
+
                 <a href="#" class="hover:text-fashion-black underline underline-offset-4">¿Olvidaste tu
                     contraseña?</a>
             </div>
+            <?php if (isset($_SESSION['error'])): ?>
+                <span class="text-red-600 text-xs mt-2 block">
+                    <?= $_SESSION['error']; ?>
+                </span>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
             <button type="submit" class=" bton  w-full py-4  mt-8 tracking-[0.25em]">
                 Iniciar Sesión</button>
         </form>

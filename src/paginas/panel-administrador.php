@@ -1,0 +1,112 @@
+<?php
+$titulo = "Panel de administrador";
+require '../plantillas/cabecera.php';
+?>
+
+<main class="min-h-screen bg-fashion-gray flex">
+
+    <aside class="w-96 bg-white shadow-xl hidden md:block sticky top-24 h-[calc(100vh-6rem)] z-10 overflow-y-auto p-6">
+        <h1 class=" font-titulos  text-2xl  text-fashion-black mb-8">
+            Panel de administrador
+        </h1>
+        <nav>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="dashboard">
+
+                <i class="ph ph-squares-four mr-2 text-xl"></i>Pedidos
+            </li>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="pedidos">
+                <i class="ph ph-package mr-2 text-xl"></i>Pedidos
+            </li>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="productos">
+                <i class="ph ph-t-shirt mr-2 text-xl"></i>Productos
+            </li>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="categorias">
+                <i class="ph ph-tag mr-2 text-xl"></i>Categorías
+            </li>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="usuarios">
+                <i class="ph ph-users mr-2 text-xl"></i>Usuarios
+            </li>
+            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+                data-admin-sección="informes">
+                <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
+            </li>
+        </nav>
+    </aside>
+
+    <section class="flex-1 p-8 pt-24">
+
+        <div id="seccion-usuarios">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-titulos text-4xl italic text-fashion-black">Gestión de Usuarios</h2>
+                <button class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
+                    font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                    <i class="ph ph-plus mr-2"></i>Nuevo Usuario
+                </button>
+            </div>
+            <div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Usuario</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Rol
+                            </th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Estado</th>
+                            <th
+                                class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500 text-right">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 flex flex-col items-start">
+                                <strong>Perritos</strong>
+                                <span class="text-sm text-gray-500">perros@gmail.com</span>
+                            </td>
+                            <td>
+                                <span
+                                    class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gray-100 text-gray-800">
+                                    Admin
+                                </span>
+                            </td>
+                            <td>
+                                <span
+                                    class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-green-100 text-green-700">
+                                    Activo
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right space-x-2">
+                                <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                    title="Editar">
+                                    <i class="ph ph-pencil-simple text-xl"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                    title="Desactivar">
+                                    <i class="ph ph-trash text-xl"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                    title="Activar">
+                                    <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </section>
+
+</main>
+
+<?php
+include '../plantillas/footer.html';
+?>

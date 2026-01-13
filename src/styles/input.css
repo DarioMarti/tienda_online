@@ -5,8 +5,8 @@
     --color-fashion-black: #1a1a1a;
     --color-fashion-accent: #D4AF37;
     --color-fashion-gray: #F5F5F5;
-    --font-titulos: "Inter", sans-serif;
-    --font-general: "Montserrat", sans-serif;
+    --font-family-general: "Montserrat", sans-serif;
+    --font-family-titulos: "Inter", sans-serif;
     --tracking-widest: 0.2em;
 
 
