@@ -60,6 +60,15 @@ nav li {
     transform: translateX(100%);
 }
 
+.mostrarSeccion {
+    display: block;
+}
+
+.ocultarSeccion {
+    display: none;
+}
+
+
 /* MENÚ MÓVIL A PANTALLA COMPLETA */
 #sidebar-menu-movil {
     max-width: none !important;

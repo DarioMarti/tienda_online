@@ -1,5 +1,18 @@
-const btnEliminarUsuario = document.getElementById('btnEliminarUsuario');
+//ELIMINA EL PRODUCTO
+async function eliminarProducto(idProducto) {
 
+    let datos = new URLSearchParams();
+    datos.append('id_producto', idProducto);
+
+    const respuesta = await fetch('../../modelos/producto/eliminar-producto.php', {
+        method: 'POST',
+        body: datos
+    });
+    window.location.reload();
+
+}
+
+//ELIMINA EL USUARIO
 async function eliminarUsuario(idUsuario) {
     try {
 

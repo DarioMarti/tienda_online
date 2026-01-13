@@ -3,7 +3,9 @@ $titulo = "Panel de administrador";
 require '../plantillas/cabecera.php';
 
 require '../../modelos/usuario/mostrar-usuarios.php';
+require '../../modelos/producto/mostrar-productos.php';
 $usuarios = mostrarUsuarios();
+$productos = mostrarProductos();
 
 ?>
 
@@ -16,26 +18,29 @@ $usuarios = mostrarUsuarios();
         <nav>
             <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="dashboard">
-
-                <i class="ph ph-squares-four mr-2 text-xl"></i>Pedidos
+                <i class="ph ph-squares-four mr-2 text-xl"></i>Dashboard
             </li>
             <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="pedidos">
                 <i class="ph ph-package mr-2 text-xl"></i>Pedidos
             </li>
-            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+            <li onclick="mostrarSeccion('productos')"
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="productos">
                 <i class="ph ph-t-shirt mr-2 text-xl"></i>Productos
             </li>
-            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+            <li onclick="mostrarSeccion('categorias')"
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="categorias">
                 <i class="ph ph-tag mr-2 text-xl"></i>Categorías
             </li>
-            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+            <li onclick="mostrarSeccion('usuarios')"
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="usuarios">
                 <i class="ph ph-users mr-2 text-xl"></i>Usuarios
             </li>
-            <li class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
+            <li onclick="mostrarSeccion('informes')"
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
                 data-admin-sección="informes">
                 <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
             </li>
@@ -45,9 +50,9 @@ $usuarios = mostrarUsuarios();
     <section class="flex-1 p-8 pt-24">
 
         <!-- SECCIÓN USUARIOS-->
-        <div id="seccion-usuarios">
+        <div id="seccion-usuarios" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="font-titulos text-4xl italic text-fashion-black">Gestión de Usuarios</h2>
+                <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Usuarios</h2>
                 <button class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
                     font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
                     <i class="ph ph-plus mr-2"></i>Nuevo Usuario
@@ -105,7 +110,8 @@ $usuarios = mostrarUsuarios();
                                         </button>
 
                                     <?php else: ?>
-                                        <button class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                        <button onclick="activarUsuario(<?= $usuario['id'] ?>)"
+                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
                                             title="Activar">
                                             <i class="ph ph-arrow-u-up-left text-xl"></i>
                                         </button>
@@ -120,7 +126,95 @@ $usuarios = mostrarUsuarios();
             </div>
         </div>
 
-
+        <!--SECCIÓN PRODUCTOS-->
+        <div id="seccion-productos" class="seccion-panel">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Productos</h2>
+                <button
+                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                    <i class="ph ph-plus mr-2"></i>Nuevo Producto
+                </button>
+            </div>
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500 w-20">
+                                Imagen</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Producto</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500 w-1/3">
+                                Descripción</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Precio</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Stock</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Categoría</th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Estado</th>
+                            <th
+                                class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500 text-right">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <?php foreach ($productos as $producto): ?>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <img src=<?php echo $producto['imagen'] ?> alt="Producto 1"
+                                        class="w-20 h-20 object-cover">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <strong><?= htmlspecialchars($producto['nombre']) ?></strong>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-xs text-gray-500 line-clamp-3">Descripcion de producto</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-bold text-fashion-black">
+                                        <?= $producto['precio'] ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                                        <?= $producto['stock'] ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-sm text-gray-500"><?= $producto['categoria_id'] ?></p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-green-100 text-green-700">
+                                        <?= $producto['activo'] == 1 ? 'Activo' : 'Inactivo' ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-2">
+                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                        title="Editar">
+                                        <i class="ph ph-pencil-simple text-xl"></i>
+                                    </button>
+                                    <?php if ($producto['activo'] == 1): ?>
+                                        <button onclick="eliminarProducto(<?= $producto['id'] ?>)"
+                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                            title="Desactivar">
+                                            <i class="ph ph-trash text-xl"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button onclick="activarProducto(<?= $producto['id'] ?>)"
+                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                            title="Activar">
+                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                        </button>
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 
 </main>
