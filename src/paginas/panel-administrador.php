@@ -1,6 +1,10 @@
 <?php
 $titulo = "Panel de administrador";
 require '../plantillas/cabecera.php';
+
+require '../../modelos/usuario/mostrar-usuarios.php';
+$usuarios = mostrarUsuarios();
+
 ?>
 
 <main class="min-h-screen bg-fashion-gray flex">
@@ -40,6 +44,7 @@ require '../plantillas/cabecera.php';
 
     <section class="flex-1 p-8 pt-24">
 
+        <!-- SECCIÓN USUARIOS-->
         <div id="seccion-usuarios">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-4xl italic text-fashion-black">Gestión de Usuarios</h2>
@@ -65,38 +70,51 @@ require '../plantillas/cabecera.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-4 flex flex-col items-start">
-                                <strong>Perritos</strong>
-                                <span class="text-sm text-gray-500">perros@gmail.com</span>
-                            </td>
-                            <td>
-                                <span
-                                    class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gray-100 text-gray-800">
-                                    Admin
-                                </span>
-                            </td>
-                            <td>
-                                <span
-                                    class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-green-100 text-green-700">
-                                    Activo
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right space-x-2">
-                                <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                    title="Editar">
-                                    <i class="ph ph-pencil-simple text-xl"></i>
-                                </button>
-                                <button class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                    title="Desactivar">
-                                    <i class="ph ph-trash text-xl"></i>
-                                </button>
-                                <button class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                    title="Activar">
-                                    <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <?php foreach ($usuarios as $usuario): ?>
+
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 flex flex-col items-start fila-usuario">
+                                    <strong>
+                                        <?= htmlspecialchars($usuario['nombre']) ?>
+                                    </strong>
+                                    <span class="text-sm text-gray-500"><?= htmlspecialchars($usuario['email']) ?>/span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gray-100 text-gray-800">
+                                        <?= htmlspecialchars($usuario['rol']) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $usuario['activo'] == 1 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700" ?>">
+                                        <?php echo $usuario['activo'] == 1 ? 'activo' : 'inactivo' ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-2">
+                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                        title="Editar">
+                                        <i class="ph ph-pencil-simple text-xl"></i>
+                                    </button>
+                                    <?php
+                                    if ($usuario['activo'] == 1): ?>
+                                        <button id="btnEliminarUsuario" onclick="eliminarUsuario(<?= $usuario['id'] ?>)"
+                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                            title="Desactivar">
+                                            <i class="ph ph-trash text-xl"></i>
+                                        </button>
+
+                                    <?php else: ?>
+                                        <button class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                            title="Activar">
+                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                        </button>
+
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
