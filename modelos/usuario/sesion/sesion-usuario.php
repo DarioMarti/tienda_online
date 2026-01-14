@@ -42,7 +42,10 @@ try {
 
 
 } catch (PDOException $error) {
-    echo "Error: " . $error->getMessage();
+    echo json_encode([
+        'estado' => 'error',
+        'mensaje' => $error->getMessage()
+    ]);
 }
 
 

@@ -18,13 +18,13 @@ try {
 
 
     echo json_encode([
-        'exito' => true,
+        'estado' => 'success',
         'mensaje' => 'Usuario activado correctamente'
     ]);
 
 } catch (PDOException $err) {
     echo json_encode([
-        'exito' => false,
+        'estado' => 'error',
         'mensaje' => 'Error al eliminar el usuario'
     ]);
 }

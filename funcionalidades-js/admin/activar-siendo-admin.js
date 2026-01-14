@@ -30,3 +30,20 @@ async function activarUsuario(idUsuario) {
     }
 }
 
+//ELIMINA LA CATEGORIA
+async function activarCategoria(idCategoria) {
+    try {
+
+        const datos = new URLSearchParams();
+        datos.append('id_categoria', idCategoria);
+
+        const respuesta = await fetch('../../modelos/categoria/activar-categoria.php', {
+            method: 'POST',
+            body: datos
+        })
+
+        window.location.reload();
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -1,4 +1,9 @@
 
+document.addEventListener('DOMContentLoaded', () => {
+    mostrarSeccion('dashboard');
+});
+
+
 function mostrarSeccion(seccion) {
 
     document.querySelectorAll('.seccion-panel').forEach(seccion => {

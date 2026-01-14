@@ -45,14 +45,17 @@ try {
     }
 
 
-    $sentencia = $conn->prepare('INSERT INTO usuarios (nombre, email, password) VALUES(?,?,?)');
+    $sentencia = $conn->prepare('INSERT INTO usuarios (nombre, email, password, fecha_creacion) VALUES(?,?,?,now())');
     $sentencia->execute([$nombre, $email, $contraseñaCifrada]);
 
     header('location:../../src/paginas/registro-exitoso.php');
     exit;
 
 } catch (PDOException $error) {
-    echo "Error: " . $error->getMessage();
+    echo json_encode([
+        'estado' => 'error',
+        'mensaje' => $error->getMessage()
+    ]);
 }
 
 ?>

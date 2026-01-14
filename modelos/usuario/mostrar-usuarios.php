@@ -18,7 +18,10 @@ function mostrarUsuarios()
 
 
     } catch (PDOException $err) {
-        echo 'Error' . $err->getMessage();
+        echo json_encode([
+            'estado' => 'error',
+            'mensaje' => $err->getMessage()
+        ]);
     }
 }
 
