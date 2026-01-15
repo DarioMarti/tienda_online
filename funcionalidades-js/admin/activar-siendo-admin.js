@@ -19,7 +19,7 @@ async function activarUsuario(idUsuario) {
         const datos = new URLSearchParams();
         datos.append('id_usuario', idUsuario);
 
-        const respuesta = await fetch('../../modelos/usuario/administrador/admin-activar-usuario.php', {
+        const respuesta = await fetch('../../modelos/usuario/activar-usuario.php', {
             method: 'POST',
             body: datos
         })

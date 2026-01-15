@@ -311,7 +311,7 @@ $pedidos = mostrarPedidos();
                         <?php foreach ($productos as $producto): ?>
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <img src=<?php echo $producto['imagen'] ?> alt="Producto 1"
+                                    <img src="../../<?= $producto['imagen'] ?>" alt="Producto"
                                         class="w-20 h-20 object-cover">
                                 </td>
                                 <td class="px-6 py-4">
@@ -341,7 +341,7 @@ $pedidos = mostrarPedidos();
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
                                     <button
-                                        onclick="abrirCerrarModalCrearProducto('editar', '<?= htmlspecialchars($producto['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['precio'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['stock'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['imagen'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descuento'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['id'], ENT_QUOTES) ?>')"
+                                        onclick="abrirCerrarModalCrearProducto('editar', '<?= htmlspecialchars($producto['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['precio'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['stock'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['imagen'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descuento'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>')"
                                         class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>

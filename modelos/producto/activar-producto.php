@@ -11,11 +11,7 @@ try {
     $sentencia = $conn->prepare('UPDATE productos set activo = 1 where id = ?');
     $sentencia->execute([$idProducto]);
 
-    $_SESSION['mensaje'] = [
-        'estado' => true,
-        'mensaje' => "Se ha activado con exito",
-        'tipo' => 'producto'
-    ];
+
 
 
 } catch (PDOException $err) {

@@ -99,11 +99,14 @@ function abrirCerrarModalCrearUsuario(accion, nombre = "", apellido = "", email 
 
 
 //Abrir y cerrar el modal de crear producto
-function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", precio = "", stock = "", imagen = "", descuento = "", categoria = "", id = "") {
+function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", precio = "", stock = "", imagen = "", descuento = "", categoria = "", id = "", categoria_id = "") {
     let modalProducto = document.getElementById('modal-producto');
     let formProducto = document.getElementById('formulario-producto');
     let tituloModalProducto = document.getElementById('titulo-modal-producto');
     let inputId = document.getElementById('id-producto');
+    let imagenProducto = document.getElementById('imagen-producto');
+    const previsualizacion = document.getElementById('previsualizacion-imagen');
+    const placeholder = document.getElementById('placeholder-subida');
 
     if (modalProducto.classList.contains('hidden')) {
         modalProducto.classList.remove('hidden');
@@ -113,6 +116,19 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
         modalProducto.classList.add('hidden');
     }
 
+    //Permite seleccionar la imagen
+    document.getElementById('zona-drop').addEventListener('click', function () {
+        imagenProducto.click();
+    });
+    //Previsualiza la imagen
+    imagenProducto.addEventListener('change', function (e) {
+        if (e.target.files && e.target.files[0]) {
+            previsualizacion.src = URL.createObjectURL(e.target.files[0]);
+            previsualizacion.classList.remove('hidden');
+            //Oculta el placeholder
+            placeholder.classList.add('hidden');
+        }
+    });
 
     if (accion == 'crear') {
         formProducto.action = '../../modelos/producto/crear-producto.php';
@@ -126,9 +142,13 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
         document.getElementById('imagen-producto').value = '';
         document.getElementById('descuento-producto').value = '';
         document.getElementById('categoria-producto').value = '';
+        previsualizacion.src = '';
+        previsualizacion.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        placeholder.classList.add('block');
 
     } else if (accion == 'editar') {
-        formProducto.action = '../../modelos/producto/administrador/admin-editar-producto.php';
+        formProducto.action = '../../modelos/usuario/administrador/admin-editar-producto.php';
         tituloModalProducto.textContent = 'Editar Producto';
         inputId.value = id;
 
@@ -136,10 +156,14 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
         document.getElementById('descripcion-producto').value = descripcion;
         document.getElementById('precio-producto').value = precio;
         document.getElementById('stock-producto').value = stock;
-        document.getElementById('imagen-producto').value = imagen;
         document.getElementById('descuento-producto').value = descuento;
-        document.getElementById('categoria-producto').value = categoria;
+        document.getElementById('categoria-producto').value = categoria_id;
+        imagenProducto.removeAttribute('required');
+        previsualizacion.src = '../../' + imagen;
+        previsualizacion.classList.remove('hidden');
+        placeholder.classList.remove('block');
+        placeholder.classList.add('hidden');
     }
-
-
 }
+
+

@@ -83,6 +83,7 @@
 
 <!-- MODAL DE CREAR O EDITAR PRODUCTO -->
 <div id="modal-producto" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+
     <div
         class="bg-white rounded-xl shadow-2xl w-full max-h-[90vh] max-w-[1200px] overflow-y-auto transform transition-all ">
         <div class="sticky top-0 bg-white border-b border-gray-100 px-8 py-6 flex justify-between items-center z-10">
@@ -97,7 +98,8 @@
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form id="formulario-producto" action="../modelos/productos/agregar-producto.php" method="POST" class="p-8">
+        <form id="formulario-producto" action="../../modelos/producto/crear-producto.php" method="POST" class="p-8"
+            enctype="multipart/form-data">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <input type="hidden" name="id" id="id-producto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-8">
@@ -106,7 +108,8 @@
                         Imagen del Producto
                     </label>
                     <div id="zona-drop" class="relative w-full cursor-pointer group" style="padding-bottom: 100%;">
-                        <input type="file" id="imagen-producto" name="imagen" accept="image/*" class="hidden">
+                        <input type="file" id="imagen-producto" name="imagen" accept="image/*" class="opacity-0"
+                            required>
                         <div id="contenedor-previsualizacion-imagen"
                             class="absolute inset-0 bg-gray-50 rounded-lg border-2 border-gray-200 flex items-center justify-center overflow-hidden transition-all ">
                             <div id="placeholder-subida" class="text-center space-y-4">
@@ -116,7 +119,7 @@
                                         class="ph ph-upload-simple text-4xl text-gray-400 group-hover:text-fashion-black"></i>
                                 </div>
                                 <div>
-                                    <p class="text-base font-bold text-fashion-black">Arrastra o selecciona una imagen
+                                    <p class="text-base font-bold text-fashion-black">Selecciona una imagen
                                     </p>
                                     <p class="text-xs text-gray-500 mt-2 uppercase tracking-wide">JPG, PNG, WEBP</p>
                                 </div>
@@ -192,6 +195,15 @@
                         <select id="categoria-producto" name="categoria_id" required
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-fashion-black focus:ring-0 transition-all text-fashion-black cursor-pointer">
                             <option value="">Seleccionar Categoría</option>
+                            <?php
+                            foreach ($categorias as $categoria):
+                                ?>
+                                <option value="<?= $categoria['id'] ?>">
+                                    <?= $categoria['nombre'] ?>
+                                </option>
+                                <?php
+                            endforeach;
+                            ?>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -221,6 +233,58 @@
     </div>
 </div>
 
+
+<!--MODAL CREAR Y EDITAR CATEGORIAS-->
+
+<div id="modal-categoria" class=" fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center">
+            <h2 id="titulo-modal-categoria" class="font-editorial text-3xl italic text-fashion-black">Nueva Categoría
+            </h2>
+            <button class="text-gray-400 hover:text-fashion-black transition-colors">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+        <form id="formulario-categoria" action="../modelos/categorias/crear-categoria.php" method="POST" class="p-8">
+            <input type="hidden" name="category_id" id="id-categoria">
+            <input type="hidden" name="action" id="accion-formulario-categoria" value="crear">
+            <div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Nombre</label>
+                    <input type="text" name="nombre" id="nombre-categoria" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Descripción</label>
+                    <textarea name="descripcion" id="descripcion-categoria" rows="3"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black"></textarea>
+                </div>
+
+
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Categoría Padre</label>
+                    <select name="categoria_padre_id" id="id-padre-categoria"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black bg-white">
+                        <option value="">Ninguna (Categoría Principal)</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-4 mt-8">
+                <button type="button"
+                    class="flex-1 bg-gray-200 text-gray-700 py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all rounded-lg">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="flex-1 bg-fashion-black text-white py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-accent transition-all rounded-lg shadow-lg">
+                    Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 <!-- MODAL DE RESULTADO -->

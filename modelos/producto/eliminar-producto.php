@@ -11,11 +11,6 @@ try {
     $sentencia = $conn->prepare('UPDATE productos set activo = 0 where id = ?');
     $sentencia->execute([$idProducto]);
 
-    $_SESSION['mensaje'] = [
-        'estado' => true,
-        'mensaje' => "Se ha eliminado el producto",
-        'tipo' => 'producto'
-    ];
 
 } catch (PDOException $err) {
     $_SESSION['mensaje'] = [
