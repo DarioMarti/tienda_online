@@ -96,3 +96,50 @@ function abrirCerrarModalCrearUsuario(accion, nombre = "", apellido = "", email 
 
     }
 }
+
+
+//Abrir y cerrar el modal de crear producto
+function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", precio = "", stock = "", imagen = "", descuento = "", categoria = "", id = "") {
+    let modalProducto = document.getElementById('modal-producto');
+    let formProducto = document.getElementById('formulario-producto');
+    let tituloModalProducto = document.getElementById('titulo-modal-producto');
+    let inputId = document.getElementById('id-producto');
+
+    if (modalProducto.classList.contains('hidden')) {
+        modalProducto.classList.remove('hidden');
+        modalProducto.classList.add('block');
+    } else {
+        modalProducto.classList.remove('block');
+        modalProducto.classList.add('hidden');
+    }
+
+
+    if (accion == 'crear') {
+        formProducto.action = '../../modelos/producto/crear-producto.php';
+        tituloModalProducto.textContent = 'Nuevo Producto';
+        inputId.value = '';
+
+        document.getElementById('nombre-producto').value = '';
+        document.getElementById('descripcion-producto').value = '';
+        document.getElementById('precio-producto').value = '';
+        document.getElementById('stock-producto').value = '';
+        document.getElementById('imagen-producto').value = '';
+        document.getElementById('descuento-producto').value = '';
+        document.getElementById('categoria-producto').value = '';
+
+    } else if (accion == 'editar') {
+        formProducto.action = '../../modelos/producto/administrador/admin-editar-producto.php';
+        tituloModalProducto.textContent = 'Editar Producto';
+        inputId.value = id;
+
+        document.getElementById('nombre-producto').value = nombre;
+        document.getElementById('descripcion-producto').value = descripcion;
+        document.getElementById('precio-producto').value = precio;
+        document.getElementById('stock-producto').value = stock;
+        document.getElementById('imagen-producto').value = imagen;
+        document.getElementById('descuento-producto').value = descuento;
+        document.getElementById('categoria-producto').value = categoria;
+    }
+
+
+}

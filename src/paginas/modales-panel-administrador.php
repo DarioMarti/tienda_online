@@ -32,6 +32,7 @@
                 <div class="space-y-2 md:col-span-2" id="input-password">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Contraseña</label>
                     <input type="password" name="contrasena" id="password-usuario" autocomplete="new-password"
+                        placeholder="******"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black">
                 </div>
                 <div class="space-y-2">
@@ -81,7 +82,7 @@
 
 
 <!-- MODAL DE CREAR O EDITAR PRODUCTO -->
-<div id="modal-producto" class=" fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+<div id="modal-producto" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div
         class="bg-white rounded-xl shadow-2xl w-full max-h-[90vh] max-w-[1200px] overflow-y-auto transform transition-all ">
         <div class="sticky top-0 bg-white border-b border-gray-100 px-8 py-6 flex justify-between items-center z-10">
@@ -91,20 +92,23 @@
                 </h2>
                 <p class="text-gray-500 text-sm mt-1">Completa los detalles del producto</p>
             </div>
-            <button class="text-gray-400 hover:text-fashion-black transition-colors p-2 hover:bg-gray-100 rounded-full">
+            <button onclick="abrirCerrarModalCrearProducto()"
+                class="text-gray-400 hover:text-fashion-black transition-colors p-2 hover:bg-gray-100 rounded-full cursor-pointer">
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
         <form id="formulario-producto" action="../modelos/productos/agregar-producto.php" method="POST" class="p-8">
+            <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
+            <input type="hidden" name="id" id="id-producto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-8">
-                <div class="flex flex-col">
-                    <label class="block text-xs uppercase tracking-widest font-bold text-gray-500 mb-3">
+                <div class="flex flex-col space-y-2">
+                    <label class="block text-xs uppercase tracking-widest font-bold text-gray-500 ">
                         Imagen del Producto
                     </label>
                     <div id="zona-drop" class="relative w-full cursor-pointer group" style="padding-bottom: 100%;">
                         <input type="file" id="imagen-producto" name="imagen" accept="image/*" class="hidden">
                         <div id="contenedor-previsualizacion-imagen"
-                            class="absolute inset-0 bg-gray-50 rounded-lg border-2 border-gray-200 flex items-center justify-center overflow-hidden transition-all group-hover:border-fashion-black">
+                            class="absolute inset-0 bg-gray-50 rounded-lg border-2 border-gray-200 flex items-center justify-center overflow-hidden transition-all ">
                             <div id="placeholder-subida" class="text-center space-y-4">
                                 <div
                                     class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-md mx-auto group-hover:scale-110 transition-transform">
@@ -120,7 +124,7 @@
                             <img id="previsualizacion-imagen" src="#" alt="Vista previa"
                                 class="hidden absolute inset-0 w-full h-full object-cover z-10">
                             <div id="capa-cambio-imagen"
-                                class="hidden absolute inset-0 bg-black bg-opacity-50 items-center justify-center group-hover:flex z-20">
+                                class="hidden absolute inset-0 bg-black/20 items-center justify-center group-hover:flex z-20">
                             </div>
                         </div>
                     </div>
@@ -133,7 +137,7 @@
                             Producto</label>
                         <input type="text" id="nombre-producto" name="nombre" required
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-fashion-black focus:ring-0 transition-all text-fashion-black font-medium"
-                            placeholder="Ej: Camiseta Básica Oversize">
+                            placeholder="Ej: Lampara de salón">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-2">
@@ -144,13 +148,13 @@
                                 class="flex items-center bg-gray-50 border border-gray-200 rounded-lg overflow-hidden focus-within:border-fashion-black transition-colors">
                                 <button type="button"
                                     class="p-2  text-gray-500 border-r border-gray-100 cursor-pointer">
-                                    <i class="ph ph-minus text-xs"></i>
+                                    <i class="ph ph-minus text-md pl-2"></i>
                                 </button>
                                 <input type="number" id="precio-producto" name="precio" required step="0.50" min="0"
                                     value="0.00"
                                     class="w-full bg-transparent text-center tracking-wider border-none px-4 py-3 focus:ring-0 text-fashion-black font-bold appearance-none ">
                                 <button type="button" class="p-2  text-gray-500 cursor-pointer">
-                                    <i class="ph ph-plus text-xs"></i>
+                                    <i class="ph ph-plus text-md pr-2"></i>
                                 </button>
                             </div>
                         </div>
@@ -181,11 +185,11 @@
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label for="id-categoria-producto"
+                        <label for="categoria-producto"
                             class="block text-xs uppercase tracking-widest font-bold text-gray-500">
                             Categoría
                         </label>
-                        <select id="id-categoria-producto" name="categoria_id" required
+                        <select id="categoria-producto" name="categoria_id" required
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-fashion-black focus:ring-0 transition-all text-fashion-black cursor-pointer">
                             <option value="">Seleccionar Categoría</option>
                         </select>
@@ -197,14 +201,14 @@
                         </label>
                         <textarea id="descripcion-producto" name="descripcion" rows="6"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:border-fashion-black focus:ring-0 transition-all resize-none text-fashion-black"
-                            placeholder="Describe los detalles, materiales, tallas y cuidados del producto..."></textarea>
+                            placeholder="Describe los detalles, materiales, y cuidados del producto..."></textarea>
                     </div>
 
                 </div>
 
             </div>
             <div class="flex gap-4 pt-6 border-t border-gray-100">
-                <button type="button" onclick="cerrarModalProducto()"
+                <button type="button" onclick="abrirCerrarModalCrearProducto()"
                     class="flex-1 bg-gray-200 text-gray-700 py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all rounded-lg cursor-pointer">
                     Cancelar
                 </button>

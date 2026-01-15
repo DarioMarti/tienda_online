@@ -279,8 +279,8 @@ $pedidos = mostrarPedidos();
         <div id="seccion-productos" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Productos</h2>
-                <button
-                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                <button onclick="abrirCerrarModalCrearProducto('crear')"
+                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nuevo Producto
                 </button>
             </div>
@@ -340,7 +340,9 @@ $pedidos = mostrarPedidos();
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                    <button
+                                        onclick="abrirCerrarModalCrearProducto('editar', '<?= htmlspecialchars($producto['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['precio'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['stock'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['imagen'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descuento'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['id'], ENT_QUOTES) ?>')"
+                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
