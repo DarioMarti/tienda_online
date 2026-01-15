@@ -21,39 +21,33 @@ $pedidos = mostrarPedidos();
         </h1>
         <nav>
             <li onclick="mostrarSeccion('dashboard')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="dashboard">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-squares-four mr-2 text-xl"></i>Dashboard
             </li>
             <li onclick="mostrarSeccion('pedidos')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="pedidos">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-package mr-2 text-xl"></i>Pedidos
             </li>
             <li onclick="mostrarSeccion('productos')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="productos">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-t-shirt mr-2 text-xl"></i>Productos
             </li>
             <li onclick="mostrarSeccion('categorias')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="categorias">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-tag mr-2 text-xl"></i>Categorías
             </li>
             <li onclick="mostrarSeccion('usuarios')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="usuarios">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-users mr-2 text-xl"></i>Usuarios
             </li>
             <li onclick="mostrarSeccion('informes')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center"
-                data-admin-sección="informes">
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
             </li>
         </nav>
     </aside>
 
-    <section class="flex-1 p-8 pt-24">
+    <section class="flex-1 p-8 pt-24" id="apartadoActual" data-seccion-Actual="dashboard">
         <!--SECCIÓN DASHBOARD-->
         <div id="seccion-dashboard" class="seccion-panel">
             <h2 class="font-titulos text-3xl font-bold text-fashion-black mb-8">Resumen General</h2>
@@ -102,6 +96,103 @@ $pedidos = mostrarPedidos();
                         <i class="ph ph-tag text-xl"></i>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!--SECCIÓN PEDIDOS-->
+        <div id="seccion-pedidos" class="seccion-panel">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Pedidos</h2>
+                <button
+                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                    <i class="ph ph-plus mr-2"></i>Nuevo Pedido
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                ID
+                            </th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Cliente
+                            </th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Fecha
+                            </th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Total
+                            </th>
+                            <th class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500">
+                                Estado
+                            </th>
+                            <th
+                                class="px-6 py-4 text-xs uppercase tracking-widest font-semibold text-gray-500 text-right">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <?php foreach ($pedidos as $pedido): ?>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <td class="px-6 py-4 font-bold text-fashion-black">
+                                    <?= htmlspecialchars($pedido['id']) ?>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-semibold text-fashion-black">
+                                        <?= htmlspecialchars($pedido['nombre_destinatario']) ?>
+                                    </div>
+
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    <?= htmlspecialchars($pedido['fecha']) ?>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-fashion-black">
+                                    <?= htmlspecialchars($pedido['coste_total']) ?>€
+                                </td>
+                                <td class="px-6 py-4">
+                                    <?php $coloresEstado = [
+                                        'pendiente' => 'bg-yellow-100 text-yellow-700',
+                                        'pagado' => 'bg-green-100 text-green-700',
+                                        'enviado' => 'bg-blue-100 text-blue-700',
+                                        'entregado' => 'bg-purple-100 text-purple-700',
+                                        'cancelado' => 'bg-red-100 text-red-700'
+                                    ][$pedido['estado']] ?? 'bg-gray-100 text-gray-700' ?>
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $coloresEstado; ?>">
+                                        <?= htmlspecialchars($pedido['estado']) ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-2">
+                                    <button class="text-gray-400 hover:text-fashion-accent transition-colors cursor-pointer"
+                                        title="Ver Detalles">
+                                        <i class="ph ph-eye text-xl"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                        title="Editar">
+                                        <i class="ph ph-pencil-simple text-xl"></i>
+                                    </button>
+                                    <?php if ($pedido['estado'] !== 'cancelado'): ?>
+                                        <button onclick="eliminarPedido(<?= $pedido['id'] ?>)"
+                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                            title="Eliminar">
+                                            <i class="ph ph-trash text-xl"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button onclick="activarPedido(<?= $pedido['id'] ?>)"
+                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                            title="Reactivar">
+                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -349,10 +440,14 @@ $pedidos = mostrarPedidos();
 
             </div>
         </div>
+
+        <!--SECCIÓN PEDIDOS-->
+        <div></div>
     </section>
 
 </main>
 
+<script src="../../funcionalidades-js/panel-administrador.js"></script>
 <?php
 include '../plantillas/footer.html';
 ?>

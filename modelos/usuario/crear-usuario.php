@@ -48,14 +48,23 @@ try {
     $sentencia = $conn->prepare('INSERT INTO usuarios (nombre, email, password, fecha_creacion) VALUES(?,?,?,now())');
     $sentencia->execute([$nombre, $email, $contraseñaCifrada]);
 
-    header('location:../../src/paginas/registro-exitoso.php');
+
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => 'Usuario creado con exito',
+        'tipo' => 'Crear-usuarios'
+    ];
+    header('location:registro-exitoso.php');
     exit;
 
 } catch (PDOException $error) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => $error->getMessage()
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al crear el usuario',
+        'tipo' => 'Crear-usuarios'
+    ];
+    header('location:registro-usuario.php');
+    exit;
 }
 
 ?>

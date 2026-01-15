@@ -13,14 +13,16 @@ try {
     $conn = conectar();
     $sentencia = $conn->prepare('INSERT INTO pedidos (nombre_destinatario, coste_total, fecha, estado, direccion_envio, ciudad, provincia) VALUES (?, ?, now(), ?, ?, ?, ?)');
     $sentencia->execute([$nombre_destinatario, $coste_total, $estado_pedido, $direccion, $ciudad, $provincia]);
-    echo json_encode([
-        'estado' => 'success',
-        'mensaje' => 'Pedido creado correctamente'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => "Pedido creado correctamente",
+        'tipo' => 'pedido'
+    ];
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => 'Error al crear el pedido'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al crear el pedido',
+        'tipo' => 'pedido'
+    ];
 }
 ?>

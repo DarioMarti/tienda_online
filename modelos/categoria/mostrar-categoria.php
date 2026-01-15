@@ -15,10 +15,11 @@ function mostrarCategorias()
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (PDOException $err) {
-        echo json_encode([
-            'estado' => 'error',
-            'mensaje' => 'Error al eliminar el usuario'
-        ]);
+        $_SESSION['mensaje'] = [
+            'estado' => false,
+            'mensaje' => 'Error al mostrar las categorias',
+            'tipo' => 'categoria'
+        ];
     }
 }
 

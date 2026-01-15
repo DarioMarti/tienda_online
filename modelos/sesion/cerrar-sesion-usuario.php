@@ -2,8 +2,7 @@
 
 session_start();
 
-$_SESSION = [];          // Vacía variables de sesión
-session_destroy();
+unset($_SESSION['usuario']);
 
 header('location:../../../src/paginas/index.php');
 exit();

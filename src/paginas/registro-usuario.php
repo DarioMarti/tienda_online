@@ -66,10 +66,10 @@ require '../plantillas/cabecera.php';
             <div class="text-center pt-4 border-t border-gray-200">
                 <p class="text-sm text-gray-600">
                     ¿Ya tienes cuenta?
-                    <a href="index.php"
-                        class="text-fashion-black font-semibold hover:text-fashion-accent transition-colors underline underline-offset-2">
+                    <span onclick="abrirCerrarLogin()"
+                        class="text-fashion-black font-semibold hover:text-fashion-accent transition-colors underline underline-offset-2 cursor-pointer">
                         Inicia Sesión
-                    </a>
+                    </span>
                 </p>
             </div>
 

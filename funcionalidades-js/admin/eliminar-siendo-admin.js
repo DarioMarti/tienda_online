@@ -1,4 +1,4 @@
-//ELIMINA EL PRODUCTO
+//Elimina el producto
 async function eliminarProducto(idProducto) {
 
     let datos = new URLSearchParams();
@@ -12,7 +12,7 @@ async function eliminarProducto(idProducto) {
 
 }
 
-//ELIMINA EL USUARIO
+//Elimina el usuario
 async function eliminarUsuario(idUsuario) {
     try {
 
@@ -30,7 +30,7 @@ async function eliminarUsuario(idUsuario) {
     }
 }
 
-//ELIMINA EL CATEGORIA
+//Elimina la categoria
 async function eliminarCategoria(idCategoria) {
     try {
 
@@ -38,6 +38,24 @@ async function eliminarCategoria(idCategoria) {
         datos.append('id_categoria', idCategoria);
 
         const respuesta = await fetch('../../modelos/categoria/eliminar-categoria.php', {
+            method: 'POST',
+            body: datos
+        })
+
+        window.location.reload();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//Elimina el pedido
+async function eliminarPedido(idPedido) {
+    try {
+
+        const datos = new URLSearchParams();
+        datos.append('id_pedido', idPedido);
+
+        const respuesta = await fetch('../../modelos/pedido/eliminar-pedido.php', {
             method: 'POST',
             body: datos
         })

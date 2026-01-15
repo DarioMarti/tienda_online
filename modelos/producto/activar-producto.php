@@ -11,16 +11,19 @@ try {
     $sentencia = $conn->prepare('UPDATE productos set activo = 1 where id = ?');
     $sentencia->execute([$idProducto]);
 
-    echo json_encode([
-        'estado' => 'success',
-        'mensaje' => "Se ha activado con exito"
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => "Se ha activado con exito",
+        'tipo' => 'producto'
+    ];
+
 
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => "No se ha podido eliminar con exito"
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => "No se ha podido activar con exito",
+        'tipo' => 'producto'
+    ];
 }
 
 ?>

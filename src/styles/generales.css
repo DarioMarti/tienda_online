@@ -12,6 +12,16 @@
     font-family: "Inter", sans-serif;
 }
 
+label {
+    font-family: "Inter", sans-serif;
+}
+
+input,
+textarea,
+select {
+    font-family: "Montserrat", sans-serif;
+}
+
 .bton {
     padding: 10px;
     background-color: black;

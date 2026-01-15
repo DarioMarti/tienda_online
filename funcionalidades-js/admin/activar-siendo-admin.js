@@ -1,4 +1,4 @@
-//ELIMINA EL PRODUCTO
+//Activa el producto
 async function activarProducto(idProducto) {
 
     let datos = new URLSearchParams();
@@ -12,7 +12,7 @@ async function activarProducto(idProducto) {
 
 }
 
-//ELIMINA EL USUARIO
+//Activa el usuario
 async function activarUsuario(idUsuario) {
     try {
 
@@ -30,7 +30,7 @@ async function activarUsuario(idUsuario) {
     }
 }
 
-//ELIMINA LA CATEGORIA
+//Activa la categoria
 async function activarCategoria(idCategoria) {
     try {
 
@@ -38,6 +38,24 @@ async function activarCategoria(idCategoria) {
         datos.append('id_categoria', idCategoria);
 
         const respuesta = await fetch('../../modelos/categoria/activar-categoria.php', {
+            method: 'POST',
+            body: datos
+        })
+
+        window.location.reload();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//Activa el pedido
+async function activarPedido(idPedido) {
+    try {
+
+        const datos = new URLSearchParams();
+        datos.append('id_pedido', idPedido);
+
+        const respuesta = await fetch('../../modelos/pedido/activar-pedido.php', {
             method: 'POST',
             body: datos
         })

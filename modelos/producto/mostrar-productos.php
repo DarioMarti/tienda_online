@@ -13,10 +13,11 @@ function mostrarProductos()
         $sentencia->execute();
 
     } catch (PDOException $error) {
-        json_encode([
-            'error' => 'error',
-            'mensaje' => 'Error al mostrar los productos'
-        ]);
+        $_SESSION['mensaje'] = [
+            'estado' => false,
+            'mensaje' => 'Error al mostrar los productos',
+            'tipo' => 'producto'
+        ];
     }
 
     return $sentencia->fetchAll(PDO::FETCH_ASSOC);

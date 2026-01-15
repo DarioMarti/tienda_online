@@ -1,16 +1,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    mostrarSeccion('dashboard');
+    const seccionGuardada = sessionStorage.getItem('seccionActual') || 'dashboard';
+    mostrarSeccion(seccionGuardada);
 });
-
 
 function mostrarSeccion(seccion) {
 
     document.querySelectorAll('.seccion-panel').forEach(seccion => {
+        seccion.classList.remove('mostrarSeccion');
         seccion.classList.add('ocultarSeccion');
     })
 
     let seccionSeleccionada = document.getElementById('seccion-' + seccion);
     seccionSeleccionada.classList.remove('ocultarSeccion');
     seccionSeleccionada.classList.add('mostrarSeccion');
+    sessionStorage.setItem('seccionActual', seccion);
 }

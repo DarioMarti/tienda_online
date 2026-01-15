@@ -13,7 +13,6 @@ if (empty($nombre))
     $errores[] = "El campo nombre no puede estar vacio";
 
 //Comprobar si ya exite la categoria
-
 $comprobarCategoria = $conn->prepare('SELECT * FROM categorias WHERE nombre = ? LIMIT 1');
 $comprobarCategoria->execute([$nombre]);
 
@@ -32,11 +31,18 @@ try {
     $sentencia = $conn->prepare('INSERT INTO categorias (nombre, descripcion, categoria_padre_id) VALUES(?,?,?)');
     $sentencia->execute([$nombre, $descripcion, $categoria_padre]);
 
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => 'Categoria creada correctamente',
+        'tipo' => 'categoria'
+    ];
+
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => 'Error al eliminar el usuario'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al crear la categoria',
+        'tipo' => 'categoria'
+    ];
 }
 
 ?>

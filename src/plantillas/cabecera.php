@@ -80,7 +80,7 @@ session_start();
                         </span>
                         <div
                             class="hidden group-hover:block absolute right-0  w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                            <a href="perfil-page.php"
+                            <a href="perfil-usuario.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mi
                                 Perfil</a>
                             <a href="mis-pedidos-page.php"
@@ -88,12 +88,13 @@ session_start();
                                 Pedidos</a>
                             <?php if ($_SESSION['usuario']['rol'] === "admin"): ?>
                                 <a href="../paginas/panel-administrador.php"
+                                    onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">
                                     Panel de <?= $_SESSION['usuario']['rol'] === 'admin' ? 'administrador' : 'empleado' ?>
                                 </a>
                             <?php endif ?>
                             <hr class="my-2">
-                            <a href="../../modelos/usuario/sesion/cerrar-sesion-usuario.php"
+                            <a href="../../modelos/sesion/cerrar-sesion-usuario.php"
                                 class="block px-4 py-2 text-sm text-red-600 hover:bg-fashion-gray transition-colors">Cerrar
                                 Sesión</a>
                         </div>
@@ -120,17 +121,18 @@ session_start();
 
 
     <!-- LOGIN BARRA LATERAL -->
-    <div id="barra-lateral-login" class="barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['error']))
+    <div id="barra-lateral-login" class="barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false)
         echo 'data-comprobar-error="true"'; ?>>
         <div class="flex justify-between items-center mb-10">
             <h2 class="editorial-font text-3xl font-semibold">Iniciar Sesión</h2>
-            <button id="cerrar-login" class="text-gray-400 hover:text-fashion-black transition-colors">
+            <button id="btn-cerrar-login"
+                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
 
         <!-- FORMULARIO LOGIN -->
-        <form class="space-y-6 flex-1" method="POST" action="../../modelos/usuario/sesion/sesion-usuario.php">
+        <form class="space-y-6 flex-1" method="POST" action="../../modelos/sesion/sesion-usuario.php">
             <input type="hidden" name="ruta-actual-login" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <div class="space-y-2">
                 <label class="text-xs uppercase tracking-widest font-semibold text-gray-500 mb-4">Correo
@@ -155,11 +157,11 @@ session_start();
                 <a href="#" class="hover:text-fashion-black underline underline-offset-4">¿Olvidaste tu
                     contraseña?</a>
             </div>
-            <?php if (isset($_SESSION['error'])): ?>
+            <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false): ?>
                 <span class="text-red-600 text-xs mt-2 block">
-                    <?= $_SESSION['error']; ?>
+                    <?= $_SESSION['mensaje']['mensaje']; ?>
                 </span>
-                <?php unset($_SESSION['error']); ?>
+                <?php unset($_SESSION['mensaje']); ?>
             <?php endif; ?>
 
             <button type="submit" class=" bton  w-full py-4  mt-8 tracking-[0.25em]">

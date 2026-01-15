@@ -8,15 +8,19 @@ try {
     $conn = conectar();
     $sentencia = $conn->prepare('UPDATE categorias SET activa = 0 WHERE id = ?');
     $sentencia->execute([$id_categoria]);
-    echo json_encode([
-        'estado' => 'success',
-        'mensaje' => 'Categoria eliminada correctamente'
-    ]);
+
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => 'Categoria eliminada correctamente',
+        'tipo' => 'categoria'
+    ];
+
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => 'Error al eliminar la categoria'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al eliminar la categoria',
+        'tipo' => 'categoria'
+    ];
 }
 
 ?>

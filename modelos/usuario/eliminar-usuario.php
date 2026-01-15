@@ -18,10 +18,13 @@ try {
     ]);
 
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => 'Error al eliminar el usuario'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al eliminar el usuario',
+        'tipo' => 'Eliminar-usuarios'
+    ];
+    header('location:../../src/paginas/perfil-usuario.php');
+    exit;
 }
 
 

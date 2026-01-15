@@ -18,10 +18,13 @@ function mostrarUsuarios()
 
 
     } catch (PDOException $err) {
-        echo json_encode([
-            'estado' => 'error',
-            'mensaje' => $err->getMessage()
-        ]);
+        $_SESSION['mensaje'] = [
+            'estado' => false,
+            'mensaje' => 'Error al mostrar los usuarios',
+            'tipo' => 'Mostrar-usuarios'
+        ];
+        header('location:../../src/paginas/perfil-usuario.php');
+        exit;
     }
 }
 

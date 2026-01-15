@@ -8,15 +8,17 @@ try {
     $conn = conectar();
     $sentencia = $conn->prepare('UPDATE categorias SET activa = 1 WHERE id = ?');
     $sentencia->execute([$id_categoria]);
-    echo json_encode([
-        'estado' => 'success',
-        'mensaje' => 'Categoria activada correctamente'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => true,
+        'mensaje' => 'Categoria activada correctamente',
+        'tipo' => 'categoria'
+    ];
 } catch (PDOException $err) {
-    echo json_encode([
-        'estado' => 'error',
-        'mensaje' => 'Error al activar la categoria'
-    ]);
+    $_SESSION['mensaje'] = [
+        'estado' => false,
+        'mensaje' => 'Error al activar la categoria',
+        'tipo' => 'categoria'
+    ];
 }
 
 ?>
