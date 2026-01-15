@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const seccionGuardada = sessionStorage.getItem('seccionActual') || 'dashboard';
     mostrarSeccion(seccionGuardada);
@@ -15,4 +14,13 @@ function mostrarSeccion(seccion) {
     seccionSeleccionada.classList.remove('ocultarSeccion');
     seccionSeleccionada.classList.add('mostrarSeccion');
     sessionStorage.setItem('seccionActual', seccion);
+}
+
+function desactivarCuenta() {
+
+    fetch('../modelos/sesion/cerrar-sesion-usuario.php', {
+        method: 'POST',
+    })
+
+
 }

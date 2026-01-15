@@ -10,6 +10,7 @@ require '../plantillas/cabecera.php';
         </div>
         <!-- FORMULARIO REGISTRO -->
         <form class="mt-8 space-y-6" action="../../modelos/usuario/crear-usuario.php" method="POST">
+            <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
 
             <!-- NOMBRE DE USUARIO -->
             <div class="space-y-2">

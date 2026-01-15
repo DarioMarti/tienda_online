@@ -10,6 +10,8 @@ if (!$_SESSION['usuario']) {
 $id = $_SESSION['usuario']['id'];
 $nombre = $_POST['nombre'] ?? "";
 $apellidos = $_POST['apellidos'] ?? "";
+$rol = $_POST['rol'] ?? "";
+$estado = $_POST['estado'] ?? "";
 $telefono = intval($_POST['telefono'] ?? "");
 $direccion = trim($_POST['direccion'] ?? "");
 

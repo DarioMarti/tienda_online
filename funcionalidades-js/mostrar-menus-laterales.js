@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuLateralLogin = document.getElementById('barra-lateral-login');
 
     if (menuLateralLogin?.dataset.comprobarError === 'true') {
-        abrirLogin();
+        abrirCerrarLogin();
     }
 });
 

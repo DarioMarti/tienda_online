@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../../config/conexionDB.php';
+require_once '../../config/conexionDB.php';
 session_start();
 
 $email = $_POST['email'];

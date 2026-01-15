@@ -4,7 +4,7 @@ session_start();
 
 unset($_SESSION['usuario']);
 
-header('location:../../../src/paginas/index.php');
+header('location:../../src/paginas/index.php');
 exit();
 
 ?>

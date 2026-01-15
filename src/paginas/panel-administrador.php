@@ -200,8 +200,8 @@ $pedidos = mostrarPedidos();
         <div id="seccion-usuarios" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Usuarios</h2>
-                <button class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
-                    font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                <button onclick="abrirCerrarModalCrearUsuario('crear')" class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
+                    font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nuevo Usuario
                 </button>
             </div>
@@ -244,7 +244,9 @@ $pedidos = mostrarPedidos();
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                    <button
+                                        onclick="abrirCerrarModalCrearUsuario('editar', '<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['apellidos'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['rol'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['telefono'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['direccion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['activo'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['id'], ENT_QUOTES) ?>')"
+                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
@@ -444,7 +446,7 @@ $pedidos = mostrarPedidos();
         <!--SECCIÓN PEDIDOS-->
         <div></div>
     </section>
-
+    <?php include 'modales-panel-administrador.php'; ?>
 </main>
 
 <script src="../../funcionalidades-js/panel-administrador.js"></script>

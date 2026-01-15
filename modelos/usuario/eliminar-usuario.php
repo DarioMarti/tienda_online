@@ -2,20 +2,25 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
+
+if (!$_SESSION['usuario']) {
+    header('location:../../src/paginas/index.php');
+    exit;
+}
+
 $id_usuario = $_SESSION['usuario']['id'];
 
 try {
 
+    $conn = conectar();
 
     $sentencia = $conn->prepare('UPDATE usuarios set activo = 0 WHERE id = ?');
     $sentencia->execute([$id_usuario]);
 
-    header('location:../../paginas/panel-administrador.php');
+    unset($_SESSION['usuario']);
 
-    echo json_encode([
-        'estado' => 'success',
-        'mensaje' => 'Usuario eliminado correctamente'
-    ]);
+    header('location:../../src/paginas/index.php');
+
 
 } catch (PDOException $err) {
     $_SESSION['mensaje'] = [

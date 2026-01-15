@@ -200,17 +200,17 @@ if (!$_SESSION['usuario']) {
                 </div>
                 <!-- CERRAR SESIÓN -->
                 <div class="bg-white rounded-lg shadow-xl p-6">
-                    <a href="../modelos/cerrar-sesion.php"
+                    <a href="../../modelos/sesion/cerrar-sesion-usuario.php"
                         class="block w-full bg-red-600 text-white py-3 px-4 text-xs uppercase tracking-widest font-semibold hover:bg-red-700 transition-all duration-300 rounded-lg text-center">
                         <i class="ph ph-sign-out mr-2"></i>Cerrar Sesión
                     </a>
                 </div>
                 <!-- ELIMINAR CUENTA -->
-                <a href="#"
-                    class="block w-full py-3 px-4 text-xs uppercase tracking-widest font-semibold bg-gray-100 hover:bg-gray-200 text-red-600 transition-all duration-300 rounded-lg text-center"
+                <button onclick="abrirModalEliminarCuenta()"
+                    class="cursor-pointer block w-full py-3 px-4 text-xs uppercase tracking-widest font-semibold bg-gray-100 hover:bg-gray-200 text-red-600 transition-all duration-300 rounded-lg text-center"
                     id="eliminar-cuenta">
                     <i class="ph ph-trash mr-2"></i>Eliminar Cuenta
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -284,7 +284,7 @@ if (!$_SESSION['usuario']) {
 </div>
 
 
-<!--MODA DE CAMBIAR CONTRASEÑA-->
+<!--MODAL DE CAMBIAR CONTRASEÑA-->
 <div id="modal-cambiar-contrasena" class=" hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
         <div
@@ -338,7 +338,7 @@ if (!$_SESSION['usuario']) {
 </div>
 <!-- MODAL DE RESULTADO -->
 <?php if (isset($_SESSION['mensaje'])): ?>
-    <div id="resultado-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div id="resultado-modal" class="resultado-modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center transform transition-all">
 
@@ -366,6 +366,36 @@ if (!$_SESSION['usuario']) {
         </div>
     </div>
 <?php endif; ?>
+
+<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+<div id="eliminar-cuenta-modal" class=" hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 text-center transform transition-all">
+        <div class="mb-4">
+            <i class="ph ph-warning-circle text-6xl text-red-500"></i>
+        </div>
+
+        <h3 class="font-editorial text-2xl italic text-fashion-black mb-2">
+            ¿Estás seguro?
+        </h3>
+
+        <p class="text-gray-600 mb-6">
+            Esta acción eliminará permanentemente tu cuenta y no se puede deshacer.
+        </p>
+
+        <div class="flex gap-4">
+            <button id="cancelar-eliminar-cuenta-btn" onclick="abrirModalEliminarCuenta()"
+                class="cursor-pointer flex-1 bg-gray-200 text-gray-700 py-3 px-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all duration-300 rounded-lg">
+                Cancelar
+            </button>
+            <a href="../../modelos/usuario/eliminar-usuario.php"
+                class="cursor-pointer flex-1 bg-red-600 text-white py-3 px-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-red-700 transition-all duration-300 rounded-lg shadow-lg hover:shadow-xl">
+                Eliminar
+            </a>
+        </div>
+    </div>
+</div>
+
+
 <?php
 include '../plantillas/footer.html';
 ?>
