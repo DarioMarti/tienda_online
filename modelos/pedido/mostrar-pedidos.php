@@ -4,10 +4,10 @@ require_once '../../config/conexionDB.php';
 
 function mostrarPedidos()
 {
-
-    $conn = conectar();
-
     try {
+        $conn = conectar();
+
+
         $sentencia = $conn->prepare('SELECT * FROM pedidos');
         $sentencia->execute();
         $pedidos = $sentencia->fetchAll(PDO::FETCH_ASSOC);

@@ -1,12 +1,14 @@
 <?php
 
 require_once '../../config/conexionDB.php';
+session_start();
+
 
 $nombre_destinatario = $_POST['nombre_destinatario'] ?? '';
 $coste_total = floatval($_POST['coste_total']) ?? 0;
 $email = $_POST['usuario_email'] ?? '';
-$estado_pedido = $_POST['estado_pedido'] ?? '';
-$direccion = $_POST['direccion'] ?? '';
+$estado_pedido = $_POST['estado'] ?? '';
+$direccion = $_POST['direccion_envio'] ?? '';
 $ciudad = $_POST['ciudad'] ?? '';
 $provincia = $_POST['provincia'] ?? '';
 $productos = $_POST['productos'] ?? [];
@@ -51,7 +53,7 @@ try {
     }
 
     //Insertar pedido
-    $sentenciaPedido = $conn->prepare('INSERT INTO pedidos (usuario_id, nombre_destinatario, coste_total, fecha, estado, direccion_envio, ciudad, provincia) VALUES (?, ?, ?, now(), ?, ?, ?, ?)');
+    $sentenciaPedido = $conn->prepare('INSERT INTO pedidos (usuario_id, nombre_destinatario, coste_total, estado, direccion_envio, ciudad, provincia) VALUES (?, ?, ?, now(), ?, ?, ?, ?)');
     $sentenciaPedido->execute([$id_usuario, $nombre_destinatario, $coste_total, $estado_pedido, $direccion, $ciudad, $provincia]);
     $id_pedido = $conn->lastInsertId();
 
@@ -76,6 +78,9 @@ try {
         'mensaje' => "Pedido creado correctamente",
         'tipo' => 'pedido'
     ];
+    header('Location: ' . $rutaActual);
+    exit();
+
 } catch (PDOException $err) {
     $_SESSION['mensaje'] = [
         'estado' => false,

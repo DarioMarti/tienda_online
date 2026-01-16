@@ -204,7 +204,7 @@ function abrirCerrarModalCrearCategoria(accion, nombre = "", descripcion = "", c
 
 
 //Abrir y cerrar el modal de crear y editar pedido
-function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = "", direccion = "", ciudad = "", provincia = "", estado = "", id = "") {
+function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "", nombre = "", direccion = "", ciudad = "", provincia = "", estado = "", id = "") {
     let modalPedido = document.getElementById('modal-pedido');
     let formPedido = document.getElementById('formulario-pedido');
     let tituloModalPedido = document.getElementById('titulo-modal-pedido');
@@ -213,9 +213,16 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
     let costeTotal = document.getElementById('coste-total-pedido');
     costeTotal.value = "0";
 
+    //Toma los productos cuando se edita un pedido
+    let productos = [];
+    if (boton && boton.dataset && boton.dataset.productos) {
+        productos = JSON.parse(boton.dataset.productos);
+    }
+
     if (modalPedido.classList.contains('hidden')) {
         modalPedido.classList.remove('hidden');
         modalPedido.classList.add('block');
+        bloqueProductos.innerHTML = '';
     } else {
         modalPedido.classList.remove('block');
         modalPedido.classList.add('hidden');
@@ -225,8 +232,9 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
     let btnAgregar = document.getElementById('agregar-producto-pedido');
     let newBtn = btnAgregar.cloneNode(true);
     btnAgregar.parentNode.replaceChild(newBtn, btnAgregar);
+    newBtn.addEventListener('click', agregarProducto);
 
-    newBtn.addEventListener('click', () => {
+    function agregarProducto(producto = null) {
 
         //Se crea los elementos
         let filaProducto = document.createElement('tr');
@@ -239,7 +247,7 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
         celdaInputStock.type = 'number';
         celdaInputStock.min = '1';
         celdaInputStock.max = '100';
-        celdaInputStock.value = '1';
+        celdaInputStock.value = producto ? producto.cantidad : '1';
         celdaInputStock.name = 'stock[]';
         celdaStock.appendChild(celdaInputStock);
 
@@ -268,11 +276,17 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
                 selectProducto.classList.add('w-full', 'px-3', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:outline-none', 'focus:border-fashion-black', 'bg-white', 'text-sm');
                 selectProducto.name = 'productos[]';
 
-                data.forEach(producto => {
+                data.forEach(prod => {
                     let optionProducto = document.createElement('option');
-                    optionProducto.value = producto.id;
-                    optionProducto.textContent = producto.nombre;
-                    optionProducto.dataset.precio = producto.precio;
+                    optionProducto.value = prod.id;
+                    optionProducto.textContent = prod.nombre;
+                    optionProducto.dataset.precio = prod.precio;
+
+                    // Si se pasa un producto específico, pre-seleccionarlo
+                    if (producto && prod.id == producto.producto_id) {
+                        optionProducto.selected = true;
+                    }
+
                     selectProducto.appendChild(optionProducto);
                 });
                 celdaProducto.appendChild(selectProducto);
@@ -300,8 +314,8 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
             })
             .catch(error => console.error('Error al cargar productos:', error));
 
-    });
 
+    }
     //comrpueba el subtotal
     function actualizarPrecio() {
         let total = 0;
@@ -317,7 +331,7 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
     }
 
     if (accion == 'crear') {
-        formPedido.action = '../../modelos/pedidos/crear-pedido.php';
+        formPedido.action = '../../modelos/pedido/crear-pedido.php';
         tituloModalPedido.textContent = 'Nuevo Pedido';
         inputId.value = '';
 
@@ -341,5 +355,15 @@ function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = ""
         document.getElementById('ciudad-pedido').value = ciudad;
         document.getElementById('provincia-pedido').value = provincia;
         document.getElementById('estado-pedido').value = estado;
+
+        //Crear filas de productos ya creados
+        if (productos && productos.length > 0) {
+            productos.forEach(detalle => {
+                agregarProducto(detalle);
+            });
+        }
     }
+
+
+
 }

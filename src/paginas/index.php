@@ -81,6 +81,9 @@ $productos = mostrarProductos();
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
                 <?php foreach ($productos as $producto): ?>
                     <div class="group cursor-pointer">
+                        <div class="hidden id-producto-catalogo" name="id-producto-catalogo">
+                            <?php echo $producto['id']; ?>
+                        </div>
                         <a href="#" class="block">
                             <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[3/4]">
                                 <img src="#"
@@ -97,7 +100,7 @@ $productos = mostrarProductos();
                                 <div
                                     class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-12">
 
-                                    <button
+                                    <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
                                         class=" cursor-pointer w-full bg-white text-fashion-black hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
                                         Añadir a la cesta
                                     </button>

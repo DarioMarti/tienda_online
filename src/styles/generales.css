@@ -87,7 +87,7 @@ nav li {
 
 /* CARRITO A PANTALLA COMPLETA EN MÓVIL */
 @media (max-width: 1023px) {
-    #sidebar-carrito {
+    #barra-lateral-carrito {
         max-width: none !important;
         width: 100% !important;
     }

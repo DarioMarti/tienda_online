@@ -6,6 +6,7 @@ require '../../modelos/usuario/mostrar-usuarios.php';
 require '../../modelos/producto/mostrar-productos.php';
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/pedido/mostrar-pedidos.php';
+require '../../modelos/pedido/mostrar-detalles-pedido.php';
 $usuarios = mostrarUsuarios();
 $productos = mostrarProductos();
 $categorias = mostrarCategorias();
@@ -103,7 +104,7 @@ $pedidos = mostrarPedidos();
         <div id="seccion-pedidos" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Pedidos</h2>
-                <button onclick="abrirCerrarModalCrearPedido()"
+                <button onclick="abrirCerrarModalCrearPedido(null,'crear')"
                     class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nuevo Pedido
                 </button>
@@ -171,7 +172,27 @@ $pedidos = mostrarPedidos();
                                         title="Ver Detalles">
                                         <i class="ph ph-eye text-xl"></i>
                                     </button>
-                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                    <button <?php
+                                    $emailPedido = "";
+                                    foreach ($usuarios as $usuario) {
+                                        if ($usuario['id'] == $pedido['usuario_id']) {
+                                            $emailPedido = $usuario['email'];
+                                        }
+                                    }
+                                    $productosPedido = [];
+                                    $pedidoDetalles = mostrarDetallesPedido($pedido['id']);
+                                    foreach ($pedidoDetalles as $detalle) {
+                                        foreach ($productos as $producto) {
+                                            if ($producto['id'] == $detalle['producto_id']) {
+                                                $productosPedido[] = array_merge($detalle, $producto);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                        data-productos='<?= json_encode($productosPedido) ?>'
+                                        onclick="abrirCerrarModalCrearPedido(this,'editar', '<?= $emailPedido ?>', '<?= $pedido['coste_total'] ?>','<?= htmlspecialchars($pedido['nombre_destinatario'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['direccion_envio'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['ciudad'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['provincia'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['estado'], ENT_QUOTES) ?>','<?= $pedido['id'] ?>')"
+                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
