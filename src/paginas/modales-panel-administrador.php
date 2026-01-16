@@ -236,19 +236,20 @@
 
 <!--MODAL CREAR Y EDITAR CATEGORIAS-->
 
-<div id="modal-categoria" class=" fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+<div id="modal-categoria" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
 
         <div class="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center">
             <h2 id="titulo-modal-categoria" class="font-editorial text-3xl italic text-fashion-black">Nueva Categoría
             </h2>
-            <button class="text-gray-400 hover:text-fashion-black transition-colors">
+            <button onclick="abrirCerrarModalCrearCategoria()"
+                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
         <form id="formulario-categoria" action="../modelos/categorias/crear-categoria.php" method="POST" class="p-8">
-            <input type="hidden" name="category_id" id="id-categoria">
-            <input type="hidden" name="action" id="accion-formulario-categoria" value="crear">
+            <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
+            <input type="hidden" name="id" id="id-categoria">
             <div>
                 <div class="space-y-2">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Nombre</label>
@@ -273,18 +274,126 @@
                 </div>
             </div>
             <div class="flex gap-4 mt-8">
-                <button type="button"
-                    class="flex-1 bg-gray-200 text-gray-700 py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all rounded-lg">
+                <button onclick="abrirCerrarModalCrearCategoria()" type="button"
+                    class="flex-1 bg-gray-200 text-gray-700 py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all rounded-lg cursor-pointer">
                     Cancelar
                 </button>
                 <button type="submit"
-                    class="flex-1 bg-fashion-black text-white py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-accent transition-all rounded-lg shadow-lg">
+                    class="flex-1 bg-fashion-black text-white py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-accent transition-all rounded-lg shadow-lg cursor-pointer">
                     Guardar
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+
+<!--MODAL CREAR Y EDITAR PEDIDOS-->
+<div id="modal-pedido" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center">
+            <h2 id="titulo-modal-pedido" class="font-editorial text-3xl italic text-fashion-black">Nuevo Pedido</h2>
+            <button onclick="abrirCerrarModalCrearPedido()"
+                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+        <form id="formulario-pedido" action="../modelos/pedidos/crear-pedido.php" method="POST" class="p-8">
+            <input type="hidden" name="category_id" id="id-formulario-pedido">
+            <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Email Usuario</label>
+                    <input type="email" name="usuario_email" id="email-usuario-pedido" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black"
+                        placeholder="Email del cliente">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Coste Total (€)</label>
+                    <input type="number" step="0.01" name="coste_total" id="coste-total-pedido" required readonly
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-fashion-black font-bold">
+                </div>
+                <div class="md:col-span-2 mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-xs uppercase tracking-widest font-bold text-gray-500">Artículos del Pedido</h4>
+                        <button type="button" id="agregar-producto-pedido"
+                            class="text-xs bg-fashion-black text-white px-4 py-2 rounded hover:bg-fashion-accent transition-colors flex items-center gap-2">
+                            <i class="ph ph-plus"></i> Añadir Producto
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-gray-100 rounded-lg">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">
+                                        Producto</th>
+                                    <th
+                                        class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 w-24">
+                                        Cant.</th>
+                                    <th
+                                        class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-right w-24">
+                                        Precio</th>
+                                    <th
+                                        class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-right w-24">
+                                        Subtotal</th>
+                                    <th
+                                        class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-center w-12">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="constructor-items-pedido" class="divide-y divide-gray-100">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Nombre
+                        Destinatario</label>
+                    <input type="text" name="nombre_destinatario" id="nombre-destinatario-pedido" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black">
+                </div>
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Dirección Envío</label>
+                    <textarea name="direccion_envio" id="direccion-envio-pedido" required rows="2"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black"></textarea>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Ciudad</label>
+                    <input type="text" name="ciudad" id="ciudad-pedido" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Provincia</label>
+                    <input type="text" name="provincia" id="provincia-pedido" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black">
+                </div>
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Estado</label>
+                    <select name="estado" id="estado-pedido" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black bg-white">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="enviado">Enviado</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="flex gap-4 mt-8">
+                <button onclick="abrirCerrarModalCrearPedido()" type="button"
+                    class="flex-1 bg-gray-200 text-gray-700 py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all rounded-lg cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="flex-1 bg-fashion-black text-white py-4 px-8 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-accent transition-all rounded-lg shadow-lg cursor-pointer">
+                    Guardar Pedido
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 
 <!-- MODAL DE RESULTADO -->

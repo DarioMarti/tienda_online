@@ -103,8 +103,8 @@ $pedidos = mostrarPedidos();
         <div id="seccion-pedidos" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Pedidos</h2>
-                <button
-                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                <button onclick="abrirCerrarModalCrearPedido()"
+                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nuevo Pedido
                 </button>
             </div>
@@ -371,8 +371,8 @@ $pedidos = mostrarPedidos();
         <div id="seccion-categorias" class="seccion-panel ">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Categorías</h2>
-                <button
-                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg">
+                <button onclick="abrirCerrarModalCrearCategoria('crear')"
+                    class="bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nueva Categoría
                 </button>
             </div>
@@ -419,7 +419,9 @@ $pedidos = mostrarPedidos();
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                    <button
+                                        onclick="abrirCerrarModalCrearCategoria('editar', '<?= htmlspecialchars($categoria['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['categoria_padre_id'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['id'], ENT_QUOTES) ?>')"
+                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
@@ -445,8 +447,6 @@ $pedidos = mostrarPedidos();
             </div>
         </div>
 
-        <!--SECCIÓN PEDIDOS-->
-        <div></div>
     </section>
     <?php include 'modales-panel-administrador.php'; ?>
 </main>

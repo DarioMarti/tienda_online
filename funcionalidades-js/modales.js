@@ -167,3 +167,179 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
 }
 
 
+//Abrir y cerrar el modal de crear categoria
+function abrirCerrarModalCrearCategoria(accion, nombre = "", descripcion = "", categoria_padre_id = "", id = "") {
+    let modalCategoria = document.getElementById('modal-categoria');
+    let formCategoria = document.getElementById('formulario-categoria');
+    let tituloModalCategoria = document.getElementById('titulo-modal-categoria');
+    let inputId = document.getElementById('id-categoria');
+
+    if (modalCategoria.classList.contains('hidden')) {
+        modalCategoria.classList.remove('hidden');
+        modalCategoria.classList.add('block');
+    } else {
+        modalCategoria.classList.remove('block');
+        modalCategoria.classList.add('hidden');
+    }
+
+    if (accion == 'crear') {
+        formCategoria.action = '../../modelos/categoria/crear-categoria.php';
+        tituloModalCategoria.textContent = 'Nueva Categoria';
+        inputId.value = '';
+
+        document.getElementById('nombre-categoria').value = '';
+        document.getElementById('descripcion-categoria').value = '';
+        document.getElementById('id-padre-categoria').value = '';
+
+    } else if (accion == 'editar') {
+        formCategoria.action = '../../modelos/usuario/administrador/admin-editar-categoria.php';
+        tituloModalCategoria.textContent = 'Editar Categoria';
+        inputId.value = id;
+
+        document.getElementById('nombre-categoria').value = nombre;
+        document.getElementById('descripcion-categoria').value = descripcion;
+        document.getElementById('id-padre-categoria').value = categoria_padre_id;
+    }
+}
+
+
+//Abrir y cerrar el modal de crear y editar pedido
+function abrirCerrarModalCrearPedido(accion, email = "", coste = "", nombre = "", direccion = "", ciudad = "", provincia = "", estado = "", id = "") {
+    let modalPedido = document.getElementById('modal-pedido');
+    let formPedido = document.getElementById('formulario-pedido');
+    let tituloModalPedido = document.getElementById('titulo-modal-pedido');
+    let inputId = document.getElementById('id-formulario-pedido');
+    let bloqueProductos = document.getElementById('constructor-items-pedido');
+    let costeTotal = document.getElementById('coste-total-pedido');
+    costeTotal.value = "0";
+
+    if (modalPedido.classList.contains('hidden')) {
+        modalPedido.classList.remove('hidden');
+        modalPedido.classList.add('block');
+    } else {
+        modalPedido.classList.remove('block');
+        modalPedido.classList.add('hidden');
+    }
+
+
+    let btnAgregar = document.getElementById('agregar-producto-pedido');
+    let newBtn = btnAgregar.cloneNode(true);
+    btnAgregar.parentNode.replaceChild(newBtn, btnAgregar);
+
+    newBtn.addEventListener('click', () => {
+
+        //Se crea los elementos
+        let filaProducto = document.createElement('tr');
+        let celdaProducto = document.createElement('td');
+        let celdaStock = document.createElement('td');
+        let celdaPrecio = document.createElement('td');
+        let celdaPrecioTotal = document.createElement('td');
+
+        let celdaInputStock = document.createElement('input');
+        celdaInputStock.type = 'number';
+        celdaInputStock.min = '1';
+        celdaInputStock.max = '100';
+        celdaInputStock.value = '1';
+        celdaInputStock.name = 'stock[]';
+        celdaStock.appendChild(celdaInputStock);
+
+        // Estilos para las celdas
+        const clasesCelda = ['px-4', 'py-3', 'text-sm', 'text-gray-600'];
+        filaProducto.classList.add('border-b', 'border-gray-100', 'hover:bg-gray-50', 'transition-colors');
+        celdaProducto.classList.add(...clasesCelda);
+        celdaStock.classList.add(...clasesCelda, 'w-24');
+        celdaPrecio.classList.add(...clasesCelda, 'text-right', 'font-medium', 'w-24');
+        celdaPrecioTotal.classList.add(...clasesCelda, 'text-right', 'font-bold', 'text-fashion-black', 'w-24');
+        celdaInputStock.classList.add('w-full', 'px-2', 'py-1', 'border', 'border-gray-300', 'rounded', 'focus:outline-none', 'focus:border-fashion-black', 'text-center');
+        celdaPrecioTotal.classList.add('subtotal');
+
+        filaProducto.appendChild(celdaProducto);
+        filaProducto.appendChild(celdaStock);
+        filaProducto.appendChild(celdaPrecio);
+        filaProducto.appendChild(celdaPrecioTotal);
+
+
+        bloqueProductos.appendChild(filaProducto);
+
+        fetch('../../modelos/producto/api-mostrar-productos.php')
+            .then(response => response.json())
+            .then(data => {
+                let selectProducto = document.createElement('select');
+                selectProducto.classList.add('w-full', 'px-3', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:outline-none', 'focus:border-fashion-black', 'bg-white', 'text-sm');
+                selectProducto.name = 'productos[]';
+
+                data.forEach(producto => {
+                    let optionProducto = document.createElement('option');
+                    optionProducto.value = producto.id;
+                    optionProducto.textContent = producto.nombre;
+                    optionProducto.dataset.precio = producto.precio;
+                    selectProducto.appendChild(optionProducto);
+                });
+                celdaProducto.appendChild(selectProducto);
+
+                celdaPrecio.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
+                celdaPrecioTotal.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
+
+                // Actualizar el precio total
+                const actualizarSubtotal = () => {
+                    let precioUnitario = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
+                    let cantidad = parseInt(celdaInputStock.value);
+                    let subtotal = precioUnitario * cantidad;
+
+
+                    celdaPrecio.textContent = precioUnitario.toFixed(2) + ' €';
+                    celdaPrecioTotal.textContent = subtotal.toFixed(2) + ' €';
+                };
+
+                selectProducto.addEventListener('change', actualizarSubtotal);
+                celdaInputStock.addEventListener('change', actualizarSubtotal);
+                selectProducto.addEventListener('change', actualizarPrecio);
+                celdaInputStock.addEventListener('change', actualizarPrecio);
+
+                actualizarPrecio();
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
+
+    });
+
+    //comrpueba el subtotal
+    function actualizarPrecio() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(subtotal => {
+            let precio = parseFloat(subtotal.textContent);
+            console.log(precio);
+            if (!isNaN(precio)) {
+                total += precio;
+            }
+        });
+
+        costeTotal.value = total.toFixed(2);
+    }
+
+    if (accion == 'crear') {
+        formPedido.action = '../../modelos/pedidos/crear-pedido.php';
+        tituloModalPedido.textContent = 'Nuevo Pedido';
+        inputId.value = '';
+
+        document.getElementById('email-usuario-pedido').value = '';
+        document.getElementById('coste-total-pedido').value = '';
+        document.getElementById('nombre-destinatario-pedido').value = '';
+        document.getElementById('direccion-envio-pedido').value = '';
+        document.getElementById('ciudad-pedido').value = '';
+        document.getElementById('provincia-pedido').value = '';
+        document.getElementById('estado-pedido').value = '';
+
+    } else if (accion == 'editar') {
+        formPedido.action = '../../modelos/usuario/administrador/admin-editar-pedido.php';
+        tituloModalPedido.textContent = 'Editar Pedido';
+        inputId.value = id;
+
+        document.getElementById('email-usuario-pedido').value = email;
+        document.getElementById('coste-total-pedido').value = coste;
+        document.getElementById('nombre-destinatario-pedido').value = nombre;
+        document.getElementById('direccion-envio-pedido').value = direccion;
+        document.getElementById('ciudad-pedido').value = ciudad;
+        document.getElementById('provincia-pedido').value = provincia;
+        document.getElementById('estado-pedido').value = estado;
+    }
+}
