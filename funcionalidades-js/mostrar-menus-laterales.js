@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuLateralLogin?.dataset.comprobarError === 'true') {
         abrirCerrarLogin();
     }
+    if (localStorage.getItem('carrito abierto') === 'true') {
+        document.getElementById('barra-lateral-carrito').classList.remove('barra-lateral-cerrado')
+        document.getElementById('barra-lateral-carrito').classList.add('barra-lateral-abierto')
+    } else {
+        document.getElementById('barra-lateral-carrito').classList.remove('barra-lateral-abierto')
+        document.getElementById('barra-lateral-carrito').classList.add('barra-lateral-cerrado')
+    }
 });
 
 if (botonLogin) { botonLogin.addEventListener('click', abrirCerrarLogin) }

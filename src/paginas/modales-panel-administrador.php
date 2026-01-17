@@ -269,6 +269,15 @@
                     <select name="categoria_padre_id" id="id-padre-categoria"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-fashion-black bg-white">
                         <option value="">Ninguna (Categoría Principal)</option>
+                        <?php
+                        foreach ($categorias as $categoria):
+                            ?>
+                            <option value="<?= $categoria['id'] ?>">
+                                <?= $categoria['nombre'] ?>
+                            </option>
+                            <?php
+                        endforeach;
+                        ?>
 
                     </select>
                 </div>

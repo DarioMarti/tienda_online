@@ -3,8 +3,6 @@ session_start();
 require_once '../../config/conexionDB.php';
 header('Content-Type: application/json');
 
-
-
 try {
     $conn = conectar();
 
@@ -20,8 +18,6 @@ try {
         ];
     }
 
-
-
     // Inicializar carrito si no existe
     if (!isset($_SESSION['carrito'])) {
         $_SESSION['carrito'] = [
@@ -30,8 +26,6 @@ try {
             'total' => 0
         ];
     }
-
-
 
     // Buscar si el producto ya existe en el carrito
     $indice_encontrado = -1;
@@ -43,18 +37,16 @@ try {
     }
 
     if ($indice_encontrado != -1) {
-        // --- CASO 1: YA EXISTE -> INCREMENTAR CANTIDAD ---
         $_SESSION['carrito']['cantidad'][$indice_encontrado]++;
         $_SESSION['carrito']['total'] += $producto['precio'];
 
         echo json_encode([
-            'success' => true,
+            'estado' => true,
             'mensaje' => 'Cantidad actualizada',
             'total' => count($_SESSION['carrito']['productos'])
         ]);
 
     } else {
-        // --- CASO 2: NO EXISTE -> BUSCAR EN BD Y AGREGAR ---
         $sentencia = $conn->prepare('SELECT * FROM productos WHERE id = ?');
         $sentencia->execute([$id_producto]);
         $producto_bd = $sentencia->fetch(PDO::FETCH_ASSOC);
@@ -65,7 +57,7 @@ try {
             $_SESSION['carrito']['total'] += $producto_bd['precio'];
 
             echo json_encode([
-                'success' => true,
+                'estado' => true,
                 'mensaje' => 'Producto agregado',
                 'total' => count($_SESSION['carrito']['productos'])
             ]);
@@ -77,7 +69,11 @@ try {
 
             exit();
         } else {
-            echo json_encode(['success' => false, 'mensaje' => 'Producto no encontrado en BD']);
+            echo json_encode([
+                'estado' => false,
+                'mensaje' => 'Producto no encontrado en BD',
+                'total' => count($_SESSION['carrito']['productos'])
+            ]);
             $_SESSION['mensaje'] = [
                 'estado' => false,
                 'mensaje' => 'Producto no encontrado en BD',
@@ -90,8 +86,9 @@ try {
 
 } catch (PDOException $e) {
     echo json_encode([
-        'success' => false,
-        'mensaje' => 'Error de BD: ' . $e->getMessage()
+        'estado' => false,
+        'mensaje' => 'Error de BD: ' . $e->getMessage(),
+        'total' => count($_SESSION['carrito']['productos'])
     ]);
     $_SESSION['mensaje'] = [
         'estado' => false,

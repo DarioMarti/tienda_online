@@ -7,7 +7,9 @@ require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/producto/mostrar-productos.php';
 
 $categorias = mostrarCategorias();
-$productos = mostrarProductos();
+
+$filtroBusqueda = $_GET['busqueda'] ?? '';
+$productos = mostrarProductos($filtroBusqueda);
 
 ?>
 <!-- HERO IMAGE -->
@@ -25,7 +27,7 @@ $productos = mostrarProductos();
 <div class="w-full px-6 lg:px-12 py-16">
 
     <main class="flex flex-col lg:flex-row gap-12">
-        <!-- ASIDE - BARRA LATERAL -->
+        <!-- ASIDE - BARRA LATERAL - FILTROS -->
         <aside class="w-full lg:w-1/5 2xl:w-1/6 hidden lg:block">
             <div class="sticky top-32 space-y-12 pr-6 border-r border-gray-100 h-full">
                 <!-- CATEGORÍAS -->
@@ -36,7 +38,8 @@ $productos = mostrarProductos();
                             $categoriaPadre = $categoria['id'] ?>
                             <?php if ($categoria['categoria_padre_id'] == null): ?>
                                 <li>
-                                    <a href="#" class="flex items-center gap-2 hover:text-fashion-accent transition-colors">
+                                    <a href="#"
+                                        class="flex items-center gap-2 hover:text-fashion-accent transition-colors categoria-<?php echo $categoria['nombre']; ?>">
                                         <i class="ph ph-arrow-right"></i>
                                         <span><?= $categoria['nombre'] ?></span>
                                     </a>
@@ -45,7 +48,7 @@ $productos = mostrarProductos();
                                             <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id']): ?>
                                                 <li class="ml-10 text-2xs text-gray-400 py-1">
                                                     <a href="#"
-                                                        class="flex items-center gap-2 hover:text-fashion-accent transition-colors">
+                                                        class="flex items-center gap-2 hover:text-fashion-accent transition-colors categoria-<?php echo $categoria['nombre']; ?>">
                                                         <span><?= $categoriaHija['nombre'] ?></span>
                                                     </a>
                                                 </li>
@@ -59,8 +62,6 @@ $productos = mostrarProductos();
                     </ul>
                 </div>
             </div>
-            <!--FILTROS-->
-            <div></div>
         </aside>
 
         <!-- CONTENIDO PRINCIPAL -->
@@ -85,8 +86,8 @@ $productos = mostrarProductos();
                             <?php echo $producto['id']; ?>
                         </div>
                         <a href="#" class="block">
-                            <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[3/4]">
-                                <img src="#"
+                            <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
+                                <img src="../../<?= $producto['imagen'] ?>"
                                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                     alt="<?= $producto['descripcion'] ?>">
 
@@ -98,10 +99,10 @@ $productos = mostrarProductos();
                                     </div>
                                 <?php endif ?>
                                 <div
-                                    class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-12">
+                                    class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 flex flex-col justify-end">
 
                                     <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
-                                        class=" cursor-pointer w-full bg-white text-fashion-black hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
+                                        class=" cursor-pointer w-full bg-black text-white hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
                                         Añadir a la cesta
                                     </button>
                                 </div>

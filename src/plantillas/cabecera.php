@@ -112,11 +112,18 @@ $carrito = mostrarCarrito();
                     <i class="ph ph-handbag cesta hover:scale-110 transition-transform"></i>
                     <span id="contador-carrito"
                         class="absolute bg-fashion-accent text-white font-bold flex items-center justify-center rounded-full z-20   w-[13px] h-[13px] text-[8px] top-[-3px] right-[-3px] leading-none p-0 m-0 pointer-events-none">
-                        0
+                        <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']['cantidad']) : "0" ?>
                     </span>
 
                 </div>
             </div>
+        </div>
+
+        <!-- BARRA DE BUSQUEDA FILTRADA -->
+        <div id="contenedor-busqueda"
+            class="hidden absolute left-0 top-full w-full bg-white border-b border-gray-100 shadow-sm py-2 px-6 lg:px-12 z-50 transform transition-all duration-300 origin-top">
+            <input type="text" id="input-busqueda" placeholder="BUSCAR PRODUCTOS O CATEGORÍAS..."
+                class="w-full bg-transparent border-0 text-lg md:text-2xl editorial-font italic focus:ring-0 focus:outline-none py-4 placeholder:text-[8.5px] placeholder:uppercase placeholder:tracking-[0.2em] placeholder:font-sans placeholder:not-italic">
         </div>
     </header>
 
@@ -195,10 +202,10 @@ $carrito = mostrarCarrito();
         </div>
         <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
         <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
-            <input type="hidden" name="ruta-actual-carrito" value="<?= $_SERVER['REQUEST_URI'] ?>">
+
             <?php if (!empty($_SESSION['carrito']['productos'])): ?>
                 <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
-
+                    <span class="hidden producto-Carrito"></span>
                     <div class="flex gap-4 group relative ">
                         <div class="w-20  bg-gray-50 overflow-hidden rounded-md">
                             <!-- Nota: Asegúrate de tener la ruta de imagen correcta en tu DB -->
@@ -211,8 +218,10 @@ $carrito = mostrarCarrito();
                                     <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
                                         <?php echo htmlspecialchars($producto['nombre']); ?>
                                     </h4>
+                                    <h3>ID:<?= $producto['id'] ?></h3>
                                     <!-- Usamos el índice para identificar qué borrar (si es un array simple) -->
-                                    <button class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
+                                    <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
+                                        class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
                                         <i class="ph ph-trash text-sm"></i>
                                     </button>
                                 </div>

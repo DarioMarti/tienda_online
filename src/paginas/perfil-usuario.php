@@ -343,7 +343,7 @@ if (!$_SESSION['usuario']) {
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center transform transition-all">
 
             <!-- CÍRCULO DEL ICONO -->
-            <?php if ($_SESSION['mensaje']['estado'] == 'success') { ?>
+            <?php if ($_SESSION['mensaje']['estado'] == true) { ?>
                 <div class="mb-6 w-16 h-16 bg-green-100 text-green-600 flex items-center justify-center rounded-full mx-auto">
                     <i class="ph ph-check text-3xl"></i>
                 </div>
