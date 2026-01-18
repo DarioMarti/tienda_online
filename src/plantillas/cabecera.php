@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once '../../modelos/carrito/mostrar-carrito.php';
+require_once '../../config/seguridad.php';
 $carrito = mostrarCarrito();
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,7 @@ $carrito = mostrarCarrito();
 
     <!-- HEADER -->
     <header class="sticky top-0 w-full z-[60] py-6 px-6 lg:px-12 transition-all duration-300 z-50 bg-white">
-        <div class="w-full flex justify-between align-middle items-center ">
+        <div class="w-full flex justify-between align-middle items-center z-[50]">
 
             <!-- MENÚ DE LA IZQUIERDA -->
             <nav class="hidden lg:flex space-x-8 text-xs uppercase tracking-widest font-medium">
@@ -45,7 +45,7 @@ $carrito = mostrarCarrito();
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Inicio - Aetheria' ? 'text-fashion-accent' : '' ?>">
                     Home
                 </a>
-                <a href="rebajas-page.php"
+                <a href="rebajas.php"
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Rebajas - Aetheria' ? 'text-red-600 font-bold' : 'text-red-500' ?>">
                     Rebajas
                 </a>
@@ -70,7 +70,7 @@ $carrito = mostrarCarrito();
             </a>
 
             <!-- ICONOS DE LA DERECHA -->
-            <div class="flex items-center space-x-6 text-xl">
+            <div class="relative z-[60] flex items-center space-x-6 text-xl">
 
                 <?php
                 if (isset($_SESSION['usuario'])): ?>
@@ -88,7 +88,7 @@ $carrito = mostrarCarrito();
                             <a href="mis-pedidos-page.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mis
                                 Pedidos</a>
-                            <?php if ($_SESSION['usuario']['rol'] === "admin"): ?>
+                            <?php if (personalAutorizado()): ?>
                                 <a href="../paginas/panel-administrador.php"
                                     onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">
@@ -125,136 +125,137 @@ $carrito = mostrarCarrito();
             <input type="text" id="input-busqueda" placeholder="BUSCAR PRODUCTOS O CATEGORÍAS..."
                 class="w-full bg-transparent border-0 text-lg md:text-2xl editorial-font italic focus:ring-0 focus:outline-none py-4 placeholder:text-[8.5px] placeholder:uppercase placeholder:tracking-[0.2em] placeholder:font-sans placeholder:not-italic">
         </div>
+        <!-- BARRA LATERAL CARRITO (Inside Header) -->
+        <div id="barra-lateral-carrito"
+            class="barra-lateral !absolute top-full right-0  barra-lateral-cerrado z-[40] flex flex-col p-8 bg-white shadow-xl max-w-sm w-full">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="editorial-font text-3xl italic">Tu Cesta</h2>
+                <button id="cerrar-carrito"
+                    class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+            <!-- CONTENIDO DINÁMICO DEL CARRITO -->
+            <div id="contenido-carrito" class="flex flex-col h-full">
+                <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
+                <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
+
+                    <?php if (!empty($_SESSION['carrito']['productos'])): ?>
+                        <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
+                            <span class="hidden producto-Carrito"></span>
+                            <div class="flex gap-4 group relative ">
+                                <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
+                                    <img src="../../<?php echo htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
+                                        alt="<?php echo htmlspecialchars($producto['nombre']); ?>"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between py-1 pl-4">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
+                                                <?php echo htmlspecialchars($producto['nombre']); ?>
+                                            </h4>
+                                            <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
+                                                class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
+                                                <i class="ph ph-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 uppercase">
+                                            Cantidad: <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
+                                        </p>
+                                    </div>
+                                    <p class="text-xs font-medium"><?php echo number_format($producto['precio'], 2); ?> €</p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-sm text-gray-500 text-center py-10">Tu cesta está vacía</p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- FOOTER DEL CARRITO -->
+                <div class="border-t border-gray-100 pt-8 mt-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Subtotal</span>
+                        <span id="subtotal-carrito" class="text-lg font-bold">0,00 €</span>
+                    </div>
+                    <?php
+                    $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;
+                    $checkout_url = isset($_SESSION['usuario']) ? '../paginas/checkout.php' : '../paginas/registro-usuario-page.php';
+                    ?>
+                    <a href="<?= $checkout_url ?>" id="btn-finalizar-compra"
+                        class="block w-full py-4 text-center text-xs uppercase tracking-[0.25em] font-semibold transition-colors rounded-lg <?= $cart_empty ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none' : 'bg-fashion-black text-white hover:bg-fashion-accent' ?>">
+                        Finalizar Compra
+                    </a>
+                    <button id="continuar-comprando" onclick="abrirCerrarCarrito()"
+                        class="w-full text-center mt-4 text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors cursor-pointer">
+                        Continuar Comprando
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGIN BARRA LATERAL -->
+        <div id="barra-lateral-login" class=" !absolute top-full barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false)
+            echo 'data-comprobar-error="true"'; ?>>
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="editorial-font text-3xl font-semibold">Iniciar Sesión</h2>
+                <button id="btn-cerrar-login"
+                    class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- FORMULARIO LOGIN -->
+            <form class="space-y-6 flex-1" method="POST" action="../../modelos/sesion/sesion-usuario.php">
+                <input type="hidden" name="ruta-actual-login" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-500 mb-4">Correo
+                        Electronico</label>
+                    <input
+                        class="w-full  py-2 text-fashion-black focus:outline-none focus:border-fashion-black transition-colors bg-transparent"
+                        type="email" placeholder="tu@email.com" name="email" id="email">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-widest font-semibold text-gray-500">Contraseña</label>
+                    <input type="password"
+                        class="w-full py-2 text-fashion-black focus:outline-none focus:border-fashion-black transition-colors bg-transparent "
+                        id="campo-pass" name="password" placeholder="••••••••">
+                </div>
+                <div class="flex justify-between items-center text-xs text-gray-500 pt-2 formulario-checkbox"
+                    id="formulario-checkbox">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox"
+                            class="rounded border-gray-300 text-fashion-black focus:ring-fashion-black ">
+                        <span>Recordarme</span>
+                    </label>
+
+                    <a href="#" class="hover:text-fashion-black underline underline-offset-4">¿Olvidaste tu
+                        contraseña?</a>
+                </div>
+                <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false): ?>
+                    <span class="text-red-600 text-xs mt-2 block">
+                        <?= $_SESSION['mensaje']['mensaje']; ?>
+                    </span>
+                    <?php unset($_SESSION['mensaje']); ?>
+                <?php endif; ?>
+
+                <button type="submit" class=" bton  w-full py-4  mt-8 tracking-[0.25em]">
+                    Iniciar Sesión</button>
+            </form>
+
+            <!-- REGISTRARSE -->
+            <div class="border-t border-gray-100 pt-8 text-center">
+                <p class="text-sm text-gray-500 mb-4">¿Aún no tienes cuenta?</p>
+                <a href="../paginas/registro-usuario.php"
+                    class="inline-block border border-fashion-black text-fashion-black px-8 py-3 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-black hover:text-white transition-all duration-300">
+                    Crear Cuenta
+                </a>
+            </div>
+
+        </div>
     </header>
 
     <!-- OVERLAY -->
     <div id="capa-superpuesta"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] hidden transition-opacity duration-300"></div>
-
-
-    <!-- LOGIN BARRA LATERAL -->
-    <div id="barra-lateral-login" class="barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false)
-        echo 'data-comprobar-error="true"'; ?>>
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="editorial-font text-3xl font-semibold">Iniciar Sesión</h2>
-            <button id="btn-cerrar-login"
-                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
-                <i class="ph ph-x text-2xl"></i>
-            </button>
-        </div>
-
-        <!-- FORMULARIO LOGIN -->
-        <form class="space-y-6 flex-1" method="POST" action="../../modelos/sesion/sesion-usuario.php">
-            <input type="hidden" name="ruta-actual-login" value="<?= $_SERVER['REQUEST_URI'] ?>">
-            <div class="space-y-2">
-                <label class="text-xs uppercase tracking-widest font-semibold text-gray-500 mb-4">Correo
-                    Electronico</label>
-                <input
-                    class="w-full  py-2 text-fashion-black focus:outline-none focus:border-fashion-black transition-colors bg-transparent"
-                    type="email" placeholder="tu@email.com" name="email" id="email">
-            </div>
-            <div class="space-y-2">
-                <label class="text-xs uppercase tracking-widest font-semibold text-gray-500">Contraseña</label>
-                <input type="password"
-                    class="w-full py-2 text-fashion-black focus:outline-none focus:border-fashion-black transition-colors bg-transparent "
-                    id="campo-pass" name="password" placeholder="••••••••">
-            </div>
-            <div class="flex justify-between items-center text-xs text-gray-500 pt-2 formulario-checkbox"
-                id="formulario-checkbox">
-                <label class="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" class="rounded border-gray-300 text-fashion-black focus:ring-fashion-black ">
-                    <span>Recordarme</span>
-                </label>
-
-                <a href="#" class="hover:text-fashion-black underline underline-offset-4">¿Olvidaste tu
-                    contraseña?</a>
-            </div>
-            <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false): ?>
-                <span class="text-red-600 text-xs mt-2 block">
-                    <?= $_SESSION['mensaje']['mensaje']; ?>
-                </span>
-                <?php unset($_SESSION['mensaje']); ?>
-            <?php endif; ?>
-
-            <button type="submit" class=" bton  w-full py-4  mt-8 tracking-[0.25em]">
-                Iniciar Sesión</button>
-        </form>
-
-        <!-- REGISTRARSE -->
-        <div class="border-t border-gray-100 pt-8 text-center">
-            <p class="text-sm text-gray-500 mb-4">¿Aún no tienes cuenta?</p>
-            <a href="../paginas/registro-usuario.php"
-                class="inline-block border border-fashion-black text-fashion-black px-8 py-3 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-black hover:text-white transition-all duration-300">
-                Crear Cuenta
-            </a>
-        </div>
-
-    </div>
-
-
-    <!--BARRA LATERAL CARRITO-->
-    <div id="barra-lateral-carrito" class="barra-lateral barra-lateral-cerrado z-[50] flex flex-col p-8">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="editorial-font text-3xl italic">Tu Cesta</h2>
-            <button id="cerrar-carrito" class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
-                <i class="ph ph-x text-2xl"></i>
-            </button>
-        </div>
-        <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
-        <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
-
-            <?php if (!empty($_SESSION['carrito']['productos'])): ?>
-                <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
-                    <span class="hidden producto-Carrito"></span>
-                    <div class="flex gap-4 group relative ">
-                        <div class="w-20  bg-gray-50 overflow-hidden rounded-md">
-                            <!-- Nota: Asegúrate de tener la ruta de imagen correcta en tu DB -->
-                            <img src="../../<?php echo htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
-                                alt="<?php echo htmlspecialchars($producto['nombre']); ?>" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex-1 flex flex-col justify-between py-1 pl-4">
-                            <div>
-                                <div class="flex justify-between items-start">
-                                    <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
-                                        <?php echo htmlspecialchars($producto['nombre']); ?>
-                                    </h4>
-                                    <h3>ID:<?= $producto['id'] ?></h3>
-                                    <!-- Usamos el índice para identificar qué borrar (si es un array simple) -->
-                                    <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
-                                        class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
-                                        <i class="ph ph-trash text-sm"></i>
-                                    </button>
-                                </div>
-                                <p class="text-[10px] text-gray-400  uppercase">
-                                    Cantidad: <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
-                                </p>
-                            </div>
-                            <p class="text-xs font-medium"><?php echo number_format($producto['precio'], 2); ?> €</p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p class="text-sm text-gray-500 text-center py-10">Tu cesta está vacía</p>
-            <?php endif; ?>
-
-        </div>
-        <!-- FOOTER DEL CARRITO -->
-        <div class="border-t border-gray-100 pt-8 mt-auto">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Subtotal</span>
-                <span id="subtotal-carrito" class="text-lg font-bold">0,00 €</span>
-            </div>
-            <?php
-            $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;
-            $checkout_url = isset($_SESSION['usuario']) ? 'checkout-page.php' : 'registro-usuario-page.php';
-            ?>
-            <a href="<?= $checkout_url ?>" id="btn-finalizar-compra"
-                class="block w-full py-4 text-center text-xs uppercase tracking-[0.25em] font-semibold transition-colors rounded-lg <?= $cart_empty ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none' : 'bg-fashion-black text-white hover:bg-fashion-accent' ?>">
-                Finalizar Compra
-            </a>
-            <button id="continuar-comprando"
-                class="w-full text-center mt-4 text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors">
-                Continuar Comprando
-            </button>
-        </div>
-    </div>

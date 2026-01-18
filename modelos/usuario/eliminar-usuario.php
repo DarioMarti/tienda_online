@@ -2,11 +2,10 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
+require_once '../../config/seguridad.php';
+restringirAccesoVisitantes();
 
-if (!$_SESSION['usuario']) {
-    header('location:../../src/paginas/index.php');
-    exit;
-}
+
 
 $id_usuario = $_SESSION['usuario']['id'];
 
@@ -26,7 +25,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al eliminar el usuario',
-        'tipo' => 'Eliminar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:../../src/paginas/perfil-usuario.php');
     exit;

@@ -14,6 +14,8 @@ function agregarCarritoAPI(id_producto) {
             } else {
                 localStorage.setItem('carrito abierto', false);
             }
+
+            localStorage.setItem('recien agregado', true);
             window.location.reload();
         })
         .catch(error => {

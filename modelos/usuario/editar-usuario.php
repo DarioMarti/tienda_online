@@ -2,10 +2,8 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
-
-if (!$_SESSION['usuario']) {
-    die("Error: Se debe de estar logeado");
-}
+require_once '../../config/seguridad.php';
+restringirAccesoClientes();
 
 $id = $_SESSION['usuario']['id'];
 $nombre = $_POST['nombre'] ?? "";
@@ -27,7 +25,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Usuario modificado con exito',
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:../../src/paginas/panel-administrador.php');
     exit;
@@ -36,7 +34,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al modificar el usuario',
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:../../src/paginas/perfil-usuario.php');
     exit;

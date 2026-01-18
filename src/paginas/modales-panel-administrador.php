@@ -406,7 +406,14 @@
 
 
 <!-- MODAL DE RESULTADO -->
-<?php if (isset($_SESSION['mensaje'])): ?>
+<?php
+$tiposMensajes = [
+    'categoria',
+    'usuario',
+    'producto',
+    'pedido'
+];
+if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tiposMensajes)): ?>
     <div class="resultado-modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center transform transition-all">

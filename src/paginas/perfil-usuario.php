@@ -1,11 +1,9 @@
 <?php
+session_start();
+require '../../config/seguridad.php';
+restringirAccesoVisitantes();
+
 require '../plantillas/cabecera.php';
-
-if (!$_SESSION['usuario']) {
-    die("Error: Se debe de estar logeado");
-}
-
-
 ?>
 <main class="min-h-screen bg-fashion-gray py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -337,7 +335,14 @@ if (!$_SESSION['usuario']) {
 
 </div>
 <!-- MODAL DE RESULTADO -->
-<?php if (isset($_SESSION['mensaje'])): ?>
+<?php
+$tiposMensajes = [
+    'categoria',
+    'usuario',
+    'producto',
+    'pedido'
+];
+if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tiposMensajes)): ?>
     <div id="resultado-modal" class="resultado-modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center transform transition-all">

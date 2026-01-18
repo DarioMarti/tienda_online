@@ -37,7 +37,7 @@ if (!empty($errores)) {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => $mensajeErrores,
-        'tipo' => 'Crear-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $urlActual);
     exit();
@@ -58,7 +58,7 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => 'Este email ya está registrado.',
-            'tipo' => 'Crear-usuarios'
+            'tipo' => 'usuario'
         ];
         header('location:' . $urlActual);
         exit();
@@ -72,7 +72,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Usuario creado con exito',
-        'tipo' => 'Crear-usuarios'
+        'tipo' => 'usuario'
     ];
 
     // Redirección inteligente
@@ -88,7 +88,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al crear el usuario: ' . $error->getMessage(),
-        'tipo' => 'Crear-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $urlActual);
     exit;

@@ -1,4 +1,7 @@
 <?php
+session_start();
+require_once '../../config/seguridad.php';
+restringirSoloAdmin();
 require_once '../../config/conexionDB.php';
 header('Content-Type: application/json');
 

@@ -2,6 +2,8 @@
 
 require_once '../../../config/conexionDB.php';
 session_start();
+require_once '../../../config/seguridad.php';
+restringirSoloAdmin();
 
 if (!isset($_SESSION['usuario'])) {
     die("Error: Se debe de estar logeado");
@@ -23,7 +25,7 @@ if ($_SESSION['usuario']['id'] == $id && $rol != 'admin') {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'No se puede cambiar el rol de tu propio usuario',
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $rutaActual);
     exit;
@@ -48,7 +50,7 @@ if (!empty($errores)) {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => $mensajeErrores,
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $rutaActual);
     exit();
@@ -67,7 +69,7 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => 'Usuario no encontrado',
-            'tipo' => 'Editar-usuarios'
+            'tipo' => 'usuario'
         ];
         header('location:' . $rutaActual);
         exit();
@@ -85,7 +87,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Usuario modificado con exito',
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $rutaActual);
     exit;
@@ -94,7 +96,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al modificar el usuario',
-        'tipo' => 'Editar-usuarios'
+        'tipo' => 'usuario'
     ];
     header('location:' . $rutaActual);
     exit;

@@ -1,9 +1,7 @@
 <?php
-
-session_start();
-$titulo = "Inicio - Aetheria";
+$titulo = "Rebajas - Aetheria";
 require '../plantillas/cabecera.php';
-$heroImage = "../../img/CabeceraHome2.jpg";
+$heroImage = "../../img/Hero-Imagen.jpg";
 
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/producto/mostrar-productos.php';
@@ -14,20 +12,20 @@ $filtroBusqueda = $_GET['busqueda'] ?? '';
 $filtroCategoria = $_GET['categoria'] ?? '';
 $filtroPrecio = $_GET['precio'] ?? '';
 $filtroOrden = $_GET['orden'] ?? '';
-$productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $filtroPrecio);
+$productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $filtroPrecio, 1, true);
 
 ?>
-<!-- HERO IMAGE -->
-<section class="flex flex-col justify-center items-center h-[60vh] w-full overflow-hidden text-center text-white px-4 "
-    style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('<?= $heroImage ?>') center top / cover no-repeat;">
 
-    <p class="font-family-sans uppercase tracking-[0.3em] text-xs mb-4 ">Fall Winter 2025</p>
-    <h2 class="font-family-sans text-5xl md:text-7xl mb-6 italic">
-        La Colección
-    </h2>
 
+<section
+    class="flex flex-col justify-center items-center h-[300px] w-full overflow-hidden text-center text-white px-4 bg-fashion-black relative">
+    <div class="absolute inset-0 opacity-40 bg-[url('../img/home/Hero-Imagen.jpg')] bg-cover bg-center grayscale"></div>
+    <div class="relative z-10">
+        <p class="uppercase tracking-[0.4em] text-[10px] mb-4 text-fashion-accent font-bold">Seasonal Sale</p>
+        <h2 class="editorial-font text-4xl md:text-6xl mb-6 italic">Rebajas</h2>
+
+    </div>
 </section>
-
 <!-- BLOQUE CENTRAL -->
 <div class="w-full px-6 lg:px-12 py-16">
 
@@ -171,15 +169,6 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
     </main>
 
 </div>
-
-
-
-
-
-
-
-
-
 
 <?php
 include '../plantillas/footer.html';

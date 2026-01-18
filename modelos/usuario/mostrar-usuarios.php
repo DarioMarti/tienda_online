@@ -21,7 +21,7 @@ function mostrarUsuarios()
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => 'Error al mostrar los usuarios',
-            'tipo' => 'Mostrar-usuarios'
+            'tipo' => 'usuario'
         ];
         header('location:../../src/paginas/perfil-usuario.php');
         exit;

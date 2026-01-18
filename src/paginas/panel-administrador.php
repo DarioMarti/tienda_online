@@ -1,4 +1,8 @@
 <?php
+session_start();
+require '../../config/seguridad.php';
+restringirAccesoClientes();
+
 $titulo = "Panel de administrador";
 require '../plantillas/cabecera.php';
 

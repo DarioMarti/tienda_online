@@ -12,37 +12,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuLateralLogin?.dataset.comprobarError === 'true') {
         abrirCerrarLogin();
     }
-    if (localStorage.getItem('carrito abierto') === 'true') {
-        document.getElementById('barra-lateral-carrito').classList.remove('barra-lateral-cerrado')
-        document.getElementById('barra-lateral-carrito').classList.add('barra-lateral-abierto')
-    } else {
-        document.getElementById('barra-lateral-carrito').classList.remove('barra-lateral-abierto')
-        document.getElementById('barra-lateral-carrito').classList.add('barra-lateral-cerrado')
+    if (localStorage.getItem('recien agregado') === 'true') {
+        localStorage.setItem('recien agregado', false)
+        if (localStorage.getItem('carrito abierto') === 'true') {
+            barraLateralCarrito.classList.remove('barra-lateral-cerrado')
+            barraLateralCarrito.classList.add('barra-lateral-abierto')
+        } else {
+            barraLateralCarrito.classList.remove('barra-lateral-abierto')
+            barraLateralCarrito.classList.add('barra-lateral-cerrado')
+        }
     }
+
 });
+
+
+//Abrir y cerrar las menús laterales de carrito y login
 
 if (botonLogin) { botonLogin.addEventListener('click', abrirCerrarLogin) }
 if (botonCerrarLogin) { botonCerrarLogin.addEventListener('click', abrirCerrarLogin) }
+if (iconoCarrito) { iconoCarrito.addEventListener('click', abrirCerrarCarrito) }
+if (botonCerrarCarrito) { botonCerrarCarrito.addEventListener('click', abrirCerrarCarrito) }
+
+function cerrarLogin() {
+    menuLateralLogin.classList.remove('barra-lateral-abierto')
+    menuLateralLogin.classList.add('barra-lateral-cerrado')
+}
+function cerrarCarrito() {
+    barraLateralCarrito.classList.remove('barra-lateral-abierto')
+    barraLateralCarrito.classList.add('barra-lateral-cerrado')
+}
+
 
 function abrirCerrarLogin() {
     if (menuLateralLogin.classList.contains('barra-lateral-abierto')) {
-        menuLateralLogin.classList.remove('barra-lateral-abierto')
-        menuLateralLogin.classList.add('barra-lateral-cerrado')
+        cerrarLogin()
     } else {
+        cerrarCarrito()
         menuLateralLogin.classList.remove('barra-lateral-cerrado')
         menuLateralLogin.classList.add('barra-lateral-abierto')
     }
 }
 
-if (iconoCarrito) { iconoCarrito.addEventListener('click', abrirCerrarCarrito) }
-if (botonCerrarCarrito) { botonCerrarCarrito.addEventListener('click', abrirCerrarCarrito) }
-
 function abrirCerrarCarrito() {
     if (barraLateralCarrito.classList.contains('barra-lateral-abierto')) {
-        barraLateralCarrito.classList.remove('barra-lateral-abierto')
-        barraLateralCarrito.classList.add('barra-lateral-cerrado')
+        cerrarCarrito()
     } else {
+        cerrarLogin()
         barraLateralCarrito.classList.remove('barra-lateral-cerrado')
         barraLateralCarrito.classList.add('barra-lateral-abierto')
     }
 }
+
+
+

@@ -1,9 +1,11 @@
 <?php
-
+session_start();
 require_once '../../config/conexionDB.php';
+require_once '../../config/seguridad.php';
 
 function mostrarPedidos()
 {
+    restringirAccesoVisitantes();
     try {
         $conn = conectar();
 

@@ -58,7 +58,7 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => $mensajeErrores,
-            'tipo' => 'Editar-producto'
+            'tipo' => 'producto'
         ];
         header('location:' . $rutaActual);
         exit();
@@ -76,7 +76,7 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => 'Producto no encontrado',
-            'tipo' => 'Editar-producto'
+            'tipo' => 'producto'
         ];
         header('location:' . $rutaActual);
         exit();
@@ -93,7 +93,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Producto modificado con exito',
-        'tipo' => 'Editar-producto'
+        'tipo' => 'producto'
     ];
     header('location:' . $rutaActual);
     exit;
@@ -102,7 +102,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al modificar el producto',
-        'tipo' => 'Editar-producto'
+        'tipo' => 'producto'
     ];
     header('location:' . $rutaActual);
     exit;

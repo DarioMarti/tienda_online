@@ -2,6 +2,8 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
+require_once '../../config/seguridad.php';
+restringirAccesoVisitantes();
 
 $contrasenaActual = $_POST['actual_contrasena'] ?? "";
 $contrasenaNueva = $_POST['nueva_contrasena'] ?? "";

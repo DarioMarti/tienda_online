@@ -1,5 +1,6 @@
 <?php
 require '../plantillas/cabecera.php';
+restringirAccesoVisitantes();
 ?>
 
 <div class="flex items-center justify-center bg-white px-6 py-20" style="min-height: 60vh;">

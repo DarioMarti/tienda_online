@@ -16,6 +16,8 @@ function eliminarProductoCarrito(id_producto) {
                 localStorage.setItem('carrito abierto', false);
             }
 
+            localStorage.setItem('recien agregado', true);
+
             window.location.reload();
         })
         .catch(error => {

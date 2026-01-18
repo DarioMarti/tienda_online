@@ -1,6 +1,8 @@
 <?php
 require_once '../../config/conexionDB.php';
 session_start();
+require_once '../../config/seguridad.php';
+restringirAccesoClientes();
 
 $id_pedido = $_POST['id_pedido'] ?? '';
 $nombre_destinatario = $_POST['nombre_destinatario'] ?? '';

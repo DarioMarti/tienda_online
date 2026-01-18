@@ -1,6 +1,8 @@
 <?php
-
+session_start();
 require_once '../../config/conexionDB.php';
+require_once '../../config/seguridad.php';
+restringirAccesoClientes();
 
 $id_categoria = $_POST['id_categoria'];
 

@@ -2,7 +2,8 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
-
+require_once '../../config/seguridad.php';
+restringirAccesoVisitantes();
 
 $nombre_destinatario = $_POST['nombre_destinatario'] ?? '';
 $coste_total = floatval($_POST['coste_total']) ?? 0;

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../../modelos/pedido/mostrar-pedidos.php';
 
 function mostrarDetallesPedido($id_pedido)

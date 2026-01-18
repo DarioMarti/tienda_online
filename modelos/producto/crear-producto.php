@@ -46,7 +46,7 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => $mensajeErrores,
-            'tipo' => 'Editar-producto'
+            'tipo' => 'producto'
         ];
         header('location:' . $rutaActual);
         exit();
