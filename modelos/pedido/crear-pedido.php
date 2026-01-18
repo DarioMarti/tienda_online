@@ -54,7 +54,7 @@ try {
     }
 
     //Insertar pedido
-    $sentenciaPedido = $conn->prepare('INSERT INTO pedidos (usuario_id, nombre_destinatario, coste_total, estado, direccion_envio, ciudad, provincia) VALUES (?, ?, ?, now(), ?, ?, ?, ?)');
+    $sentenciaPedido = $conn->prepare('INSERT INTO pedidos (usuario_id, nombre_destinatario, coste_total,fecha,estado, direccion_envio, ciudad, provincia) VALUES (?, ?, ?, now(), ?, ?, ?, ?)');
     $sentenciaPedido->execute([$id_usuario, $nombre_destinatario, $coste_total, $estado_pedido, $direccion, $ciudad, $provincia]);
     $id_pedido = $conn->lastInsertId();
 
@@ -78,6 +78,12 @@ try {
         'estado' => true,
         'mensaje' => "Pedido creado correctamente",
         'tipo' => 'pedido'
+    ];
+    $_SESSION['carrito'] = [
+        'id_usuario' => $_SESSION['usuario']['id'],
+        'productos' => [],
+        'cantidad' => [],
+        'total' => 0
     ];
     header('Location: ' . $rutaActual);
     exit();

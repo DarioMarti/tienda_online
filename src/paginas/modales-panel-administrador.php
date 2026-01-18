@@ -347,7 +347,9 @@
                                         Subtotal</th>
                                     <th
                                         class="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-center w-12">
+                                        Acción
                                     </th>
+
                                 </tr>
                             </thead>
                             <tbody id="constructor-items-pedido" class="divide-y divide-gray-100">

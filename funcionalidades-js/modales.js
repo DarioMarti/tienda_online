@@ -219,6 +219,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
         productos = JSON.parse(boton.dataset.productos);
     }
 
+    //Muestra u oculta el modal
     if (modalPedido.classList.contains('hidden')) {
         modalPedido.classList.remove('hidden');
         modalPedido.classList.add('block');
@@ -234,15 +235,18 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
     btnAgregar.parentNode.replaceChild(newBtn, btnAgregar);
     newBtn.addEventListener('click', agregarProducto);
 
-    function agregarProducto(producto = null) {
 
+    //Función para agregar filas de productos en el pedido
+    function agregarProducto(producto = null) {
         //Se crea los elementos
         let filaProducto = document.createElement('tr');
         let celdaProducto = document.createElement('td');
         let celdaStock = document.createElement('td');
         let celdaPrecio = document.createElement('td');
         let celdaPrecioTotal = document.createElement('td');
+        let celdaAcciones = document.createElement('td');
 
+        //Se crea la celda del stock
         let celdaInputStock = document.createElement('input');
         celdaInputStock.type = 'number';
         celdaInputStock.min = '1';
@@ -250,6 +254,11 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
         celdaInputStock.value = producto ? producto.cantidad : '1';
         celdaInputStock.name = 'stock[]';
         celdaStock.appendChild(celdaInputStock);
+
+        //Se crea el elemento de acciones
+        let icono = document.createElement('i');
+        icono.className = 'ph ph-trash text-xl';
+        celdaAcciones.appendChild(icono);
 
         // Estilos para las celdas
         const clasesCelda = ['px-4', 'py-3', 'text-sm', 'text-gray-600'];
@@ -260,11 +269,13 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
         celdaPrecioTotal.classList.add(...clasesCelda, 'text-right', 'font-bold', 'text-fashion-black', 'w-24');
         celdaInputStock.classList.add('w-full', 'px-2', 'py-1', 'border', 'border-gray-300', 'rounded', 'focus:outline-none', 'focus:border-fashion-black', 'text-center');
         celdaPrecioTotal.classList.add('subtotal');
+        celdaAcciones.classList.add(...clasesCelda, 'text-gray-400', 'hover:text-red-500', 'cursor-pointer', 'text-right');
 
         filaProducto.appendChild(celdaProducto);
         filaProducto.appendChild(celdaStock);
         filaProducto.appendChild(celdaPrecio);
         filaProducto.appendChild(celdaPrecioTotal);
+        filaProducto.appendChild(celdaAcciones);
 
 
         bloqueProductos.appendChild(filaProducto);
@@ -291,6 +302,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
                 });
                 celdaProducto.appendChild(selectProducto);
 
+                celdaInputStock.value = 1;
                 celdaPrecio.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
                 celdaPrecioTotal.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
 
@@ -299,7 +311,6 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
                     let precioUnitario = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
                     let cantidad = parseInt(celdaInputStock.value);
                     let subtotal = precioUnitario * cantidad;
-
 
                     celdaPrecio.textContent = precioUnitario.toFixed(2) + ' €';
                     celdaPrecioTotal.textContent = subtotal.toFixed(2) + ' €';
@@ -311,11 +322,19 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
                 celdaInputStock.addEventListener('change', actualizarPrecio);
 
                 actualizarPrecio();
+
+                //Eliminar la fila del producto
+                icono.addEventListener('click', () => {
+                    filaProducto.remove();
+                    actualizarPrecio();
+                });
+
             })
             .catch(error => console.error('Error al cargar productos:', error));
 
 
     }
+
     //comrpueba el subtotal
     function actualizarPrecio() {
         let total = 0;
@@ -341,7 +360,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
         document.getElementById('direccion-envio-pedido').value = '';
         document.getElementById('ciudad-pedido').value = '';
         document.getElementById('provincia-pedido').value = '';
-        document.getElementById('estado-pedido').value = '';
+        document.getElementById('estado-pedido').value = 'pendiente';
 
     } else if (accion == 'editar') {
         formPedido.action = '../../modelos/usuario/administrador/admin-editar-pedido.php';
@@ -365,5 +384,114 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
     }
 
 
+
+}
+
+
+
+function cerrarModalDetallesPedido(id) {
+    //Muestra u oculta el modal
+    if (document.getElementById('modal-detalles-pedido').classList.contains('hidden')) {
+        document.getElementById('modal-detalles-pedido').classList.remove('hidden');
+        document.getElementById('modal-detalles-pedido').classList.add('block');
+        cargarDetallesPedido(id);
+    }
+    else {
+        document.getElementById('modal-detalles-pedido').classList.add('hidden');
+        document.getElementById('modal-detalles-pedido').classList.remove('block');
+    }
+
+}
+
+function cargarDetallesPedido(id) {
+
+    let estado = document.getElementById('det-etiqueta-estado');
+    let nombre = document.getElementById('det-nombre-receptor');
+    let direccion = document.getElementById('det-direccion-envio');
+    let ciudad = document.getElementById('det-ubicacion-envio');
+    let coste = document.getElementById('det-total-pedido');
+    let listaItems = document.getElementById('det-lista-items');
+
+    reiniciarModalDetallesPedido(listaItems, estado, nombre, direccion, ciudad, coste);
+
+    //Carga los detalles del pedido
+    fetch('../../modelos/pedido/api-obtener-detalles-pedido.php?id_pedido=' + id)
+        .then(response => response.json())
+        .then(data => {
+
+            //Carga los datos del pedido
+            fetch('../../modelos/pedido/api-obtener-pedidos.php?id_pedido=' + id)
+                .then(response => response.json())
+                .then(data => {
+                    switch (data.estado) {
+                        case "pendiente": estado.className = 'bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase'; break;
+                        case "pagado": estado.className = 'bg-green-200 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase'; break;
+                        case "enviado": estado.className = 'bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase'; break;
+                        case "entregado": estado.className = 'bg-purple-200 text-purple-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase'; break;
+                        case "cancelado": estado.className = 'bg-red-200 text-red-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase'; break;
+                    }
+
+                    estado.textContent = data.estado;
+                    nombre.textContent = data.nombre_destinatario;
+                    direccion.textContent = data.direccion_envio;
+                    ciudad.textContent = data.ciudad;
+                    coste.textContent = data.coste_total;
+                })
+                .catch(error => console.error('Error al cargar productos:', error));
+
+
+            data.forEach(detalle => {
+                let filaItem = document.createElement('tr');
+                filaItem.className = "border-b border-gray-50 hover:bg-gray-50/50 transition-colors";
+                listaItems.appendChild(filaItem);
+
+                let celdaNombreItem = document.createElement('td');
+                celdaNombreItem.className = "px-6 py-4 text-xs font-bold uppercase tracking-widest text-fashion-black";
+
+                let celdaCantidadItem = document.createElement('td');
+                celdaCantidadItem.className = "px-6 py-4 text-sm text-gray-500 text-center";
+
+                let celdaPrecioItem = document.createElement('td');
+                celdaPrecioItem.className = "px-6 py-4 text-sm text-gray-500 text-right";
+
+                let celdaSubtotalItem = document.createElement('td');
+                celdaSubtotalItem.className = "px-6 py-4 text-sm text-fashion-black font-bold text-right";
+
+
+                fetch('../../modelos/producto/api-mostrar-productos.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(producto => {
+                            if (producto.id == detalle.producto_id) {
+                                celdaNombreItem.textContent = producto.nombre;
+                            }
+
+                        })
+                    })
+
+
+                celdaCantidadItem.textContent = detalle.cantidad;
+                celdaPrecioItem.textContent = detalle.precio_unitario + ' €';
+
+                let precioFinalProducto = detalle.precio_unitario * detalle.cantidad;
+                celdaSubtotalItem.textContent = precioFinalProducto + ' €';
+
+                filaItem.appendChild(celdaNombreItem);
+                filaItem.appendChild(celdaCantidadItem);
+                filaItem.appendChild(celdaPrecioItem);
+                filaItem.appendChild(celdaSubtotalItem);
+
+            });
+        })
+        .catch(error => console.error('Error al cargar pedido:', error));
+}
+
+function reiniciarModalDetallesPedido(listaItems, estado, nombre, direccion, ciudad, coste) {
+    listaItems.innerHTML = '';
+    estado.textContent = '';
+    nombre.textContent = '';
+    direccion.textContent = '';
+    ciudad.textContent = '';
+    coste.textContent = '';
 
 }

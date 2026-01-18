@@ -24,8 +24,7 @@ $carrito = mostrarCarrito();
     <link rel="stylesheet" href="../styles/output.css">
     <!-- FAVICON -->
     <link rel="icon" href="../../img/globales/Favicon_Aetheria.ico" type="image/x-icon">
-    <!-- STRIPE -->
-    <script src="https://js.stripe.com/v3/"></script>
+
 </head>
 
 <body class="antialiased">
@@ -85,12 +84,11 @@ $carrito = mostrarCarrito();
                             <a href="perfil-usuario.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mi
                                 Perfil</a>
-                            <a href="mis-pedidos-page.php"
+                            <a href="mis-pedidos.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mis
                                 Pedidos</a>
                             <?php if (personalAutorizado()): ?>
-                                <a href="../paginas/panel-administrador.php"
-                                    onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
+                                <a href="panel-administrador.php" onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">
                                     Panel de <?= $_SESSION['usuario']['rol'] === 'admin' ? 'administrador' : 'empleado' ?>
                                 </a>
@@ -112,7 +110,8 @@ $carrito = mostrarCarrito();
                     <i class="ph ph-handbag cesta hover:scale-110 transition-transform"></i>
                     <span id="contador-carrito"
                         class="absolute bg-fashion-accent text-white font-bold flex items-center justify-center rounded-full z-20   w-[13px] h-[13px] text-[8px] top-[-3px] right-[-3px] leading-none p-0 m-0 pointer-events-none">
-                        <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']['cantidad']) : "0" ?>
+                        <?php
+                        echo isset($_SESSION['usuario']) ? isset($_SESSION['carrito']) ? count($_SESSION['carrito']['cantidad']) : "0" : "0"; ?>
                     </span>
 
                 </div>
@@ -125,7 +124,7 @@ $carrito = mostrarCarrito();
             <input type="text" id="input-busqueda" placeholder="BUSCAR PRODUCTOS O CATEGORÍAS..."
                 class="w-full bg-transparent border-0 text-lg md:text-2xl editorial-font italic focus:ring-0 focus:outline-none py-4 placeholder:text-[8.5px] placeholder:uppercase placeholder:tracking-[0.2em] placeholder:font-sans placeholder:not-italic">
         </div>
-        <!-- BARRA LATERAL CARRITO (Inside Header) -->
+        <!-- BARRA LATERAL CARRITO -->
         <div id="barra-lateral-carrito"
             class="barra-lateral !absolute top-full right-0  barra-lateral-cerrado z-[40] flex flex-col p-8 bg-white shadow-xl max-w-sm w-full">
             <div class="flex justify-between items-center mb-10">
@@ -136,48 +135,47 @@ $carrito = mostrarCarrito();
                 </button>
             </div>
             <!-- CONTENIDO DINÁMICO DEL CARRITO -->
-            <div id="contenido-carrito" class="flex flex-col h-full">
-                <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
-                <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
+            <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
+            <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
 
-                    <?php if (!empty($_SESSION['carrito']['productos'])): ?>
-                        <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
-                            <span class="hidden producto-Carrito"></span>
-                            <div class="flex gap-4 group relative ">
-                                <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
-                                    <img src="../../<?php echo htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
-                                        alt="<?php echo htmlspecialchars($producto['nombre']); ?>"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between py-1 pl-4">
-                                    <div>
-                                        <div class="flex justify-between items-start">
-                                            <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
-                                                <?php echo htmlspecialchars($producto['nombre']); ?>
-                                            </h4>
-                                            <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
-                                                class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
-                                                <i class="ph ph-trash text-sm"></i>
-                                            </button>
-                                        </div>
-                                        <p class="text-[10px] text-gray-400 uppercase">
-                                            Cantidad: <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
-                                        </p>
-                                    </div>
-                                    <p class="text-xs font-medium"><?php echo number_format($producto['precio'], 2); ?> €</p>
-                                </div>
+                <?php if (!empty($_SESSION['carrito']['productos'])): ?>
+                    <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
+                        <span class="hidden producto-Carrito"></span>
+                        <div class="flex gap-4 group relative ">
+                            <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
+                                <img src="../../<?php echo htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
+                                    alt="<?php echo htmlspecialchars($producto['nombre']); ?>"
+                                    class="w-full h-full object-cover">
                             </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="text-sm text-gray-500 text-center py-10">Tu cesta está vacía</p>
-                    <?php endif; ?>
-                </div>
+                            <div class="flex-1 flex flex-col justify-between py-1 pl-4">
+                                <div>
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
+                                            <?php echo htmlspecialchars($producto['nombre']); ?>
+                                        </h4>
+                                        <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
+                                            class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
+                                            <i class="ph ph-trash text-sm"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-[10px] text-gray-400 uppercase">
+                                        Cantidad: <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
+                                    </p>
+                                </div>
+                                <p class="text-xs font-medium"><?php echo number_format($producto['precio'], 2); ?> €</p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-sm text-gray-500 text-center py-10">Tu cesta está vacía</p>
+                <?php endif; ?>
 
                 <!-- FOOTER DEL CARRITO -->
                 <div class="border-t border-gray-100 pt-8 mt-auto">
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Subtotal</span>
-                        <span id="subtotal-carrito" class="text-lg font-bold">0,00 €</span>
+                        <span id="subtotal-carrito"
+                            class="text-lg font-bold"><?php echo $_SESSION['carrito']['total'] ?></span>
                     </div>
                     <?php
                     $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;

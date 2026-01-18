@@ -11,10 +11,14 @@ require '../../modelos/producto/mostrar-productos.php';
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/pedido/mostrar-pedidos.php';
 require '../../modelos/pedido/mostrar-detalles-pedido.php';
+require '../../modelos/informes/obtener-informe.php';
+
 $usuarios = mostrarUsuarios();
 $productos = mostrarProductos();
 $categorias = mostrarCategorias();
 $pedidos = mostrarPedidos();
+$ingresosMensuales = obtenerIngresosMensuales();
+$productosMasVendidos = obtenerProductosMasVendidos();
 
 ?>
 
@@ -41,14 +45,17 @@ $pedidos = mostrarPedidos();
                 class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-tag mr-2 text-xl"></i>Categorías
             </li>
-            <li onclick="mostrarSeccion('usuarios')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
-                <i class="ph ph-users mr-2 text-xl"></i>Usuarios
-            </li>
-            <li onclick="mostrarSeccion('informes')"
-                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
-                <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
-            </li>
+            <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
+                <li onclick="mostrarSeccion('usuarios')"
+                    class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
+                    <i class="ph ph-users mr-2 text-xl"></i>Usuarios
+                </li>
+
+                <li onclick="mostrarSeccion('informes')"
+                    class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
+                    <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
+                </li>
+            <?php endif; ?>
         </nav>
     </aside>
 
@@ -61,7 +68,13 @@ $pedidos = mostrarPedidos();
                     <div>
                         <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Total Ventas</p>
                         <h3 class="text-2xl font-bold text-fashion-black">
-                            200€
+                            <?php
+                            $totalVentas = 0;
+                            foreach ($pedidos as $pedido) {
+                                $totalVentas += $pedido['coste_total'];
+                            }
+                            echo $totalVentas;
+                            ?>
                         </h3>
                     </div>
                     <div class="p-2 bg-green-100 rounded-xl text-green-600">
@@ -72,7 +85,13 @@ $pedidos = mostrarPedidos();
                     <div>
                         <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Pedidos</p>
                         <h3 class="text-2xl font-bold text-fashion-black">
-                            200€
+                            <?php
+                            $totalPedidos = 0;
+                            foreach ($pedidos as $pedido) {
+                                $totalPedidos++;
+                            }
+                            echo $totalPedidos;
+                            ?>
                         </h3>
                     </div>
                     <div class="p-2 bg-blue-100 rounded-xl text-blue-600">
@@ -83,7 +102,13 @@ $pedidos = mostrarPedidos();
                     <div>
                         <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Usuarios</p>
                         <h3 class="text-2xl font-bold text-fashion-black">
-                            200€
+                            <?php
+                            $totalUsuarios = 0;
+                            foreach ($usuarios as $usuario) {
+                                $totalUsuarios++;
+                            }
+                            echo $totalUsuarios;
+                            ?>
                         </h3>
                     </div>
                     <div class="p-2 bg-purple-100 rounded-xl text-purple-600">
@@ -94,7 +119,13 @@ $pedidos = mostrarPedidos();
                     <div>
                         <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Productos</p>
                         <h3 class="text-2xl font-bold text-fashion-black">
-                            200€
+                            <?php
+                            $totalProductos = 0;
+                            foreach ($productos as $producto) {
+                                $totalProductos++;
+                            }
+                            echo $totalProductos;
+                            ?>
                         </h3>
                     </div>
                     <div class="p-2 bg-orange-100 rounded-xl text-orange-600">
@@ -471,6 +502,67 @@ $pedidos = mostrarPedidos();
 
             </div>
         </div>
+
+        <!-- SECCIÓN INFORMES -->
+        <div id="seccion-informes" class="seccion-panel">
+            <h2 class="font-editorial text-4xl italic text-fashion-black mb-8">Informes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-bold mb-4">Ingresos Mensuales</h3>
+                    <ul class="space-y-3">
+                        <?php if (empty($ingresosMensuales)): ?>
+                            <li class="text-gray-400 text-sm">No hay ingresos registrados.</li>
+                        <?php else: ?>
+                            <?php
+                            $meses = [
+                                '01' => 'Enero',
+                                '02' => 'Febrero',
+                                '03' => 'Marzo',
+                                '04' => 'Abril',
+                                '05' => 'Mayo',
+                                '06' => 'Junio',
+                                '07' => 'Julio',
+                                '08' => 'Agosto',
+                                '09' => 'Septiembre',
+                                '10' => 'Octubre',
+                                '11' => 'Noviembre',
+                                '12' => 'Diciembre'
+                            ];
+                            foreach ($ingresosMensuales as $ingreso): ?>
+                                <li class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                    <span>
+                                        <?php
+                                        $fechaObj = DateTime::createFromFormat('Y-m', $ingreso['mes']);
+                                        echo $meses[$fechaObj->format('m')] . ' ' . $fechaObj->format('Y');
+                                        ?>
+                                    </span>
+                                    <span class="font-bold">
+                                        <?= number_format($ingreso['total'], 2) ?> €
+                                    </span>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-bold mb-4">Productos Más Vendidos</h3>
+                    <ul class="space-y-3">
+                        <?php foreach ($productosMasVendidos as $prod): ?>
+                            <li class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                <span>
+                                    <?= htmlspecialchars($prod['nombre']) ?>
+                                </span>
+                                <span class="font-bold">
+                                    <?= $prod['total_vendido'] ?> uds
+                                </span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
 
     </section>
     <?php include 'modales-panel-administrador.php'; ?>

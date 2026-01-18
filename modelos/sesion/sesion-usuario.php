@@ -1,6 +1,8 @@
 <?php
 
 require_once '../../config/conexionDB.php';
+require_once '../carrito/crear-carrito.php';
+
 session_start();
 
 $email = $_POST['email'];
@@ -27,6 +29,7 @@ try {
 
     //Se verifica la contraseña
     if (password_verify($password, $usuario['password'])) {
+
         $_SESSION['usuario'] = [
             'id' => $usuario['id'],
             'nombre' => $usuario['nombre'],
@@ -41,6 +44,8 @@ try {
 
         //Se limpian los mensajes de error que se hayan podido almacenar.
         unset($_SESSION['mensaje']);
+
+        crearCarrito();
 
         header('location:' . $urlActual);
         exit();

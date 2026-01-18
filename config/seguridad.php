@@ -20,7 +20,6 @@ function estaLogueado()
 
 function restringirAccesoClientes()
 {
-
     if (!personalAutorizado()) {
         $_SESSION['mensaje'] = [
             'estado' => false,

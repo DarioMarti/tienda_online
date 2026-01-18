@@ -3,7 +3,7 @@
 session_start();
 $titulo = "Inicio - Aetheria";
 require '../plantillas/cabecera.php';
-$heroImage = "../../img/CabeceraHome2.jpg";
+$heroImage = "../../img/CabeceraHome4.jpg";
 
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/producto/mostrar-productos.php';
@@ -18,8 +18,9 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
 
 ?>
 <!-- HERO IMAGE -->
-<section class="flex flex-col justify-center items-center h-[60vh] w-full overflow-hidden text-center text-white px-4 "
-    style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('<?= $heroImage ?>') center top / cover no-repeat;">
+<section
+    class="flex flex-col justify-center items-center h-[60vh] w-full overflow-hidden text-center text-white px-4 bg-gradient-to-b from-black/40 to-black/20"
+    style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('<?= $heroImage ?>') center top / cover no-repeat;">
 
     <p class="font-family-sans uppercase tracking-[0.3em] text-xs mb-4 ">Fall Winter 2025</p>
     <h2 class="font-family-sans text-5xl md:text-7xl mb-6 italic">

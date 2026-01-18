@@ -2,6 +2,8 @@
 
 require_once '../../config/conexionDB.php';
 session_start();
+require_once '../../config/seguridad.php';
+restringirAccesoClientes();
 
 $nombre = $_POST['nombre'] ?? "";
 $descripcion = $_POST['descripcion'] ?? "";

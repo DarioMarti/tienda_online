@@ -21,6 +21,7 @@ try {
     // Inicializar carrito si no existe
     if (!isset($_SESSION['carrito'])) {
         $_SESSION['carrito'] = [
+            'id_usuario' => $_SESSION['usuario']['id'],
             'productos' => [],
             'cantidad' => [],
             'total' => 0

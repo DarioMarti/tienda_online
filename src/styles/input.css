@@ -3,11 +3,12 @@
 
 @theme {
     --color-fashion-black: #1a1a1a;
-    --color-fashion-accent: #D4AF37;
+    --color-fashion-accent: #5F6F52;
     --color-fashion-gray: #F5F5F5;
     --font-family-general: "Montserrat", sans-serif;
     --font-family-titulos: "Inter", sans-serif;
     --tracking-widest: 0.2em;
-
+    --color-boton-secundario: #ebeae9;
+    --color-boton-secundario-Accent: #d6d5d3;
 
 }

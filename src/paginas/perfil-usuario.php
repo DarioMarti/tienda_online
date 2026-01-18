@@ -1,9 +1,19 @@
 <?php
 session_start();
-require '../../config/seguridad.php';
+require_once '../../config/seguridad.php';
 restringirAccesoVisitantes();
 
-require '../plantillas/cabecera.php';
+require_once '../plantillas/cabecera.php';
+require_once '../../modelos/pedido/mostrar-pedidos.php';
+
+$pedidos = mostrarPedidos();
+foreach ($pedidos as $pedido) {
+    if ($pedido['usuario_id'] == $_SESSION['usuario']['id']) {
+        $pedidosUsuario[] = $pedido;
+    }
+}
+
+
 ?>
 <main class="min-h-screen bg-fashion-gray py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -119,21 +129,24 @@ require '../plantillas/cabecera.php';
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-3 font-bold text-fashion-black">#23</td>
-                                        <td class="px-4 py-3 text-xs text-gray-500">
-                                            14/01/2026
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="px-2 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider 
+                                    <?php foreach ($pedidosUsuario as $pedido) { ?>
+                                        <tr class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-4 py-3 font-bold text-fashion-black">#<?php echo $pedido['id'] ?>
+                                            </td>
+                                            <td class="px-4 py-3 text-xs text-gray-500">
+                                                <?php echo $pedido['fecha'] ?>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider 
                                                     bg-green-100 text-green-700">
-                                                Entregado
-                                            </span>
-                                        </td>
-                                        <td class="px-4 py-3 text-right font-bold text-fashion-black">
-                                            200€
-                                        </td>
-                                    </tr>
+                                                    <?php echo $pedido['estado'] ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 text-right font-bold text-fashion-black">
+                                                <?php echo $pedido['coste_total'] ?>€
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -337,10 +350,7 @@ require '../plantillas/cabecera.php';
 <!-- MODAL DE RESULTADO -->
 <?php
 $tiposMensajes = [
-    'categoria',
-    'usuario',
-    'producto',
-    'pedido'
+    'usuario'
 ];
 if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tiposMensajes)): ?>
     <div id="resultado-modal" class="resultado-modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -371,6 +381,7 @@ if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tipos
         </div>
     </div>
 <?php endif; ?>
+<?php unset($_SESSION['mensaje']); ?>
 
 <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
 <div id="eliminar-cuenta-modal" class=" hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">

@@ -1,7 +1,7 @@
 <?php
 $titulo = "Rebajas - Aetheria";
+session_start();
 require '../plantillas/cabecera.php';
-$heroImage = "../../img/Hero-Imagen.jpg";
 
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/producto/mostrar-productos.php';
@@ -19,7 +19,7 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
 
 <section
     class="flex flex-col justify-center items-center h-[300px] w-full overflow-hidden text-center text-white px-4 bg-fashion-black relative">
-    <div class="absolute inset-0 opacity-40 bg-[url('../img/home/Hero-Imagen.jpg')] bg-cover bg-center grayscale"></div>
+    <div class="absolute inset-0 opacity-40  bg-cover bg-center grayscale"></div>
     <div class="relative z-10">
         <p class="uppercase tracking-[0.4em] text-[10px] mb-4 text-fashion-accent font-bold">Seasonal Sale</p>
         <h2 class="editorial-font text-4xl md:text-6xl mb-6 italic">Rebajas</h2>

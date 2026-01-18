@@ -1,6 +1,8 @@
 <?php
 require_once '../../../config/conexionDB.php';
 session_start();
+require_once '../../../config/seguridad.php';
+restringirAccesoClientes();
 
 $id_producto = $_POST['id'];
 $nombre = $_POST['nombre'] ?? '';
