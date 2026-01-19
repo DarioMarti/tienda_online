@@ -32,16 +32,19 @@ try {
     }
 
     if ($indice_encontrado != -1) {
-        $precioProducto = $_SESSION['carrito']['productos'][$indice_encontrado]['precio'];
-        $cantidad = $_SESSION['carrito']['cantidad'][$indice_encontrado];
-        $_SESSION['carrito']['total'] -= $precioProducto * $cantidad;
-
         unset($_SESSION['carrito']['productos'][$indice_encontrado]);
         unset($_SESSION['carrito']['cantidad'][$indice_encontrado]);
 
         //Se reindexa el array
         $_SESSION['carrito']['productos'] = array_values($_SESSION['carrito']['productos']);
         $_SESSION['carrito']['cantidad'] = array_values($_SESSION['carrito']['cantidad']);
+
+        // Recalcular el total desde cero para mayor seguridad
+        $subtotal = 0;
+        foreach ($_SESSION['carrito']['productos'] as $index => $producto) {
+            $subtotal += $producto['precio'] * $_SESSION['carrito']['cantidad'][$index];
+        }
+        $_SESSION['carrito']['total'] = $subtotal;
 
 
         echo json_encode([

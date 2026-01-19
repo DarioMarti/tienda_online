@@ -308,7 +308,7 @@
             </button>
         </div>
         <form id="formulario-pedido" action="../../modelos/pedido/crear-pedido.php" method="POST" class="p-8">
-            <input type="hidden" name="category_id" id="id-formulario-pedido">
+            <input type="hidden" name="id_pedido" id="id-formulario-pedido">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">

@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-$titulo = "Inicio - Aetheria";
+$titulo = "Inicio - Norder Réka";
 require '../plantillas/cabecera.php';
-$heroImage = "../../img/CabeceraHome4.jpg";
+$heroImage = "../../img/globales/CabeceraHome.webp";
 
 require '../../modelos/categoria/mostrar-categoria.php';
 require '../../modelos/producto/mostrar-productos.php';

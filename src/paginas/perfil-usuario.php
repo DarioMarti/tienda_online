@@ -5,11 +5,20 @@ restringirAccesoVisitantes();
 
 require_once '../plantillas/cabecera.php';
 require_once '../../modelos/pedido/mostrar-pedidos.php';
+require_once '../../modelos/usuario/mostrar-usuarios.php';
 
 $pedidos = mostrarPedidos();
 foreach ($pedidos as $pedido) {
     if ($pedido['usuario_id'] == $_SESSION['usuario']['id']) {
         $pedidosUsuario[] = $pedido;
+    }
+}
+
+
+$usuarios = mostrarUsuarios();
+foreach ($usuarios as $usuario) {
+    if ($usuario['id'] == $_SESSION['usuario']['id']) {
+        $usuario = $usuario;
     }
 }
 
@@ -192,20 +201,28 @@ foreach ($pedidos as $pedido) {
                         <div class="flex justify-between items-center pb-3 border-b border-gray-200">
                             <span class="text-xs uppercase tracking-widest text-gray-500">Total Pedidos</span>
                             <span class="text-2xl font-bold text-fashion-black">
-                                12
+                                <?php echo $pedidosUsuario ? count($pedidosUsuario) : 0 ?>
                             </span>
                         </div>
                         <div class="flex justify-between items-center pb-3 border-b border-gray-200">
                             <span class="text-xs uppercase tracking-widest text-gray-500">Total Gastado</span>
                             <span class="text-2xl font-bold text-fashion-black">
-                                123€
+                                <?php
+                                $total = 0;
+                                if ($pedidosUsuario) {
+                                    foreach ($pedidosUsuario as $pedido) {
+                                        $total += $pedido['coste_total'];
+                                    }
+                                }
+                                echo $total;
+                                ?>€
                             </span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-xs uppercase tracking-widest text-gray-500">Miembro Desde</span>
                             <span class="text-sm text-gray-600">
-                                14/01/2026
-
+                                <?php echo $usuario['fecha_creacion'] ?>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -307,6 +324,7 @@ foreach ($pedidos as $pedido) {
             </button>
         </div>
         <form class="p-8" action="../../modelos/usuario/cambiar-contrasena.php" method="POST">
+            <input type="hidden" name="ruta-actual" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <div class="space-y-4">
                 <!-- CONTRASEÑA ACTUAL -->
                 <div class="space-y-2">
@@ -350,7 +368,8 @@ foreach ($pedidos as $pedido) {
 <!-- MODAL DE RESULTADO -->
 <?php
 $tiposMensajes = [
-    'usuario'
+    'usuario',
+    'password'
 ];
 if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tiposMensajes)): ?>
     <div id="resultado-modal" class="resultado-modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">

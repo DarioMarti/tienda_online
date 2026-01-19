@@ -3,16 +3,17 @@ session_start();
 require '../plantillas/cabecera.php';
 $productos = $_SESSION['carrito']['productos'];
 ?>
-
+<script src="https://js.stripe.com/v3/"></script>
 <main class="min-h-screen bg-fashion-gray py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <div class="mb-12">
             <h1 class="font-editorial text-5xl italic text-fashion-black mb-4">Finalizar Compra</h1>
             <p class="text-gray-500 text-xs uppercase tracking-[0.3em]">Casi has completado tu adquisición exclusiva</p>
         </div>
-        <form id="checkout-form" action="../../modelos/pedido/crear-pedido.php" method="POST"
-            class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+        <form id="checkout-form" action="#" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
+            <input type="hidden" name="id_usuario_check" id="id_usuario_check"
+                value="<?= $_SESSION['usuario']['id'] ?>">
             <!-- BLOQUE IZQUIERDA - DATOS DEL CLIENTE -->
             <div class="space-y-12 w-full lg:col-span-2">
                 <!-- 1. DATOS DE ENVIO -->
@@ -23,9 +24,9 @@ $productos = $_SESSION['carrito']['productos'];
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
                                 Nombre Completo</label>
-                            <input type="text" name="nombre_destinatario" required
+                            <input type="text" name="nombre_destinatario" id="nombre_destinatario_check" required
                                 class="w-full px-4 py-3 bg-white border border-gray-100 focus:border-fashion-black outline-none transition-colors text-sm"
-                                value="Marcos Perea">
+                                value="<?php echo $_SESSION['usuario']['nombre']; ?> <?php echo $_SESSION['usuario']['apellido']; ?>">
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Email</label>
@@ -36,19 +37,20 @@ $productos = $_SESSION['carrito']['productos'];
                         <div class="md:col-span-2 space-y-2">
                             <label
                                 class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Dirección</label>
-                            <input type="text" name="direccion_envio" required placeholder="Calle, número, piso..."
+                            <input type="text" name="direccion_envio" id="direccion_envio_check" required
+                                placeholder="Calle, número, piso..."
                                 class="w-full px-4 py-3 bg-white border border-gray-100 focus:border-fashion-black outline-none transition-colors text-sm ">
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
                                 Ciudad</label>
-                            <input type="text" name="ciudad" required
+                            <input type="text" name="ciudad" id="ciudad_check" required
                                 class="w-full px-4 py-3 bg-white border border-gray-100 focus:border-fashion-black outline-none transition-colors text-sm">
                         </div>
                         <div class="space-y-2">
                             <label
                                 class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Provincia</label>
-                            <input type="text" name="provincia" required
+                            <input type="text" name="provincia" id="provincia_check" required
                                 class="w-full px-4 py-3 bg-white border border-gray-100 focus:border-fashion-black outline-none transition-colors text-sm">
                         </div>
                     </div>
@@ -113,7 +115,7 @@ $productos = $_SESSION['carrito']['productos'];
                             <hr class="border-fashion-gray my-4">
                             <div class="flex justify-between items-center pt-2">
                                 <span class="text-xs uppercase tracking-[0.2em] font-black">Total a Pagar</span>
-                                <input type="text" name="coste_total"
+                                <input type="text" name="coste_total" id="coste_total_check"
                                     class="text-2xl font-editorial italic font-bold hidden"
                                     value="<?php echo $_SESSION['carrito']['total'] + 10; ?>">
                                 <span class="text-2xl font-editorial italic font-bold">
@@ -133,6 +135,8 @@ $productos = $_SESSION['carrito']['productos'];
     </div>
 
 </main>
+
+<script src="../../funcionalidades-js/stripe-handler.js"></script>
 <?php
 include '../plantillas/footer.html';
 ?>

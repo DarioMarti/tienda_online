@@ -1,12 +1,14 @@
 <?php
+session_start();
 require '../plantillas/cabecera.php';
+
 ?>
 
 <main class="min-h-screen bg-fashion-gray flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-lg shadow-xl">
         <div class="text-center">
             <h2 class="font-titulos text-4xl italic text-fashion-black mb-2">Crear Cuenta</h2>
-            <p class="text-sm text-gray-500 tracking-wide">Únete a la familia Aetheria</p>
+            <p class="text-sm text-gray-500 tracking-wide">Únete a la familia Norden Réka</p>
         </div>
         <!-- FORMULARIO REGISTRO -->
         <form class="mt-8 space-y-6" action="../../modelos/usuario/crear-usuario.php" method="POST">

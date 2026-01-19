@@ -1,14 +1,12 @@
 <?php
 require '../plantillas/cabecera.php';
 restringirAccesoVisitantes();
+
 ?>
 
 <div class="flex items-center justify-center bg-white px-6 py-20" style="min-height: 60vh;">
-
     <div class="max-w-4xl w-full text-center">
-
         <div class="fade-in-up">
-
             <h1
                 class="editorial-font text-6xl md:text-7xl lg:text-6xl italic text-fashion-black mb-6 tracking-tight leading-none ">
                 Gracias
@@ -19,7 +17,7 @@ restringirAccesoVisitantes();
                     Tu cuenta ha sido creada exitosamente
                 </p>
                 <p class="text-base text-gray-500 font-light">
-                    Bienvenido a la familia Aetheria
+                    Bienvenido a la familia Norden Réka
                 </p>
             </div>
 

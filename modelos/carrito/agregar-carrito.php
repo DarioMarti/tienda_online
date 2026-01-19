@@ -39,7 +39,13 @@ try {
 
     if ($indice_encontrado != -1) {
         $_SESSION['carrito']['cantidad'][$indice_encontrado]++;
-        $_SESSION['carrito']['total'] += $producto['precio'];
+
+        // Recalcular el total desde cero para mayor seguridad
+        $subtotal = 0;
+        foreach ($_SESSION['carrito']['productos'] as $index => $producto) {
+            $subtotal += $producto['precio'] * $_SESSION['carrito']['cantidad'][$index];
+        }
+        $_SESSION['carrito']['total'] = $subtotal;
 
         echo json_encode([
             'estado' => true,
@@ -55,7 +61,17 @@ try {
         if ($producto_bd) {
             $_SESSION['carrito']['productos'][] = $producto_bd;
             $_SESSION['carrito']['cantidad'][] = 1;
-            $_SESSION['carrito']['total'] += $producto_bd['precio'];
+
+            // Recalcular el total desde cero
+            $subtotal = 0;
+            foreach ($_SESSION['carrito']['productos'] as $index => $producto) {
+                if ($producto['descuento'] > 0) {
+                    $subtotal += ($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100)) * $_SESSION['carrito']['cantidad'][$index];
+                } else {
+                    $subtotal += $producto['precio'] * $_SESSION['carrito']['cantidad'][$index];
+                }
+            }
+            $_SESSION['carrito']['total'] = $subtotal;
 
             echo json_encode([
                 'estado' => true,

@@ -14,7 +14,7 @@ require '../../modelos/pedido/mostrar-detalles-pedido.php';
 require '../../modelos/informes/obtener-informe.php';
 
 $usuarios = mostrarUsuarios();
-$productos = mostrarProductos();
+$productos = mostrarProductos("", "nombre ASC", "", null, 0, false);
 $categorias = mostrarCategorias();
 $pedidos = mostrarPedidos();
 $ingresosMensuales = obtenerIngresosMensuales();
@@ -391,7 +391,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                 </td>
                                 <td class="px-6 py-4">
                                     <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-green-100 text-green-700">
+                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $producto['activo'] == 1 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' ?>">
                                         <?= $producto['activo'] == 1 ? 'Activo' : 'Inactivo' ?>
                                     </span>
                                 </td>

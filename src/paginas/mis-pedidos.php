@@ -138,7 +138,7 @@ foreach ($pedidos as $pedido) {
                 </div>
                 <div class="flex flex-col">
                     <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Escríbenos</p>
-                    <p class="text-sm font-semibold text-fashion-black">support@aetheria.com</p>
+                    <p class="text-sm font-semibold text-fashion-black">info@nordenreka.com</p>
                 </div>
             </div>
         </div>
@@ -224,9 +224,6 @@ foreach ($pedidos as $pedido) {
         </div>
     </div>
 </div>
-
-
-
 
 
 <?php

@@ -1,5 +1,5 @@
 <?php
-$titulo = "Rebajas - Aetheria";
+$titulo = "Rebajas - Norder Réka";
 session_start();
 require '../plantillas/cabecera.php';
 

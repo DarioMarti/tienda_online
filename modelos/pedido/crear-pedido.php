@@ -15,6 +15,7 @@ $provincia = $_POST['provincia'] ?? '';
 $productos = $_POST['productos'] ?? [];
 $stock = $_POST['stock'] ?? [];
 $rutaActual = $_POST['ruta-actual'] ?? '';
+$id_usuario_check = $_POST['id_usuario_check'] ?? '';
 
 try {
     $conn = conectar();
@@ -58,6 +59,13 @@ try {
     $sentenciaPedido->execute([$id_usuario, $nombre_destinatario, $coste_total, $estado_pedido, $direccion, $ciudad, $provincia]);
     $id_pedido = $conn->lastInsertId();
 
+    //Seleccionar pedido insertado
+    if ($id_pedido) {
+        $selectPedido = $conn->prepare('SELECT * FROM pedidos WHERE id = ? LIMIT 1');
+        $selectPedido->execute([$id_pedido]);
+        $pedido = $selectPedido->fetch();
+    }
+
     //Insertar detalles de pedido
     for ($i = 0; $i < count($productos); $i++) {
 
@@ -79,14 +87,16 @@ try {
         'mensaje' => "Pedido creado correctamente",
         'tipo' => 'pedido'
     ];
-    $_SESSION['carrito'] = [
-        'id_usuario' => $_SESSION['usuario']['id'],
-        'productos' => [],
-        'cantidad' => [],
-        'total' => 0
-    ];
-    header('Location: ' . $rutaActual);
-    exit();
+
+
+
+    if (!$id_usuario_check) {
+        header('Location: ' . $rutaActual);
+        exit();
+    } else {
+        $estadoNuevo = $conn->prepare('UPDATE pedidos SET estado = ? WHERE id = ?');
+        $estadoNuevo->execute(['pagado', $id_pedido]);
+    }
 
 } catch (PDOException $err) {
     $_SESSION['mensaje'] = [

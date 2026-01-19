@@ -9,6 +9,7 @@ $contrasenaActual = $_POST['actual_contrasena'] ?? "";
 $contrasenaNueva = $_POST['nueva_contrasena'] ?? "";
 $confirmarContrasena = $_POST['confirmar_contrasena'] ?? "";
 $usuario_id = $_SESSION['usuario']['id'];
+$rutaActual = $_POST['ruta-actual'] ?? "";
 
 $errores = [];
 
@@ -41,7 +42,7 @@ if (!empty($errores)) {
         'mensaje' => $error,
         'tipo' => 'password'
     ];
-    header('location:../../src/paginas/perfil-usuario.php');
+    header('location:' . $rutaActual);
     exit;
 }
 
@@ -62,7 +63,7 @@ try {
             'mensaje' => 'El usuario no existe',
             'tipo' => 'password'
         ];
-        header('location:../../src/paginas/perfil-usuario.php');
+        header('location:' . $rutaActual);
         exit;
     }
 
@@ -70,9 +71,10 @@ try {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'titulo' => 'Cambio de contraseña',
-            'mensaje' => 'Contraseña introducida no valida',
+            'mensaje' => 'La nueva contraseña y la actual no coinciden',
             'tipo' => 'password'
         ];
+        header('location:' . $rutaActual);
         exit;
     }
 
@@ -91,7 +93,7 @@ try {
         'tipo' => 'password'
     ];
 
-    header('location:../../src/paginas/perfil-usuario.php');
+    header('location:' . $rutaActual);
     exit;
 
 
@@ -103,7 +105,7 @@ try {
         'mensaje' => 'Error al cambiar la contraseña',
         'tipo' => 'password'
     ];
-    header('location:../../src/paginas/perfil-usuario.php');
+    header('location:' . $rutaActual);
     exit;
 }
 

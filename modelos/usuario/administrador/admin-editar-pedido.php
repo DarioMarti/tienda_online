@@ -1,7 +1,7 @@
 <?php
-require_once '../../config/conexionDB.php';
+require_once '../../../config/conexionDB.php';
 session_start();
-require_once '../../config/seguridad.php';
+require_once '../../../config/seguridad.php';
 restringirAccesoClientes();
 
 $id_pedido = $_POST['id_pedido'] ?? '';
@@ -48,7 +48,7 @@ try {
 
         $stmtStock = $conn->prepare('SELECT stock FROM productos WHERE id = ?');
         $stmtStock->execute([$productos[$i]]);
-        $stockEnAlmacen = $stmtStock->fetchColumn(PDO::FETCH_COLUMN);
+        $stockEnAlmacen = $stmtStock->fetchColumn();
 
         //Comprueba si el producto ya estaba añadido en el pedido y se actualiza el stock real disponible
         $cantidadLiberada = isset($stockReservadoEnPedido[$productos[$i]]) ? $stockReservadoEnPedido[$productos[$i]] : 0;

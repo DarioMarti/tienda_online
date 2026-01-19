@@ -10,7 +10,7 @@ $carrito = mostrarCarrito();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $titulo ?? "Aetheria" ?>
+        <?= $titulo ?? "Norden Réka" ?>
     </title>
     <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,19 +41,19 @@ $carrito = mostrarCarrito();
             <!-- MENÚ DE LA IZQUIERDA -->
             <nav class="hidden lg:flex space-x-8 text-xs uppercase tracking-widest font-medium">
                 <a href="index.php"
-                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Inicio - Aetheria' ? 'text-fashion-accent' : '' ?>">
+                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Inicio - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Home
                 </a>
                 <a href="rebajas.php"
-                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Rebajas - Aetheria' ? 'text-red-600 font-bold' : 'text-red-500' ?>">
+                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Rebajas - Norden Réka' ? 'text-red-600 font-bold' : 'text-red-500' ?>">
                     Rebajas
                 </a>
-                <a href="sobre-nosotros-page.php"
-                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Sobre Nosotros - Aetheria' ? 'text-fashion-accent' : '' ?>">
+                <a href="sobre-nosotros.php"
+                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Sobre Nosotros - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Sobre Nosotros
                 </a>
-                <a href="contacto-page.php"
-                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Contacto - Aetheria' ? 'text-fashion-accent' : '' ?>">
+                <a href="contacto.php"
+                    class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Contacto - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Contacto
                 </a>
             </nav>
@@ -65,7 +65,7 @@ $carrito = mostrarCarrito();
 
             <!-- LOGO -->
             <a href="index.php" class="absolute left-1/2 transform -translate-x-1/2">
-                <img src="../../img/globales/Logotipo_Aetheria.svg" alt="Logo Aetheria" class="h-8">
+                <img src="../../img/globales/Logotipo_NordenReka.svg" alt="Logo Norden Réka" class="h-12">
             </a>
 
             <!-- ICONOS DE LA DERECHA -->
@@ -111,7 +111,7 @@ $carrito = mostrarCarrito();
                     <span id="contador-carrito"
                         class="absolute bg-fashion-accent text-white font-bold flex items-center justify-center rounded-full z-20   w-[13px] h-[13px] text-[8px] top-[-3px] right-[-3px] leading-none p-0 m-0 pointer-events-none">
                         <?php
-                        echo isset($_SESSION['usuario']) ? isset($_SESSION['carrito']) ? count($_SESSION['carrito']['cantidad']) : "0" : "0"; ?>
+                        echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']['cantidad']) : "0"; ?>
                     </span>
 
                 </div>
@@ -158,11 +158,32 @@ $carrito = mostrarCarrito();
                                             <i class="ph ph-trash text-sm"></i>
                                         </button>
                                     </div>
-                                    <p class="text-[10px] text-gray-400 uppercase">
-                                        Cantidad: <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
-                                    </p>
+                                    <div class="flex items-center gap-3 mt-2">
+                                        <button id="restar-cantidad" onclick="editarCantidad(<?= $indice ?>, 'restar')"
+                                            class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full hover:bg-fashion-black hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
+                                            <i class="ph ph-minus text-[10px]"></i>
+                                        </button>
+                                        <span class="text-[10px] font-bold text-fashion-black">
+                                            <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
+                                        </span>
+                                        <button id="sumar-cantidad" onclick="editarCantidad(<?= $indice ?>, 'sumar')"
+                                            class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full hover:bg-fashion-black hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
+                                            <i class="ph ph-plus text-[10px]"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <p class="text-xs font-medium"><?php echo number_format($producto['precio'], 2); ?> €</p>
+                                <p class="text-xs font-medium pt-2">
+                                    <?php
+                                    if($producto['descuento'] > 0):?>
+                                   <span class="line-through">  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2); ?> </span>
+                                   <span class="text-red-500 pl-2 font-bold">  <?php echo number_format($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice]; ?>€ </span>
+
+                                      <?php else:?>
+                                      <span>  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2); ?>€ </span>
+                                    <?php endif;?>
+                                  
+                                   
+                                </p>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -179,7 +200,7 @@ $carrito = mostrarCarrito();
                     </div>
                     <?php
                     $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;
-                    $checkout_url = isset($_SESSION['usuario']) ? '../paginas/checkout.php' : '../paginas/registro-usuario-page.php';
+                    $checkout_url = isset($_SESSION['usuario']) ? '../paginas/checkout.php' : '../paginas/registro-usuario.php';
                     ?>
                     <a href="<?= $checkout_url ?>" id="btn-finalizar-compra"
                         class="block w-full py-4 text-center text-xs uppercase tracking-[0.25em] font-semibold transition-colors rounded-lg <?= $cart_empty ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none' : 'bg-fashion-black text-white hover:bg-fashion-accent' ?>">
