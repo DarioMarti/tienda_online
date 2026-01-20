@@ -46,7 +46,7 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                     <ul class="space-y-4 text-sm tracking-wide font-light text-gray-900 pb-2">
                         <?php foreach ($categorias as $categoria):
                             $categoriaPadre = $categoria['id'] ?>
-                            <?php if ($categoria['categoria_padre_id'] == null): ?>
+                            <?php if ($categoria['categoria_padre_id'] == null && $categoria['activa'] == 1): ?>
                                 <li>
                                     <span onclick="filtrarCategoria('<?= $categoria['nombre'] ?>')"
                                         class="flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer"
@@ -56,7 +56,7 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                                     </span>
                                     <ul>
                                         <?php foreach ($categorias as $categoriaHija): ?>
-                                            <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id']): ?>
+                                            <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id'] && $categoriaHija['activa'] == 1): ?>
                                                 <li onclick="filtrarCategoria('<?= $categoriaHija['nombre'] ?>')"
                                                     id="categoria-<?php echo $categoriaHija['nombre']; ?>"
                                                     class="ml-10 text-2xs text-gray-400 py-1 flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer">

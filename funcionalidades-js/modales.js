@@ -83,7 +83,7 @@ function abrirModalConfirmarEliminar(seccion, id) {
 }
 
 //Modal para crear o modificar un usuario
-function abrirCerrarModalCrearUsuario(accion, nombre = "", apellido = "", email = "", rol = "cliente", telefono = "", direccion = "", activo = "", id = "") {
+function abrirCerrarModalCrearUsuario(accion, rolUsuario = "", nombre = "", apellido = "", email = "", rol = "cliente", telefono = "", direccion = "", activo = "", id = "") {
     let modalUsuario = document.getElementById('modal-usuario');
     let formUsuario = document.getElementById('form-usuario');
     let tituloModalUsuario = document.getElementById('titulo-modal-usuario');
@@ -114,6 +114,15 @@ function abrirCerrarModalCrearUsuario(accion, nombre = "", apellido = "", email 
 
         document.getElementById('seccion-datos-usuario-editar').classList.remove('block');
         document.getElementById('seccion-datos-usuario-editar').classList.add('hidden');
+
+        if (rolUsuario != 'admin') {
+            document.getElementById('rol-usuario').value = 'cliente';
+            document.getElementById('rol-usuario').setAttribute('disabled', 'disabled');
+            document.getElementById('rol-usuario').classList.add('bg-gray-200', 'cursor-not-allowed');
+        } else {
+            document.getElementById('rol-usuario').removeAttribute('disabled');
+            document.getElementById('rol-usuario').classList.remove('bg-gray-200', 'cursor-not-allowed');
+        }
 
     } else if (accion == 'editar') {
         formUsuario.action = '../../modelos/usuario/administrador/admin-editar-usuario.php';
@@ -245,7 +254,7 @@ function abrirCerrarModalCrearCategoria(accion, nombre = "", descripcion = "", c
 
 
 //Abrir y cerrar el modal de crear y editar pedido
-function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "", nombre = "", direccion = "", ciudad = "", provincia = "", estado = "", id = "") {
+function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", email = "", coste = "", nombre = "", direccion = "", ciudad = "", provincia = "", estado = "", id = "") {
     let modalPedido = document.getElementById('modal-pedido');
     let formPedido = document.getElementById('formulario-pedido');
     let tituloModalPedido = document.getElementById('titulo-modal-pedido');
@@ -373,7 +382,11 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
                     filaProducto.remove();
                     actualizarPrecio();
                 });
-
+                if (rolUsuario == 'empleado') {
+                    selectProducto.disabled = true;
+                    celdaInputStock.disabled = true;
+                    icono.style.display = 'none';
+                }
             })
             .catch(error => console.error('Error al cargar productos:', error));
 
@@ -425,6 +438,16 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
             productos.forEach(detalle => {
                 agregarProducto(detalle);
             });
+        }
+
+        //restriccion si se es empleado
+        if (rolUsuario == 'empleado') {
+            document.getElementById('email-usuario-pedido').disabled = true;
+            document.getElementById('nombre-destinatario-pedido').disabled = true;
+            document.getElementById('direccion-envio-pedido').disabled = true;
+            document.getElementById('ciudad-pedido').disabled = true;
+            document.getElementById('provincia-pedido').disabled = true;
+
         }
     }
 

@@ -49,12 +49,12 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                 class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                 <i class="ph ph-tag mr-2 text-xl"></i>Categorías
             </li>
-            <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
-                <li onclick="mostrarSeccion('usuarios')"
-                    class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
-                    <i class="ph ph-users mr-2 text-xl"></i>Usuarios
-                </li>
 
+            <li onclick="mostrarSeccion('usuarios')"
+                class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
+                <i class="ph ph-users mr-2 text-xl"></i>Usuarios
+            </li>
+            <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
                 <li onclick="mostrarSeccion('informes')"
                     class="nav-item w-full text-left px-4 py-6 rounded-lg text-sm uppercase tracking-widest font-semibold text-gray-500 hover:bg-fashion-gray hover:text-fashion-black transition-colors flex items-center">
                     <i class="ph ph-chart-line-up mr-2 text-xl"></i>Informes
@@ -241,23 +241,25 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                     }
                                     ?>
                                         data-productos='<?= json_encode($productosPedido) ?>'
-                                        onclick="abrirCerrarModalCrearPedido(this,'editar', '<?= $emailPedido ?>', '<?= $pedido['coste_total'] ?>','<?= htmlspecialchars($pedido['nombre_destinatario'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['direccion_envio'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['ciudad'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['provincia'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['estado'], ENT_QUOTES) ?>','<?= $pedido['id'] ?>')"
+                                        onclick="abrirCerrarModalCrearPedido(this,'editar', '<?= $_SESSION['usuario']['rol'] ?>', '<?= $emailPedido ?>', '<?= $pedido['coste_total'] ?>','<?= htmlspecialchars($pedido['nombre_destinatario'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['direccion_envio'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['ciudad'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['provincia'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['estado'], ENT_QUOTES) ?>','<?= $pedido['id'] ?>')"
                                         class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
                                         title="Editar">
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
-                                    <?php if ($pedido['estado'] !== 'cancelado'): ?>
-                                        <button onclick="abrirModalConfirmarEliminar('pedido', <?= $pedido['id'] ?>)"
-                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                            title="Eliminar">
-                                            <i class="ph ph-trash text-xl"></i>
-                                        </button>
-                                    <?php else: ?>
-                                        <button onclick="activarPedido(<?= $pedido['id'] ?>)"
-                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                            title="Reactivar">
-                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                        </button>
+                                    <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
+                                        <?php if ($pedido['estado'] !== 'cancelado'): ?>
+                                            <button onclick="abrirModalConfirmarEliminar('pedido', <?= $pedido['id'] ?>)"
+                                                class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                title="Eliminar">
+                                                <i class="ph ph-trash text-xl"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button onclick="activarPedido(<?= $pedido['id'] ?>)"
+                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                title="Reactivar">
+                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                            </button>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -271,7 +273,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
         <div id="seccion-usuarios" class="seccion-panel">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="font-titulos text-3xl font-bold text-fashion-black">Gestión de Usuarios</h2>
-                <button onclick="abrirCerrarModalCrearUsuario('crear')" class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
+                <button onclick="abrirCerrarModalCrearUsuario('crear', '<?= $_SESSION['usuario']['rol'] ?>')" class=" bg-fashion-black text-white px-6 py-3 rounded-lg text-xs uppercase tracking-widest
                     font-semibold hover:bg-fashion-accent transition-colors shadow-lg cursor-pointer">
                     <i class="ph ph-plus mr-2"></i>Nuevo Usuario
                 </button>
@@ -315,28 +317,31 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button
-                                        onclick="abrirCerrarModalCrearUsuario('editar', '<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['apellidos'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['rol'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['telefono'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['direccion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['activo'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['id'], ENT_QUOTES) ?>')"
-                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                        title="Editar">
-                                        <i class="ph ph-pencil-simple text-xl"></i>
-                                    </button>
+                                    <?php if ($_SESSION['usuario']['rol'] != 'admin' && $usuario['rol'] == 'cliente'): ?>
+                                        <button
+                                            onclick="abrirCerrarModalCrearUsuario('editar','<?= $_SESSION['usuario']['rol'] ?>', '<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['apellidos'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['rol'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['telefono'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['direccion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['activo'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['id'], ENT_QUOTES) ?>')"
+                                            class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                            title="Editar">
+                                            <i class="ph ph-pencil-simple text-xl"></i>
+                                        </button>
+                                    <?php endif; ?>
                                     <?php
-                                    if ($usuario['activo'] == 1): ?>
-                                        <button id="btnEliminarUsuario"
-                                            onclick="abrirModalConfirmarEliminar('usuario', <?= $usuario['id'] ?>)"
-                                            class=" text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                            title="Desactivar">
-                                            <i class="ph ph-trash text-xl"></i>
-                                        </button>
+                                    if ($_SESSION['usuario']['rol'] == 'admin'):
+                                        if ($usuario['activo'] == 1): ?>
+                                            <button id="btnEliminarUsuario"
+                                                onclick="abrirModalConfirmarEliminar('usuario', <?= $usuario['id'] ?>)"
+                                                class=" text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                title="Desactivar">
+                                                <i class="ph ph-trash text-xl"></i>
+                                            </button>
 
-                                    <?php else: ?>
-                                        <button onclick="activarUsuario(<?= $usuario['id'] ?>)"
-                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                            title="Activar">
-                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                        </button>
-
+                                        <?php else: ?>
+                                            <button onclick="activarUsuario(<?= $usuario['id'] ?>)"
+                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                title="Activar">
+                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                            </button>
+                                        <?php endif ?>
                                     <?php endif ?>
                                 </td>
                             </tr>
