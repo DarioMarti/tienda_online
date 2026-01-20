@@ -1,8 +1,12 @@
 <?php
 session_start();
-require '../vendor/autoload.php';
-require_once '../config/stripe_config.php';
-require_once '../config/conexionDB.php';
+require_once __DIR__ . '/../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/vendor/autoload.php';
+require_once $rutaRaiz . '/config/stripe_config.php';
+require_once $rutaRaiz . '/config/conexionDB.php';
 
 header('Content-Type: application/json');
 
@@ -44,8 +48,8 @@ try {
         'payment_method_types' => ['card'],
         'line_items' => $items,
         'mode' => 'payment',
-        'success_url' => $YOUR_DOMAIN . 'src/paginas/pago-exitoso.php',
-        'cancel_url' => $YOUR_DOMAIN . 'src/paginas/pago-cancelado.php',
+        'success_url' => $YOUR_DOMAIN . $rutaWeb . '/src/paginas/pago-exitoso.php',
+        'cancel_url' => $YOUR_DOMAIN . $rutaWeb . '/src/paginas/pago-cancelado.php',
     ]);
 
     echo json_encode(['id' => $checkout_session->id]);

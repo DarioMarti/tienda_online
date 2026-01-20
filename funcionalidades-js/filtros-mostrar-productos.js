@@ -21,10 +21,11 @@ inputBusqueda.addEventListener('keypress', (boton) => {
         const valor = inputBusqueda.value.trim();
 
         parametros.set('busqueda', valor);
+        parametros.delete('categoria');
         if (window.location.pathname.includes('rebajas.php')) {
-            window.location.href = valor ? `rebajas.php?${parametros.toString()}` : 'rebajas.php';
+            window.location.href = valor ? `${RUTA_WEB}/rebajas.php?${parametros.toString()}` : `${RUTA_WEB}/rebajas.php`;
         } else {
-            window.location.href = valor ? `index.php?${parametros.toString()}` : 'index.php';
+            window.location.href = valor ? `${RUTA_WEB}/index.php?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
         }
     }
 });
@@ -34,8 +35,15 @@ inputBusqueda.addEventListener('keypress', (boton) => {
 //Filtrar por categoría
 function filtrarCategoria(categoria) {
     parametros.set('categoria', categoria);
-    window.location.href = categoria ? window.location.pathname + `?${parametros.toString()}` : 'index.php';
+    parametros.delete('busqueda');
+    window.location.href = categoria ? window.location.pathname + `?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
+
 }
+
+
+
+
+
 
 
 //Filtrar por precio

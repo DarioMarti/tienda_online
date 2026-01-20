@@ -1,7 +1,11 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
 $titulo = "Contacto";
-require '../plantillas/cabecera.php';
+require $rutaRaiz . '/src/plantillas/cabecera.php';
 ?>
 <main class="w-full bg-white">
     <div class="flex flex-col lg:flex-row min-h-screen">
@@ -9,7 +13,8 @@ require '../plantillas/cabecera.php';
         <!-- IMAGEN A LA IZQUIERDA -->
         <div class="lg:w-1/2 lg:sticky lg:top-0 h-[50vh] lg:h-[calc(100vh-100px)]">
             <div class="relative w-full h-full overflow-hidden">
-                <img src="../../img/imagen-contacto.webp" alt="Norden Réka Studio" class="w-full h-full object-cover">
+                <img src="<?= $rutaWeb ?>/img/imagen-contacto.webp" alt="Norden Réka Studio"
+                    class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
         </div>
@@ -102,5 +107,5 @@ require '../plantillas/cabecera.php';
 </main>
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

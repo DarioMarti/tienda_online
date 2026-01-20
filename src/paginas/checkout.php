@@ -1,6 +1,12 @@
 <?php
 session_start();
-require '../plantillas/cabecera.php';
+require_once __DIR__ . '/../../config/ruta.php';
+require_once __DIR__ . '/../../config/detalles-pago.php';
+
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require $rutaRaiz . '/src/plantillas/cabecera.php';
 $productos = $_SESSION['carrito']['productos'];
 ?>
 <script src="https://js.stripe.com/v3/"></script>
@@ -80,7 +86,8 @@ $productos = $_SESSION['carrito']['productos'];
 
                             <div class="flex gap-4">
                                 <div class="w-16 h-20 bg-fashion-gray overflow-hidden rounded-md flex-shrink-0">
-                                    <img src="../../<?= $producto['imagen'] ?>" class="w-full h-full object-cover">
+                                    <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
+                                        class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="text-xs font-bold uppercase tracking-widest truncate">
@@ -117,7 +124,7 @@ $productos = $_SESSION['carrito']['productos'];
                                 <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">
                                     Gastos de Envío</span>
                                 <span class="font-medium">
-                                    10,00 €
+                                    <?php echo GASTOS_ENVIO; ?> <?php echo MONEDA; ?>
                                 </span>
                             </div>
                             <hr class="border-fashion-gray my-4">
@@ -125,9 +132,9 @@ $productos = $_SESSION['carrito']['productos'];
                                 <span class="text-xs uppercase tracking-[0.2em] font-black">Total a Pagar</span>
                                 <input type="text" name="coste_total" id="coste_total_check"
                                     class="text-2xl font-editorial italic font-bold hidden"
-                                    value="<?php echo $_SESSION['carrito']['total'] + 10; ?>">
+                                    value="<?php echo $_SESSION['carrito']['total'] + GASTOS_ENVIO; ?>">
                                 <span class="text-2xl font-editorial italic font-bold">
-                                    <?php echo $_SESSION['carrito']['total'] + 10; ?> €
+                                    <?php echo $_SESSION['carrito']['total'] + GASTOS_ENVIO; ?> <?php echo MONEDA; ?>
                                 </span>
                             </div>
                         </div>
@@ -144,7 +151,7 @@ $productos = $_SESSION['carrito']['productos'];
 
 </main>
 
-<script src="../../funcionalidades-js/stripe-handler.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/stripe-handler.js"></script>
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

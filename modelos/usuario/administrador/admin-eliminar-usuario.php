@@ -1,8 +1,12 @@
 <?php
-require_once '../../../config/conexionDB.php';
+require_once __DIR__ . '/../../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/config/conexionDB.php';
 header('Content-Type: application/json');
 session_start();
-require_once '../../../config/seguridad.php';
+require_once $rutaRaiz . '/config/seguridad.php';
 restringirSoloAdmin();
 
 try {
@@ -20,16 +24,18 @@ try {
     $sentencia->execute([$id_usuario]);
 
 
-    echo json_encode([
+    $_SESSION['mensaje'] = [
         'estado' => true,
-        'mensaje' => 'Usuario eliminado correctamente'
-    ]);
+        'mensaje' => 'Usuario eliminado correctamente',
+        'tipo' => 'usuario'
+    ];
 
 } catch (PDOException $err) {
-    echo json_encode([
+    $_SESSION['mensaje'] = [
         'estado' => false,
-        'mensaje' => 'Error al eliminar el usuario'
-    ]);
+        'mensaje' => 'Error al eliminar el usuario',
+        'tipo' => 'usuario'
+    ];
 }
 
 

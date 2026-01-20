@@ -1,10 +1,14 @@
 <?php
 $titulo = "Rebajas - Norder Réka";
 session_start();
-require '../plantillas/cabecera.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
 
-require '../../modelos/categoria/mostrar-categoria.php';
-require '../../modelos/producto/mostrar-productos.php';
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
+
+require_once $rutaRaiz . '/modelos/categoria/mostrar-categoria.php';
+require_once $rutaRaiz . '/modelos/producto/mostrar-productos.php';
 
 $categorias = mostrarCategorias();
 
@@ -114,7 +118,7 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                         </div>
                         <a href="#" class="block">
                             <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
-                                <img src="../../<?= $producto['imagen'] ?>"
+                                <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
                                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                     alt="<?= $producto['descripcion'] ?>">
 
@@ -171,5 +175,5 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
 </div>
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

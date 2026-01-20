@@ -1,6 +1,8 @@
 <?php
-
-require_once "../../config/conexionDB.php";
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+require_once $rutaRaiz . '/config/conexionDB.php';
 
 function mostrarUsuarios()
 {
@@ -23,7 +25,7 @@ function mostrarUsuarios()
             'mensaje' => 'Error al mostrar los usuarios',
             'tipo' => 'usuario'
         ];
-        header('location:../../src/paginas/perfil-usuario.php');
+        header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
         exit;
     }
 }

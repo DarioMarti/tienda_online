@@ -1,5 +1,9 @@
 <?php
-require_once '../../modelos/pedido/mostrar-pedidos.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/modelos/pedido/mostrar-pedidos.php';
 
 function mostrarDetallesPedido($id_pedido)
 {

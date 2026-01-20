@@ -1,7 +1,16 @@
 <?php
-require_once '../../modelos/carrito/mostrar-carrito.php';
-require_once '../../config/seguridad.php';
-$carrito = mostrarCarrito();
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+
+require_once $rutaRaiz . '/modelos/carrito/mostrar-carrito.php';
+require_once $rutaRaiz . '/config/seguridad.php';
+require_once $rutaRaiz . '/config/detalles-pago.php';
+
+isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,10 +30,11 @@ $carrito = mostrarCarrito();
     <!-- ICONOS -->
     <script src="https://unpkg.com/phosphor-icons"></script>
     <!-- TAILWIND CSS -->
-    <link rel="stylesheet" href="../styles/output.css">
+    <link rel="stylesheet" href="<?= $rutaWeb ?>/src/styles/output.css">
     <!-- FAVICON -->
-    <link rel="icon" href="../../img/globales/favicon_NordenReka.ico" type="image/x-icon">
-
+    <link rel="icon" href="<?= $rutaWeb ?>/img/globales/favicon_NordenReka.ico" type="image/x-icon">
+    <!-- RUTA WEB -->
+    <script> const RUTA_WEB = '<?= $rutaWeb ?>';</script>
 </head>
 
 <body class="antialiased">
@@ -40,19 +50,19 @@ $carrito = mostrarCarrito();
 
             <!-- MENÚ DE LA IZQUIERDA -->
             <nav class="hidden lg:flex space-x-8 text-xs uppercase tracking-widest font-medium">
-                <a href="index.php"
+                <a href="<?= $rutaWeb ?>"
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Inicio - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Home
                 </a>
-                <a href="rebajas.php"
+                <a href="<?= $rutaWeb ?>/src/paginas/rebajas.php"
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Rebajas - Norden Réka' ? 'text-red-600 font-bold' : 'text-red-500' ?>">
                     Rebajas
                 </a>
-                <a href="sobre-nosotros.php"
+                <a href="<?= $rutaWeb ?>/src/paginas/sobre-nosotros.php"
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Sobre Nosotros - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Sobre Nosotros
                 </a>
-                <a href="contacto.php"
+                <a href="<?= $rutaWeb ?>/src/paginas/contacto.php"
                     class="hover:text-fashion-accent transition-colors <?= ($titulo ?? '') === 'Contacto - Norden Réka' ? 'text-fashion-accent' : '' ?>">
                     Contacto
                 </a>
@@ -64,8 +74,8 @@ $carrito = mostrarCarrito();
             </div>
 
             <!-- LOGO -->
-            <a href="index.php" class="absolute left-1/2 transform -translate-x-1/2">
-                <img src="../../img/globales/Logotipo_NordenReka.svg" alt="Logo Norden Réka" class="h-12">
+            <a href="<?php echo $rutaWeb ?>/index.php" class="absolute left-1/2 transform -translate-x-1/2">
+                <img src="<?= $rutaWeb ?>/img/globales/Logotipo_NordenReka.svg" alt="Logo Norden Réka" class="h-12">
             </a>
 
             <!-- ICONOS DE LA DERECHA -->
@@ -81,20 +91,20 @@ $carrito = mostrarCarrito();
                         </span>
                         <div
                             class="hidden group-hover:block absolute right-0  w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                            <a href="perfil-usuario.php"
+                            <a href="<?= $rutaWeb ?>/src/paginas/perfil-usuario.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mi
                                 Perfil</a>
-                            <a href="mis-pedidos.php"
+                            <a href="<?= $rutaWeb ?>/src/paginas/mis-pedidos.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">Mis
                                 Pedidos</a>
                             <?php if (personalAutorizado()): ?>
-                                <a href="panel-administrador.php" onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
+                                <a href="<?= $rutaWeb ?>/src/paginas/panel-administrador.php" onclick="sessionStorage.setItem('seccionActual', 'dashboard')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-fashion-gray transition-colors">
                                     Panel de <?= $_SESSION['usuario']['rol'] === 'admin' ? 'administrador' : 'empleado' ?>
                                 </a>
                             <?php endif ?>
                             <hr class="my-2">
-                            <a href="../../modelos/sesion/cerrar-sesion-usuario.php"
+                            <a href="<?= $rutaWeb ?>/modelos/sesion/cerrar-sesion-usuario.php"
                                 class="block px-4 py-2 text-sm text-red-600 hover:bg-fashion-gray transition-colors">Cerrar
                                 Sesión</a>
                         </div>
@@ -121,7 +131,7 @@ $carrito = mostrarCarrito();
         <!-- BARRA DE BUSQUEDA FILTRADA -->
         <div id="contenedor-busqueda"
             class="hidden absolute left-0 top-full w-full bg-white border-b border-gray-100 shadow-sm py-2 px-6 lg:px-12 z-50 transform transition-all duration-300 origin-top">
-            <input type="text" id="input-busqueda" placeholder="BUSCAR PRODUCTOS O CATEGORÍAS..."
+            <input type="text" id="input-busqueda" placeholder="BUSCAR POR #ID, NOMBRE DE PRODUCTOS ..."
                 class="w-full bg-transparent border-0 text-lg md:text-2xl editorial-font italic focus:ring-0 focus:outline-none py-4 placeholder:text-[8.5px] placeholder:uppercase placeholder:tracking-[0.2em] placeholder:font-sans placeholder:not-italic">
         </div>
         <!-- BARRA LATERAL CARRITO -->
@@ -143,7 +153,7 @@ $carrito = mostrarCarrito();
                         <span class="hidden producto-Carrito"></span>
                         <div class="flex gap-4 group relative ">
                             <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
-                                <img src="../../<?php echo htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
+                                <img src="<?= $rutaWeb .'/'. htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
                                     alt="<?php echo htmlspecialchars($producto['nombre']); ?>"
                                     class="w-full h-full object-cover">
                             </div>
@@ -196,11 +206,11 @@ $carrito = mostrarCarrito();
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Subtotal</span>
                         <span id="subtotal-carrito"
-                            class="text-lg font-bold"><?php echo $_SESSION['carrito']['total'] ?></span>
+                            class="text-lg font-bold"><?php echo $_SESSION['carrito']['total']?? 0 ?></span>
                     </div>
                     <?php
                     $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;
-                    $checkout_url = isset($_SESSION['usuario']) ? '../paginas/checkout.php' : '../paginas/registro-usuario.php';
+                    $checkout_url = isset($_SESSION['usuario']) ? $rutaWeb . '/src/paginas/checkout.php' : $rutaWeb . '/src/paginas/registro-usuario.php';
                     ?>
                     <a href="<?= $checkout_url ?>" id="btn-finalizar-compra"
                         class="block w-full py-4 text-center text-xs uppercase tracking-[0.25em] font-semibold transition-colors rounded-lg <?= $cart_empty ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none' : 'bg-fashion-black text-white hover:bg-fashion-accent' ?>">
@@ -226,7 +236,7 @@ $carrito = mostrarCarrito();
             </div>
 
             <!-- FORMULARIO LOGIN -->
-            <form class="space-y-6 flex-1" method="POST" action="../../modelos/sesion/sesion-usuario.php">
+            <form class="space-y-6 flex-1" method="POST" action="<?= $rutaWeb ?>/modelos/sesion/sesion-usuario.php">
                 <input type="hidden" name="ruta-actual-login" value="<?= $_SERVER['REQUEST_URI'] ?>">
                 <div class="space-y-2">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-500 mb-4">Correo
@@ -256,7 +266,6 @@ $carrito = mostrarCarrito();
                     <span class="text-red-600 text-xs mt-2 block">
                         <?= $_SESSION['mensaje']['mensaje']; ?>
                     </span>
-                    <?php unset($_SESSION['mensaje']); ?>
                 <?php endif; ?>
 
                 <button type="submit" class=" bton  w-full py-4  mt-8 tracking-[0.25em]">
@@ -266,7 +275,7 @@ $carrito = mostrarCarrito();
             <!-- REGISTRARSE -->
             <div class="border-t border-gray-100 pt-8 text-center">
                 <p class="text-sm text-gray-500 mb-4">¿Aún no tienes cuenta?</p>
-                <a href="../paginas/registro-usuario.php"
+                <a href="<?php echo $rutaWeb ?>/src/paginas/registro-usuario.php"
                     class="inline-block border border-fashion-black text-fashion-black px-8 py-3 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-black hover:text-white transition-all duration-300">
                     Crear Cuenta
                 </a>

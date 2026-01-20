@@ -1,5 +1,5 @@
 function eliminarProductoCarrito(id_producto) {
-    fetch('../../modelos/carrito/eliminar-producto-carrito.php', {
+    fetch(RUTA_WEB + '/modelos/carrito/eliminar-producto-carrito.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

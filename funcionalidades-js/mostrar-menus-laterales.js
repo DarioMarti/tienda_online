@@ -69,7 +69,7 @@ function abrirCerrarCarrito() {
 
 function editarCantidad(indice, accion) {
     urlActual = window.location.href;
-    fetch('../../modelos/carrito/editar-cantidad-producto.php', {
+    fetch(RUTA_WEB + '/modelos/carrito/editar-cantidad-producto.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'indice=' + indice + '&accion=' + accion + '&url=' + urlActual

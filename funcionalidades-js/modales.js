@@ -26,7 +26,7 @@ function cerrarModalResultado() {
     modalResultadoContraseña.classList.remove('block');
     modalResultadoContraseña.classList.add('hidden');
 
-    fetch('../../modelos/usuario/cerrar-sesion-mensajes.php');
+    fetch(RUTA_WEB + '/modelos/usuario/cerrar-sesion-mensajes.php');
 
 }
 
@@ -321,7 +321,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
 
         bloqueProductos.appendChild(filaProducto);
 
-        fetch('../../modelos/producto/api-mostrar-productos.php')
+        fetch(RUTA_WEB + '/modelos/producto/api-mostrar-productos.php')
             .then(response => response.json())
             .then(data => {
                 let selectProducto = document.createElement('select');
@@ -460,12 +460,12 @@ function cargarDetallesPedido(id) {
     reiniciarModalDetallesPedido(listaItems, estado, nombre, direccion, ciudad, coste);
 
     //Carga los detalles del pedido
-    fetch('../../modelos/pedido/api-obtener-detalles-pedido.php?id_pedido=' + id)
+    fetch(RUTA_WEB + '/modelos/pedido/api-obtener-detalles-pedido.php?id_pedido=' + id)
         .then(response => response.json())
         .then(data => {
 
             //Carga los datos del pedido
-            fetch('../../modelos/pedido/api-obtener-pedidos.php?id_pedido=' + id)
+            fetch(RUTA_WEB + '/modelos/pedido/api-obtener-pedidos.php?id_pedido=' + id)
                 .then(response => response.json())
                 .then(data => {
                     switch (data.estado) {
@@ -503,7 +503,7 @@ function cargarDetallesPedido(id) {
                 celdaSubtotalItem.className = "px-6 py-4 text-sm text-fashion-black font-bold text-right";
 
 
-                fetch('../../modelos/producto/api-mostrar-productos.php')
+                fetch(RUTA_WEB + '/modelos/producto/api-mostrar-productos.php')
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(producto => {
@@ -521,15 +521,21 @@ function cargarDetallesPedido(id) {
                 let precioFinalProducto = detalle.precio_unitario * detalle.cantidad;
                 celdaSubtotalItem.textContent = precioFinalProducto + ' €';
 
+
+
+
                 filaItem.appendChild(celdaNombreItem);
                 filaItem.appendChild(celdaCantidadItem);
                 filaItem.appendChild(celdaPrecioItem);
                 filaItem.appendChild(celdaSubtotalItem);
 
             });
+
         })
         .catch(error => console.error('Error al cargar pedido:', error));
+
 }
+
 
 function reiniciarModalDetallesPedido(listaItems, estado, nombre, direccion, ciudad, coste) {
     listaItems.innerHTML = '';

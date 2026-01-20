@@ -1,13 +1,18 @@
 <?php
 session_start();
-require_once '../../config/seguridad.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoVisitantes();
 
-require_once '../plantillas/cabecera.php';
-require_once '../../modelos/pedido/mostrar-pedidos.php';
-require_once '../../modelos/usuario/mostrar-usuarios.php';
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
+require_once $rutaRaiz . '/modelos/pedido/mostrar-pedidos.php';
+require_once $rutaRaiz . '/modelos/usuario/mostrar-usuarios.php';
 
 $pedidos = mostrarPedidos();
+$pedidosUsuario = [];
 foreach ($pedidos as $pedido) {
     if ($pedido['usuario_id'] == $_SESSION['usuario']['id']) {
         $pedidosUsuario[] = $pedido;
@@ -31,14 +36,14 @@ foreach ($usuarios as $usuario) {
             <div class="flex justify-between items-start">
                 <div>
                     <h1 class="font-editorial text-4xl italic text-fashion-black mb-2">
-                        <?php echo $_SESSION['usuario']['nombre'] ?>
+                        <?php echo $_SESSION['usuario']['nombre'] ?? "" ?>
                     </h1>
                     <p class="text-gray-600 text-sm uppercase tracking-widest">
-                        <?php echo $_SESSION['usuario']['email'] ?>
+                        <?php echo $_SESSION['usuario']['email'] ?? "" ?>
                     </p>
                 </div>
                 <span class="px-3 py-1 bg-fashion-accent text-white text-xs uppercase tracking-wider rounded-full">
-                    <?php echo $_SESSION['usuario']['rol'] ?>
+                    <?php echo $_SESSION['usuario']['rol'] ?? "" ?>
                 </span>
             </div>
         </div>
@@ -63,7 +68,7 @@ foreach ($usuarios as $usuario) {
                                 class="text-xs font-titulos uppercase tracking-widest font-semibold text-gray-500">Nombre</label>
                             <div id="display-nombre"
                                 class="w-full px-4 mt-3 py-3 font-general bg-fashion-gray border border-gray-200 rounded-lg text-fashion-black">
-                                <?php echo $_SESSION['usuario']['nombre'] ?>
+                                <?php echo $_SESSION['usuario']['nombre'] ?? "" ?>
                             </div>
                         </div>
 
@@ -73,7 +78,7 @@ foreach ($usuarios as $usuario) {
                                 class="text-xs font-titulos uppercase tracking-widest font-semibold text-gray-500">Apellidos</label>
                             <div id="display-apellidos"
                                 class="w-full px-4 mt-3 py-3 font-general bg-fashion-gray border border-gray-200 rounded-lg text-fashion-black">
-                                <?php echo $_SESSION['usuario']['apellido'] ?? "No indicado" ?>
+                                <?php echo $_SESSION['usuario']['apellido'] ?? "" ?>
                             </div>
                         </div>
 
@@ -83,7 +88,7 @@ foreach ($usuarios as $usuario) {
                                 class="text-xs font-titulos uppercase tracking-widest font-semibold text-gray-500">Email</label>
                             <div
                                 class="w-full mt-3 font-general px-4 py-3 bg-fashion-gray border border-gray-200 rounded-lg text-fashion-black">
-                                <?php echo $_SESSION['usuario']['email'] ?>
+                                <?php echo $_SESSION['usuario']['email'] ?? "" ?>
                             </div>
                         </div>
 
@@ -93,7 +98,7 @@ foreach ($usuarios as $usuario) {
                                 class="text-xs font-titulos uppercase tracking-widest font-semibold text-gray-500">Teléfono</label>
                             <div id="display-telefono"
                                 class="w-full mt-3 font-general px-4 py-3 bg-fashion-gray border border-gray-200 rounded-lg text-fashion-black">
-                                <?php echo $_SESSION['usuario']['telefono'] ?>
+                                <?php echo $_SESSION['usuario']['telefono'] ?? "" ?>
                             </div>
                         </div>
 
@@ -103,7 +108,7 @@ foreach ($usuarios as $usuario) {
                                 class="text-xs font-titulos uppercase tracking-widest font-semibold text-gray-500">Dirección</label>
                             <div id="display-direccion"
                                 class="w-full mt-3 font-general px-4 py-3 bg-fashion-gray border border-gray-200 rounded-lg text-fashion-black min-h-[80px]">
-                                <?php echo $_SESSION['usuario']['direccion'] ?>
+                                <?php echo $_SESSION['usuario']['direccion'] ?? "" ?>
                             </div>
                         </div>
 
@@ -116,7 +121,7 @@ foreach ($usuarios as $usuario) {
                             <h2 class="font-editorial text-2xl italic text-fashion-black">Mis Pedidos</h2>
                             <span class="text-xs uppercase tracking-widest text-gray-500 font-semibold">
                                 <i class="ph ph-package mr-2"></i>
-                                23 Pedidos
+                                <?php echo count($pedidosUsuario) ?> Pedidos
                             </span>
                         </div>
                         <div class="overflow-x-auto">
@@ -138,24 +143,30 @@ foreach ($usuarios as $usuario) {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <?php foreach ($pedidosUsuario as $pedido) { ?>
-                                        <tr class="hover:bg-gray-50 transition-colors">
-                                            <td class="px-4 py-3 font-bold text-fashion-black">#<?php echo $pedido['id'] ?>
-                                            </td>
-                                            <td class="px-4 py-3 text-xs text-gray-500">
-                                                <?php echo $pedido['fecha'] ?>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <span class="px-2 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider 
+                                    <?php if ($pedidosUsuario): ?>
+                                        <?php foreach ($pedidosUsuario as $pedido): ?>
+                                            <tr class="hover:bg-gray-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-fashion-black">#<?php echo $pedido['id'] ?>
+                                                </td>
+                                                <td class="px-4 py-3 text-xs text-gray-500">
+                                                    <?php echo $pedido['fecha'] ?>
+                                                </td>
+                                                <td class="px-4 py-3">
+                                                    <span class="px-2 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider 
                                                     bg-green-100 text-green-700">
-                                                    <?php echo $pedido['estado'] ?>
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 text-right font-bold text-fashion-black">
-                                                <?php echo $pedido['coste_total'] ?>€
-                                            </td>
+                                                        <?php echo $pedido['estado'] ?>
+                                                    </span>
+                                                </td>
+                                                <td class="px-4 py-3 text-right font-bold text-fashion-black">
+                                                    <?php echo $pedido['coste_total'] ?>€
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-8 text-gray-500">No hay pedidos</td>
                                         </tr>
-                                    <?php } ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -261,21 +272,22 @@ foreach ($usuarios as $usuario) {
                 <!-- NOMBRE -->
                 <div class="flex flex-col gap-2">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Nombre</label>
-                    <input type="text" name="nombre" value=<?php echo $_SESSION['usuario']['nombre'] ?> required
+                    <input type="text" name="nombre" value=<?php echo $_SESSION['usuario']['nombre'] ?? '' ?> required
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-fashion-black focus:outline-none focus:border-fashion-black transition-colors">
                 </div>
 
                 <!-- APELLIDOS -->
                 <div class="flex flex-col gap-2">
                     <label class="text-xs uppercase tracking-widest font-semibold  text-gray-700">Apellidos</label>
-                    <input type="text" name="apellidos" value="<?php echo $_SESSION['usuario']['apellido'] ?>" class="w-full px-4 py-3 border border-gray-300
+                    <input type="text" name="apellidos" value="<?php echo $_SESSION['usuario']['apellido'] ?? '' ?>"
+                        class="w-full px-4 py-3 border border-gray-300
                         rounded-lg text-fashion-black focus:outline-none focus:border-fashion-black transition-colors">
                 </div>
 
                 <!--EMAIL -->
                 <div class="flex flex-col gap-2 md:col-span-2">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Email</label>
-                    <input type="email" value="<?php echo $_SESSION['usuario']['email'] ?>" disabled
+                    <input type="email" value="<?php echo $_SESSION['usuario']['email'] ?? '' ?>" disabled
                         class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed">
                     <p class="text-xs text-gray-500 italic">El email no se puede modificar</p>
                 </div>
@@ -283,7 +295,8 @@ foreach ($usuarios as $usuario) {
                 <!-- TELÉFONO -->
                 <div class="flex flex-col gap-2 md:col-span-2">
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Teléfono</label>
-                    <input type="tel" name="telefono" value="<?php echo $_SESSION['usuario']['telefono'] ?>"
+                    <input type="tel" name="telefono" maxlength="9" pattern="\d*"
+                        value="<?php echo $_SESSION['usuario']['telefono'] ?? '' ?>"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-fashion-black focus:outline-none focus:border-fashion-black transition-colors"
                         placeholder="+34 600 000 000">
                 </div>
@@ -293,7 +306,7 @@ foreach ($usuarios as $usuario) {
                     <label class="text-xs uppercase tracking-widest font-semibold text-gray-700">Dirección</label>
                     <textarea name="direccion" rows="3"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-fashion-black focus:outline-none focus:border-fashion-black transition-colors resize-none"
-                        placeholder="Calle, número, ciudad, código postal..."><?php echo $_SESSION['usuario']['direccion'] ?></textarea>
+                        placeholder="Calle, número, ciudad, código postal..."><?php echo $_SESSION['usuario']['direccion'] ?? '' ?></textarea>
                 </div>
             </div>
 
@@ -432,5 +445,5 @@ if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tipos
 
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

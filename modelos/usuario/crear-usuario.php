@@ -1,7 +1,11 @@
 <?php
-
-require '../../config/conexionDB.php';
 session_start();
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/config/conexionDB.php';
+
 
 $nombre = trim($_POST['nombre'] ?? '');
 $apellidos = trim($_POST['apellidos'] ?? '');
@@ -73,14 +77,26 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Usuario creado con exito',
-        'tipo' => 'usuario'
+        'tipo' => 'registro'
     ];
+
+    $_SESSION['usuario'] = [
+        'id' => $conn->lastInsertId(),
+        'nombre' => $nombre,
+        'apellido' => $apellidos,
+        'email' => $email,
+        'rol' => $rol,
+        'activo' => $activo,
+    ];
+
+
+
 
     // Redirección inteligente
     if ($urlActual == "registro-usuario.php" || strpos($urlActual, 'registro-usuario.php') !== false) {
-        header('location:../../src/paginas/registro-exitoso.php');
+        header('location:' . $rutaWeb . '/src/paginas/registro-exitoso.php');
     } else {
-        header('location:' . (!empty($urlActual) ? $urlActual : '../../src/paginas/panel-administrador.php'));
+        header('location:' . (!empty($urlActual) ? $urlActual : $rutaWeb . '/src/paginas/panel-administrador.php'));
     }
 
     exit;
@@ -89,7 +105,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => false,
         'mensaje' => 'Error al crear el usuario: ' . $error->getMessage(),
-        'tipo' => 'usuario'
+        'tipo' => 'registro'
     ];
     header('location:' . $urlActual);
     exit;

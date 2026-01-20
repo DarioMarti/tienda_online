@@ -405,6 +405,93 @@
     </div>
 </div>
 
+<!-- MODAL DETALLES DE PEDIDO -->
+<div id="modal-detalles-pedido"
+    class="hidden fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 modal-detalles-pedido">
+    <div class="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center z-10">
+            <div>
+                <h2 class="font-editorial text-3xl italic text-fashion-black">Detalles del Pedido <span
+                        id="det-id-pedido"></span></h2>
+                <p class="text-gray-500 text-sm mt-1" id="det-fecha-pedido"></p>
+            </div>
+            <button onclick="cerrarModalDetallesPedido()"
+                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+
+        <div class="p-8">
+            <!-- INFORMACIÓN DEL PEDIDO -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-4">Estado del Pedido</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold text-gray-700">Estado Actual:</span>
+                            <span id="det-etiqueta-estado"
+                                class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase"></span>
+                        </div>
+                        <p class="text-gray-500 text-xs">Si tienes alguna duda sobre el estado de tu pedido, contacta
+                            con nuestro servicio de atención al cliente.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-4">Dirección de Entrega</h3>
+                    <div class="space-y-2 text-sm">
+                        <p id="det-nombre-receptor" class="font-bold text-fashion-black"></p>
+                        <p id="det-direccion-envio" class="text-gray-700"></p>
+                        <p id="det-ubicacion-envio" class="text-gray-700"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS DEL PEDIDO -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-4">Artículos del Pedido</h3>
+                <div class="overflow-x-auto border border-gray-100 rounded-lg">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th id="det-nombre-item"
+                                    class="px-6 py-3 text-xs uppercase tracking-widest font-bold text-gray-500">Producto
+                                </th>
+                                <th id="det-cantidad-item"
+                                    class="px-6 py-3 text-xs uppercase tracking-widest font-bold text-gray-500 text-center">
+                                    Cant.</th>
+                                <th id="det-precio-item"
+                                    class="px-6 py-3 text-xs uppercase tracking-widest font-bold text-gray-500 text-right">
+                                    Precio</th>
+                                <th id="det-subtotal-item"
+                                    class="px-6 py-3 text-xs uppercase tracking-widest font-bold text-gray-500 text-right">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="det-lista-items" class="divide-y divide-gray-100">
+                            <!-- Items dinámicos -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-right uppercase tracking-widest text-xs">Gastos de
+                                    envío</td>
+                                <td class="px-6 py-4 text-right text-sm text-gray-600 font-bold"
+                                    id="det-gasto-envio-pedido"></td>
+                            </tr>
+                            <tr class="bg-gray-50 font-bold border-t-2 border-fashion-black">
+                                <td colspan="3" class="px-6 py-4 text-right uppercase tracking-widest text-xs">Importe
+                                    Total</td>
+                                <td class="px-6 py-4 text-right text-xl text-fashion-black" id="det-total-pedido">0.00 €
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <!-- MODAL DE RESULTADO -->
@@ -443,8 +530,8 @@ if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tipos
             </button>
         </div>
     </div>
-    <?php unset($_SESSION['mensaje']); ?>
 <?php endif; ?>
+<?php unset($_SESSION['mensaje']); ?>
 
 
 <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->

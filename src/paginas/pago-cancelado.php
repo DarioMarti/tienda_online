@@ -1,7 +1,10 @@
 <?php
 session_start();
-$titulo = "Pago exitoso";
-require '../plantillas/cabecera.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 ?>
 <div class='min-h-[60vh] flex items-center justify-center px-6 py-20'>
     <div
@@ -32,5 +35,5 @@ require '../plantillas/cabecera.php';
 </div>
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

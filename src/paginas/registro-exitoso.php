@@ -1,5 +1,10 @@
 <?php
-require '../plantillas/cabecera.php';
+session_start();
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 restringirAccesoVisitantes();
 
 ?>
@@ -22,12 +27,12 @@ restringirAccesoVisitantes();
             </div>
 
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mt-10">
-                <a href="index.php"
+                <a href="<?= $rutaWeb ?>/index.php"
                     class="px-10 py-4 bg-fashion-black text-white text-xs uppercase tracking-[0.25em] font-semibold hover:bg-fashion-accent transition-all duration-300 shadow-lg hover:shadow-xl rounded-lg">
                     Explorar Tienda
                 </a>
 
-                <a href="perfil-page.php"
+                <a href="<?= $rutaWeb ?>/src/paginas/perfil-usuario.php"
                     class="px-10 py-4 border border-gray-300 text-gray-700 text-xs uppercase tracking-[0.25em] font-semibold hover:border-fashion-black hover:text-fashion-black transition-all duration-300 rounded-lg hover:bg-gray-50">
                     Mi Cuenta
                 </a>
@@ -48,5 +53,5 @@ restringirAccesoVisitantes();
 </div>
 
 <?php
-require '../plantillas/footer.html';
+require_once $rutaRaiz . '/src/plantillas/footer.php';
 ?>

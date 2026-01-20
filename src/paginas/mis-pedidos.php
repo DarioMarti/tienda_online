@@ -1,10 +1,14 @@
 <?php
 session_start();
-require '../../config/seguridad.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoVisitantes();
 
-require '../plantillas/cabecera.php';
-require '../../modelos/pedido/mostrar-pedidos.php';
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
+require_once $rutaRaiz . '/modelos/pedido/mostrar-pedidos.php';
 $pedidos = mostrarPedidos();
 $misPedidos = [];
 
@@ -147,7 +151,8 @@ foreach ($pedidos as $pedido) {
 
 
 <!-- MODAL DETALLES DE PEDIDO -->
-<div id="modal-detalles-pedido" class="hidden fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4">
+<div id="modal-detalles-pedido"
+    class="hidden fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 modal-detalles-pedido">
     <div class="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div class="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center z-10">
             <div>
@@ -211,6 +216,12 @@ foreach ($pedidos as $pedido) {
                             <!-- Items dinámicos -->
                         </tbody>
                         <tfoot>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-right uppercase tracking-widest text-xs">Gastos de
+                                    envío</td>
+                                <td class="px-6 py-4 text-right text-sm text-gray-600 font-bold"
+                                    id="det-gasto-envio-pedido"></td>
+                            </tr>
                             <tr class="bg-gray-50 font-bold border-t-2 border-fashion-black">
                                 <td colspan="3" class="px-6 py-4 text-right uppercase tracking-widest text-xs">Importe
                                     Total</td>
@@ -227,5 +238,5 @@ foreach ($pedidos as $pedido) {
 
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

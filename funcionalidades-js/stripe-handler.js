@@ -9,7 +9,7 @@ document.getElementById('realizar-pago-btn').addEventListener('click', async (ev
         //Se crea el pedido con los datos del formulario
         const formData = new FormData(form);
 
-        const responsePedido = await fetch('../../modelos/pedido/crear-pedido.php', {
+        const responsePedido = await fetch(RUTA_WEB + '/modelos/pedido/crear-pedido.php', {
             method: 'POST',
             body: formData
         });
@@ -17,7 +17,7 @@ document.getElementById('realizar-pago-btn').addEventListener('click', async (ev
         if (!responsePedido.ok) throw new Error('Error de conexión con el servidor');
 
         //Se inicia la sesión de Stripe
-        const respuestaStripe = await fetch('../../modelos/confirmar-pago.php', { method: 'POST' });
+        const respuestaStripe = await fetch(RUTA_WEB + '/modelos/confirmar-pago.php', { method: 'POST' });
         const session = await respuestaStripe.json();
 
         if (session.error) throw new Error(session.error);

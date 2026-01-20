@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/ruta.php';
 
 //Comprueba si el usuario es admin o empleado
 function personalAutorizado()
@@ -26,7 +27,7 @@ function restringirAccesoClientes()
             'mensaje' => 'No tienes acceso a esta área',
             'tipo' => 'acceso'
         ];
-        header('Location:index.php');
+        header('Location: ' . ruta_web() . '/index.php');
         exit;
     }
 }
@@ -40,7 +41,7 @@ function restringirAccesoVisitantes()
             'mensaje' => 'No tienes acceso a esta área',
             'tipo' => 'acceso'
         ];
-        header('Location:index.php');
+        header('Location: ' . ruta_web() . '/index.php');
         exit;
     }
 }
@@ -52,7 +53,7 @@ function restringirSoloAdmin()
             'mensaje' => 'No tienes acceso a esta área',
             'tipo' => 'acceso'
         ];
-        header('Location:index.php');
+        header('Location: ' . ruta_web() . '/index.php');
         exit;
     }
 }

@@ -1,7 +1,10 @@
 <?php
 session_start();
-require '../plantillas/cabecera.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
 
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 ?>
 
 <main class="min-h-screen bg-fashion-gray flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -11,7 +14,7 @@ require '../plantillas/cabecera.php';
             <p class="text-sm text-gray-500 tracking-wide">Únete a la familia Norden Réka</p>
         </div>
         <!-- FORMULARIO REGISTRO -->
-        <form class="mt-8 space-y-6" action="../../modelos/usuario/crear-usuario.php" method="POST">
+        <form class="mt-8 space-y-6" action="<?= $rutaWeb ?>/modelos/usuario/crear-usuario.php" method="POST">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
 
             <!-- NOMBRE DE USUARIO -->
@@ -56,7 +59,11 @@ require '../plantillas/cabecera.php';
                         de privacidad</a>
                 </label>
             </div>
-
+            <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'registro' && $_SESSION['mensaje']['estado'] === false): ?>
+                <span class="text-red-600 text-xs mt-2 block">
+                    <?= $_SESSION['mensaje']['mensaje']; ?>
+                </span>
+            <?php endif; ?>
             <!-- BOTÓN DE REGISTRO -->
             <div class="pt-4">
                 <button type="submit"
@@ -82,5 +89,5 @@ require '../plantillas/cabecera.php';
 </main>
 
 <?php
-require '../plantillas/footer.html';
+require_once $rutaRaiz . '/src/plantillas/footer.php';
 ?>

@@ -1,9 +1,9 @@
-/* ESTILOS GLOBALES */
+/* Estilo global */
 * {
     font-family: "Inter", sans-serif;
 }
 
-/* CLASES DE UTILIDAD PARA FUENTES */
+/* Fuentes - tipografías */
 .font-general {
     font-family: "Montserrat", sans-serif;
 }
@@ -22,6 +22,7 @@ select {
     font-family: "Montserrat", sans-serif;
 }
 
+/* Botones */
 .bton {
     padding: 15px 10px;
     background-color: black;
@@ -64,7 +65,7 @@ nav li {
     cursor: pointer;
 }
 
-/*FORMULARIO DE LOGIN*/
+/* Formulario de login */
 .barra-lateral {
     position: fixed;
     background-color: white;
@@ -78,6 +79,13 @@ nav li {
     transition-duration: 500ms;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
+}
+
+/* Barra lateral login */
+#barra-lateral-login #campo-pass,
+#barra-lateral-login #email {
+    padding: 10px 20px;
+    background-color: #f5f5f5;
 }
 
 .barra-lateral-abierto {
@@ -96,14 +104,13 @@ nav li {
     display: none;
 }
 
-
-/* MENÚ MÓVIL A PANTALLA COMPLETA */
+/* Menú móvil a pantalla completa */
 #sidebar-menu-movil {
     max-width: none !important;
     width: 100% !important;
 }
 
-/* CARRITO A PANTALLA COMPLETA EN MÓVIL */
+/* Carrito a pantalla completa en móvil */
 @media (max-width: 1023px) {
     #barra-lateral-carrito {
         max-width: none !important;
@@ -111,20 +118,16 @@ nav li {
     }
 }
 
-#barra-lateral-login #campo-pass,
-#barra-lateral-login #email {
-    padding: 10px 20px;
-    background-color: #f5f5f5;
-}
 
-/* Chrome, Edge, Safari */
+
+/* Chrome, Edge, Safari apaciencia del input number */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Firefox */
+/* Firefox apaciencia del input number */
 input[type=number] {
     -moz-appearance: textfield;
 }

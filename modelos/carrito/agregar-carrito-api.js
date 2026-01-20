@@ -1,5 +1,5 @@
 function agregarCarritoAPI(id_producto) {
-    fetch('../../modelos/carrito/agregar-carrito.php', {
+    fetch(RUTA_WEB + '/modelos/carrito/agregar-carrito.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

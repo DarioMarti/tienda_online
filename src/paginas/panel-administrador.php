@@ -1,17 +1,21 @@
 <?php
 session_start();
-require '../../config/seguridad.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoClientes();
 
 $titulo = "Panel de administrador";
-require '../plantillas/cabecera.php';
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 
-require '../../modelos/usuario/mostrar-usuarios.php';
-require '../../modelos/producto/mostrar-productos.php';
-require '../../modelos/categoria/mostrar-categoria.php';
-require '../../modelos/pedido/mostrar-pedidos.php';
-require '../../modelos/pedido/mostrar-detalles-pedido.php';
-require '../../modelos/informes/obtener-informe.php';
+require_once $rutaRaiz . '/modelos/usuario/mostrar-usuarios.php';
+require_once $rutaRaiz . '/modelos/producto/mostrar-productos.php';
+require_once $rutaRaiz . '/modelos/categoria/mostrar-categoria.php';
+require_once $rutaRaiz . '/modelos/pedido/mostrar-pedidos.php';
+require_once $rutaRaiz . '/modelos/pedido/mostrar-detalles-pedido.php';
+require_once $rutaRaiz . '/modelos/informes/obtener-informe.php';
 
 $usuarios = mostrarUsuarios();
 $productos = mostrarProductos("", "nombre ASC", "", null, 0, false);
@@ -66,19 +70,19 @@ $productosMasVendidos = obtenerProductosMasVendidos();
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg flex justify-between items-start">
                     <div>
-                        <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Total Ventas</p>
+                        <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Categorías</p>
                         <h3 class="text-2xl font-bold text-fashion-black">
                             <?php
-                            $totalVentas = 0;
-                            foreach ($pedidos as $pedido) {
-                                $totalVentas += $pedido['coste_total'];
+                            $totalCategorias = 0;
+                            foreach ($categorias as $categoria) {
+                                $totalCategorias++;
                             }
-                            echo $totalVentas;
+                            echo $totalCategorias;
                             ?>
                         </h3>
                     </div>
                     <div class="p-2 bg-green-100 rounded-xl text-green-600">
-                        <i class="ph ph-currency-eur text-xl"></i>
+                        <i class="ph ph-tag text-xl"></i>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg flex justify-between items-start">
@@ -129,7 +133,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </h3>
                     </div>
                     <div class="p-2 bg-orange-100 rounded-xl text-orange-600">
-                        <i class="ph ph-tag text-xl"></i>
+                        <i class="ph ph-lamp text-xl"></i>
                     </div>
                 </div>
             </div>
@@ -172,7 +176,14 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
+
                         <?php foreach ($pedidos as $pedido): ?>
+
+                            <?php foreach ($usuarios as $usuario) {
+                                if ($usuario['id'] == $pedido['usuario_id']) {
+                                    $_email = $usuario['email'];
+                                }
+                            } ?>
                             <tr class="bg-gray-50 border-b border-gray-200">
                                 <td class="px-6 py-4 font-bold text-fashion-black">
                                     <?= htmlspecialchars($pedido['id']) ?>
@@ -180,6 +191,9 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-fashion-black">
                                         <?= htmlspecialchars($pedido['nombre_destinatario']) ?>
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        <?= htmlspecialchars($_email) ?>
                                     </div>
 
                                 </td>
@@ -203,7 +217,8 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-gray-400 hover:text-fashion-accent transition-colors cursor-pointer"
+                                    <button onclick="cerrarModalDetallesPedido('<?= htmlspecialchars($pedido['id']) ?>')"
+                                        class="text-gray-400 hover:text-fashion-accent transition-colors cursor-pointer"
                                         title="Ver Detalles">
                                         <i class="ph ph-eye text-xl"></i>
                                     </button>
@@ -368,7 +383,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         <?php foreach ($productos as $producto): ?>
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <img src="../../<?= $producto['imagen'] ?>" alt="Producto"
+                                    <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>" alt="Producto"
                                         class="w-20 h-20 object-cover">
                                 </td>
                                 <td class="px-6 py-4">
@@ -561,15 +576,27 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                     </ul>
                 </div>
             </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-lg font-bold mb-4">Total de Ventas</h3>
+                <span class=" text-2xl">
+                    <?php
+                    $totalVentas = 0;
+                    foreach ($pedidos as $pedido) {
+                        $totalVentas += $pedido['coste_total'];
+                    }
+                    echo $totalVentas;
+                    ?>
+                </span>
+            </div>
         </div>
 
 
 
     </section>
-    <?php include 'modales-panel-administrador.php'; ?>
+    <?php include $rutaRaiz . '/src/paginas/modales-panel-administrador.php'; ?>
 </main>
 
-<script src="../../funcionalidades-js/panel-administrador.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/panel-administrador.js"></script>
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

@@ -1,13 +1,16 @@
 <?php
 session_start();
-$titulo = "Sobre Nosotros";
-require '../plantillas/cabecera.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 ?>
 
 <main class="w-full bg-white overflow-hidden">
     <!-- IMAGEN CABECERA -->
     <section class="relative w-full h-screen overflow-hidden">
-        <img src="../../img/sobre-nosotros/sobre-nosotros-hero-v2.png" alt="Norden Réka taller"
+        <img src="<?= $rutaWeb ?>/img/sobre-nosotros/sobre-nosotros-hero-v2.png" alt="Norden Réka taller"
             class="w-full h-full object-cover scale-105 animate-[ken-burns_20s_ease_infinite_alternative]">
         <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-6 space-y-4">
             <p class="text-[10px] uppercase tracking-[0.5em] text-white/70 animate-[fadeIn_1.5s_ease-out]">Est. 2020
@@ -52,7 +55,7 @@ require '../plantillas/cabecera.php';
             <!--TEXTO FLOTANTE -->
             <div class="col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
                 <div class="relative w-full aspect-[3/4] overflow-hidden rounded-sm group shadow-2xl">
-                    <img src="../../img/sobre-nosotros/filosofia-muebles.png" alt="Norden Réka detalles"
+                    <img src="<?= $rutaWeb ?>/img/sobre-nosotros/filosofia-muebles.png" alt="Norden Réka detalles"
                         class="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110">
                 </div>
                 <div
@@ -174,7 +177,7 @@ require '../plantillas/cabecera.php';
                 <!-- IMAGEN DE MATERIALES -->
                 <div class="lg:col-span-7 relative order-1 lg:order-2">
                     <div class="relative w-full h-[500px] lg:h-[600px] overflow-hidden rounded-sm shadow-xl">
-                        <img src="../../img/sobre-nosotros/detalles-materiales.png" alt="Craftsmanship Room"
+                        <img src="<?= $rutaWeb ?>/img/sobre-nosotros/detalles-materiales.png" alt="Craftsmanship Room"
                             class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-fashion-black/5 mix-blend-overlay"></div>
                     </div>
@@ -212,5 +215,5 @@ require '../plantillas/cabecera.php';
 
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

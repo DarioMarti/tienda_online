@@ -1,6 +1,8 @@
 <?php
-
-require_once '../../config/conexionDB.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+require_once $rutaRaiz . '/config/conexionDB.php';
 
 function mostrarProductos($barraBusqueda = '', $orden = 'nombre ASC', $categoria = '', $precio = null, $soloActivos = 1, $descuentos = false)
 {
@@ -37,6 +39,8 @@ function mostrarProductos($barraBusqueda = '', $orden = 'nombre ASC', $categoria
             }
         }
 
+
+
         if ($precio != null) {
             $condiciones[] = 'precio <= :precio';
             $parametros['precio'] = $precio;
@@ -48,8 +52,14 @@ function mostrarProductos($barraBusqueda = '', $orden = 'nombre ASC', $categoria
         }
 
         if ($barraBusqueda != '') {
-            $condiciones[] = 'nombre LIKE :barraBusqueda';
-            $parametros['barraBusqueda'] = "%" . $barraBusqueda . "%";
+            if (str_contains($barraBusqueda, '#')) {
+                $idBusqueda = str_replace('#', '', $barraBusqueda);
+                $condiciones[] = 'id = :idBusqueda';
+                $parametros['idBusqueda'] = $idBusqueda;
+            } else {
+                $condiciones[] = 'nombre LIKE :barraBusqueda';
+                $parametros['barraBusqueda'] = "%" . $barraBusqueda . "%";
+            }
         }
 
         if ($descuentos) {

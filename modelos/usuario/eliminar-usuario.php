@@ -1,8 +1,11 @@
 <?php
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
 
-require_once '../../config/conexionDB.php';
+require_once $rutaRaiz . '/config/conexionDB.php';
 session_start();
-require_once '../../config/seguridad.php';
+require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoVisitantes();
 
 
@@ -18,7 +21,7 @@ try {
 
     unset($_SESSION['usuario']);
 
-    header('location:../../src/paginas/index.php');
+    header('location:' . $rutaWeb . '/src/paginas/index.php');
 
 
 } catch (PDOException $err) {
@@ -27,7 +30,7 @@ try {
         'mensaje' => 'Error al eliminar el usuario',
         'tipo' => 'usuario'
     ];
-    header('location:../../src/paginas/perfil-usuario.php');
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 }
 

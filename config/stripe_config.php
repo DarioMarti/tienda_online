@@ -9,5 +9,7 @@ define('DOMINIO_URL', 'http://localhost/tienda-muebles/');
 
 
 //MONEDA
-define("MONEDA_STRIPE", 'eur')
-    ?>
+define("MONEDA_STRIPE", 'eur');
+
+
+?>

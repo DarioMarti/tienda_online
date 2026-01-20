@@ -18,7 +18,7 @@ function mostrarSeccion(seccion) {
 
 function desactivarCuenta() {
 
-    fetch('../modelos/sesion/cerrar-sesion-usuario.php', {
+    fetch(RUTA_WEB + '/modelos/sesion/cerrar-sesion-usuario.php', {
         method: 'POST',
     })
 

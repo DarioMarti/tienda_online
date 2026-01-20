@@ -1,9 +1,12 @@
 <?php
 session_start();
-$titulo = "Pago exitoso";
-require '../../modelos/carrito/vaciar-carrito.php';
+require_once __DIR__ . '/../../config/ruta.php';
+$rutaRaiz = ruta_raiz();
+$rutaWeb = ruta_web();
+
+require_once $rutaRaiz . '/modelos/carrito/vaciar-carrito.php';
 vaciarCarrito();
-require '../plantillas/cabecera.php';
+require_once $rutaRaiz . '/src/plantillas/cabecera.php';
 
 ?>
 
@@ -45,5 +48,5 @@ require '../plantillas/cabecera.php';
 
 
 <?php
-include '../plantillas/footer.html';
+include $rutaRaiz . '/src/plantillas/footer.php';
 ?>

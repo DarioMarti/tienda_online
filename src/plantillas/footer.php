@@ -17,13 +17,13 @@
             <div>
                 <h4 class="uppercase text-xs tracking-[0.2em] mb-6 text-gray-500 font-semibold">Explorar</h4>
                 <ul class="space-y-3 text-sm text-gray-300">
-                    <li><a href="index.php"
+                    <li><a href="<?= $rutaWeb ?>/index.php"
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Inicio</a>
                     </li>
-                    <li><a href="rebajas-page.php"
+                    <li><a href="<?= $rutaWeb ?>/src/paginas/rebajas.php"
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Rebajas</a>
                     </li>
-                    <li><a href="sobre-nosotros-page.php"
+                    <li><a href="<?= $rutaWeb ?>/src/paginas/sobre-nosotros.php"
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Sobrenosotros</a>
                     </li>
                 </ul>
@@ -31,7 +31,7 @@
             <div>
                 <h4 class="uppercase text-xs tracking-[0.2em] mb-6 text-gray-500 font-semibold">Asistencia</h4>
                 <ul class="space-y-3 text-sm text-gray-300">
-                    <li><a href="#"
+                    <li><a href="<?= $rutaWeb ?>/src/paginas/contacto.php"
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Contacto</a>
                     </li>
                     <li><a href="#"
@@ -66,13 +66,13 @@
         </div>
     </div>
 </footer>
-<script src="../../funcionalidades-js/mostrar-menus-laterales.js"></script>
-<script src="../../funcionalidades-js/admin/eliminar-siendo-admin.js"></script>
-<script src="../../funcionalidades-js/admin/activar-siendo-admin.js"></script>
-<script src="../../funcionalidades-js/modales.js"></script>
-<script src="../../modelos/carrito/agregar-carrito-api.js"></script>
-<script src="../../modelos/carrito/eliminar-producto-carrito-api.js"></script>
-<script src="../../funcionalidades-js/filtros-mostrar-productos.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/mostrar-menus-laterales.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/admin/eliminar-siendo-admin.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/admin/activar-siendo-admin.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/modales.js"></script>
+<script src="<?= $rutaWeb ?>/modelos/carrito/agregar-carrito-api.js"></script>
+<script src="<?= $rutaWeb ?>/modelos/carrito/eliminar-producto-carrito-api.js"></script>
+<script src="<?= $rutaWeb ?>/funcionalidades-js/filtros-mostrar-productos.js"></script>
 </body>
 
 </html>
