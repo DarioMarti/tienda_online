@@ -39,10 +39,13 @@ try {
     } else {
         //Validaciones de la imagen
         $nombreImagen = $imagenNueva['name'];
+        $informacion = getimagesize($imagenNueva['tmp_name']);
         $extensionImagen = strtolower(pathinfo($nombreImagen, PATHINFO_EXTENSION));
-        $extensionesValidas = ['jpeg', 'jpg', 'png', 'webp'];
+        $tiposPermitidos = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_WEBP, IMAGETYPE_AVIF];
 
-        if (!in_array($extensionImagen, $extensionesValidas))
+        $extensionesValidas = ['jpeg', 'jpg', 'png', 'webp', 'avif'];
+
+        if (!in_array($extensionImagen, $extensionesValidas) || $informacion == false || !in_array($informacion[2], $tiposPermitidos))
             $errores[] = "Imagen no permitida";
 
         $nombreImagenFinal = md5(time() . $nombreImagen) . "." . $extensionImagen;

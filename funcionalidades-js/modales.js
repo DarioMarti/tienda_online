@@ -41,6 +41,47 @@ function abrirModalEliminarCuenta() {
     }
 }
 
+function abrirModalConfirmarEliminar(seccion, id) {
+    let modalConfirmacion = document.getElementById('confirmar-eliminar-modal')
+    let nombreSeccion = document.getElementById('nombre-seccion-eliminada');
+    let botonEliminar = document.getElementById('boton-confirmar-eliminar-btn');
+    nombreSeccion.textContent = seccion == 'categoria' ? 'la categoría' : 'el ' + seccion;
+
+    if (seccion == 'usuario') {
+        botonEliminar.onclick = function () {
+            eliminarUsuario(id);
+            modalConfirmacion.classList.remove('block');
+            modalConfirmacion.classList.add('hidden');
+        }
+    } else if (seccion == 'producto') {
+        botonEliminar.onclick = function () {
+            eliminarProducto(id);
+            modalConfirmacion.classList.remove('block');
+            modalConfirmacion.classList.add('hidden');
+        }
+    } else if (seccion == 'categoria') {
+        botonEliminar.onclick = function () {
+            eliminarCategoria(id);
+            modalConfirmacion.classList.remove('block');
+            modalConfirmacion.classList.add('hidden');
+        }
+    } else if (seccion == 'pedido') {
+        botonEliminar.onclick = function () {
+            eliminarPedido(id);
+            modalConfirmacion.classList.remove('block');
+            modalConfirmacion.classList.add('hidden');
+        }
+    }
+
+    if (modalConfirmacion.classList.contains('hidden')) {
+        modalConfirmacion.classList.remove('hidden');
+        modalConfirmacion.classList.add('block');
+    } else {
+        modalConfirmacion.classList.remove('block');
+        modalConfirmacion.classList.add('hidden');
+    }
+}
+
 //Modal para crear o modificar un usuario
 function abrirCerrarModalCrearUsuario(accion, nombre = "", apellido = "", email = "", rol = "cliente", telefono = "", direccion = "", activo = "", id = "") {
     let modalUsuario = document.getElementById('modal-usuario');
@@ -291,7 +332,11 @@ function abrirCerrarModalCrearPedido(boton = null, accion, email = "", coste = "
                     let optionProducto = document.createElement('option');
                     optionProducto.value = prod.id;
                     optionProducto.textContent = prod.nombre;
-                    optionProducto.dataset.precio = prod.precio;
+                    if (prod.descuento > 0) {
+                        optionProducto.dataset.precio = prod.precio - (prod.precio * prod.descuento / 100);
+                    } else {
+                        optionProducto.dataset.precio = prod.precio;
+                    }
 
                     // Si se pasa un producto específico, pre-seleccionarlo
                     if (producto && prod.id == producto.producto_id) {

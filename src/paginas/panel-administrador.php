@@ -232,7 +232,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
                                     <?php if ($pedido['estado'] !== 'cancelado'): ?>
-                                        <button onclick="eliminarPedido(<?= $pedido['id'] ?>)"
+                                        <button onclick="abrirModalConfirmarEliminar('pedido', <?= $pedido['id'] ?>)"
                                             class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                                             title="Eliminar">
                                             <i class="ph ph-trash text-xl"></i>
@@ -308,8 +308,9 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                     </button>
                                     <?php
                                     if ($usuario['activo'] == 1): ?>
-                                        <button id="btnEliminarUsuario" onclick="eliminarUsuario(<?= $usuario['id'] ?>)"
-                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                        <button id="btnEliminarUsuario"
+                                            onclick="abrirModalConfirmarEliminar('usuario', <?= $usuario['id'] ?>)"
+                                            class=" text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                                             title="Desactivar">
                                             <i class="ph ph-trash text-xl"></i>
                                         </button>
@@ -403,7 +404,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
                                     <?php if ($producto['activo'] == 1): ?>
-                                        <button onclick="eliminarProducto(<?= $producto['id'] ?>)"
+                                        <button onclick="abrirModalConfirmarEliminar('producto', <?= $producto['id'] ?>)"
                                             class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                                             title="Desactivar">
                                             <i class="ph ph-trash text-xl"></i>
@@ -482,7 +483,7 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                                         <i class="ph ph-pencil-simple text-xl"></i>
                                     </button>
                                     <?php if ($categoria['activa']): ?>
-                                        <button onclick="eliminarCategoria(<?= $categoria['id'] ?>)"
+                                        <button onclick="abrirModalConfirmarEliminar('categoria', <?= $categoria['id'] ?>)"
                                             class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                                             title="Desactivar">
                                             <i class="ph ph-trash text-xl"></i>

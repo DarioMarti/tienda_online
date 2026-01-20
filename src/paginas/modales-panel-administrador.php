@@ -445,3 +445,33 @@ if (isset($_SESSION['mensaje']) && in_array($_SESSION['mensaje']['tipo'], $tipos
     </div>
     <?php unset($_SESSION['mensaje']); ?>
 <?php endif; ?>
+
+
+<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+
+<div id="confirmar-eliminar-modal" class=" hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 text-center transform transition-all">
+        <div class="mb-4">
+            <i class="ph ph-warning-circle text-6xl text-red-500"></i>
+        </div>
+
+        <h3 class="font-editorial text-2xl italic text-fashion-black mb-2">
+            ¿Estás seguro?
+        </h3>
+
+        <p class="text-gray-600 mb-6">
+            Esta acción eliminará <span id="nombre-seccion-eliminada"></span>.
+        </p>
+
+        <div class="flex gap-4">
+            <button id="cancelar-confirmar-eliminar-btn" onclick="abrirModalConfirmarEliminar()"
+                class="cursor-pointer flex-1 bg-gray-200 text-gray-700 py-3 px-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-gray-300 transition-all duration-300 rounded-lg">
+                Cancelar
+            </button>
+            <a href="#" id="boton-confirmar-eliminar-btn"
+                class="cursor-pointer flex-1 bg-red-600 text-white py-3 px-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-red-700 transition-all duration-300 rounded-lg shadow-lg hover:shadow-xl">
+                Eliminar
+            </a>
+        </div>
+    </div>
+</div>

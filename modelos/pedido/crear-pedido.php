@@ -20,6 +20,9 @@ $id_usuario_check = $_POST['id_usuario_check'] ?? '';
 try {
     $conn = conectar();
 
+    //limpiar el email
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
     //Comprobar email
     $comprobarEmail = $conn->prepare('SELECT * FROM usuarios WHERE email = ?');
     $comprobarEmail->execute([$email]);
@@ -69,13 +72,19 @@ try {
     //Insertar detalles de pedido
     for ($i = 0; $i < count($productos); $i++) {
 
-        $precio = $conn->prepare('SELECT precio FROM productos WHERE id = ?');
-        $precio->execute([$productos[$i]]);
-        $precio = $precio->fetch();
-        $precio = $precio['precio'];
+        $precioProducto = $conn->prepare('SELECT * FROM productos WHERE id = ?');
+        $precioProducto->execute([$productos[$i]]);
+        $ProductoInfo = $precioProducto->fetch();
+        $precio = $ProductoInfo['precio'];
+        $descuento = $ProductoInfo['descuento'];
+        if ($descuento > 0) {
+            $precioFinal = $precio - ($precio * $descuento / 100);
+        } else {
+            $precioFinal = $precio;
+        }
 
         $sentenciaDetallePedido = $conn->prepare('INSERT INTO detalles_pedido (pedido_id,producto_id,cantidad, precio_unitario) VALUES (?, ?, ?, ?)');
-        $sentenciaDetallePedido->execute([$id_pedido, $productos[$i], $stock[$i], $precio]);
+        $sentenciaDetallePedido->execute([$id_pedido, $productos[$i], $stock[$i], $precioFinal]);
 
         //Restar stock del producto
         $sentenciaRestarStock = $conn->prepare('UPDATE productos SET stock = stock - ? WHERE id = ?');

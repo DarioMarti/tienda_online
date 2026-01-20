@@ -21,13 +21,18 @@ try {
     $items = [];
     foreach ($productosCarrito as $indice => $productoCarrito) {
 
+        $precioFinal = $productoCarrito['precio'];
+        if ($productoCarrito['descuento'] > 0) {
+            $precioFinal = $productoCarrito['precio'] - ($productoCarrito['precio'] * $productoCarrito['descuento'] / 100);
+        }
+
         $items[] = [
             'price_data' => [
                 'currency' => MONEDA_STRIPE,
                 'product_data' => [
                     'name' => $productoCarrito['nombre'],
                 ],
-                'unit_amount' => (int) ($productoCarrito['precio'] * 100),
+                'unit_amount' => (int) ($precioFinal * 100),
             ],
             'quantity' => $_SESSION['carrito']['cantidad'][$indice],
         ];

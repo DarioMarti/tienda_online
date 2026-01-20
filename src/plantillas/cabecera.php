@@ -23,7 +23,7 @@ $carrito = mostrarCarrito();
     <!-- TAILWIND CSS -->
     <link rel="stylesheet" href="../styles/output.css">
     <!-- FAVICON -->
-    <link rel="icon" href="../../img/globales/Favicon_Aetheria.ico" type="image/x-icon">
+    <link rel="icon" href="../../img/globales/favicon_NordenReka.ico" type="image/x-icon">
 
 </head>
 

@@ -18,6 +18,7 @@ $errores = [];
 
 if (empty($nombre))
     $errores[] = "El campo nombre no puede estar vacio";
+$email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
     $errores[] = "Email introducido no valido";

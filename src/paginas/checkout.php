@@ -87,9 +87,17 @@ $productos = $_SESSION['carrito']['productos'];
                                         <?= $producto['nombre'] ?>
                                     </h4>
                                     <p class="text-xs font-semibold mt-2">
-                                        <?=
-                                            $precioFinal = $producto['precio'] * $_SESSION['carrito']['cantidad'][$indice];
-                                        $precioFinal ?> €
+                                        <?php if ($producto['descuento'] > 0): ?>
+                                            <span class="line-through">
+                                                <?= $producto['precio'] * $_SESSION['carrito']['cantidad'][$indice] ?>€
+                                            </span>
+                                            <span class="text-red-500 font-bold pl-1">
+                                                <?= number_format($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice] ?>€
+                                            </span>
+                                        <?php else: ?>
+                                            <?= $producto['precio'] * $_SESSION['carrito']['cantidad'][$indice] ?>€
+                                        <?php endif; ?>
+
                                     </p>
                                 </div>
                             </div>
