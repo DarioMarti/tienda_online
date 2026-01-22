@@ -122,31 +122,30 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                             <div class="hidden id-producto-catalogo" name="id-producto-catalogo">
                                 <?php echo $producto['id']; ?>
                             </div>
-                            <a href="#" class="block">
-                                <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
-                                    <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
-                                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                        alt="<?= $producto['descripcion'] ?>">
 
-                                    <!--ETIQUETA DESCUENTO -->
-                                    <?php if ($producto['descuento'] > 0): ?>
-                                        <div class="absolute top-0 left-0 p-3 flex flex-col gap-2 items-start">
-                                            <span
-                                                class="bg-red-600 text-white text-xs font-bold px-3 py-1 text-center uppercase tracking-widest">-<?php echo intval($producto['descuento']); ?>%</span>
-                                        </div>
-                                    <?php endif ?>
-                                    <div
-                                        class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 flex flex-col justify-end">
+                            <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
+                                <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
+                                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    alt="<?= $producto['descripcion'] ?>">
 
-                                        <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
-                                            class=" cursor-pointer w-full bg-black text-white hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
-                                            Añadir a la cesta
-                                        </button>
+                                <!--ETIQUETA DESCUENTO -->
+                                <?php if ($producto['descuento'] > 0): ?>
+                                    <div class="absolute top-0 left-0 p-3 flex flex-col gap-2 items-start">
+                                        <span
+                                            class="bg-red-600 text-white text-xs font-bold px-3 py-1 text-center uppercase tracking-widest">-<?php echo intval($producto['descuento']); ?>%</span>
                                     </div>
+                                <?php endif ?>
+                                <div
+                                    class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 flex flex-col justify-end">
+
+                                    <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
+                                        class=" cursor-pointer w-full bg-black text-white hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
+                                        Añadir a la cesta
+                                    </button>
                                 </div>
-                            </a>
+                            </div>
                             <div>
-                                <a href="#">
+                                <a href="<?= $rutaWeb ?>/src/paginas/ficha-producto.php?id=<?= $producto['id'] ?>">
                                     <h3 class="editorial-font text-xl group-hover:text-fashion-accent transition-colors">
                                         <?php echo $producto['nombre'] ?>
                                     </h3>

@@ -42,8 +42,8 @@
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Devoluciones</a>
                     </li>
                     <li><a href="#"
-                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Guía
-                            de Tallas</a></li>
+                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Política
+                            de privacidad</a></li>
                 </ul>
             </div>
             <div>

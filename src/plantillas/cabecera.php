@@ -148,21 +148,21 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
             <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
 
                 <?php if (!empty($_SESSION['carrito']['productos'])): ?>
-                    <?php foreach ($_SESSION['carrito']['productos'] as $indice => $producto): ?>
+                    <?php foreach ($_SESSION['carrito']['productos'] as $indice => $itemCarrito): ?>
                         <span class="hidden producto-Carrito"></span>
                         <div class="flex gap-4 group relative ">
                             <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
-                                <img src="<?= $rutaWeb .'/'. htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
-                                    alt="<?php echo htmlspecialchars($producto['nombre'])??''; ?>"
+                                <img src="<?= $rutaWeb . '/' . htmlspecialchars($itemCarrito['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
+                                    alt="<?php echo htmlspecialchars($itemCarrito['nombre']) ?? ''; ?>"
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1 flex flex-col justify-between py-1 pl-4">
                                 <div>
                                     <div class="flex justify-between items-start">
                                         <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
-                                            <?php echo htmlspecialchars($producto['nombre'])??''; ?>
+                                            <?php echo htmlspecialchars($itemCarrito['nombre']) ?? ''; ?>
                                         </h4>
-                                        <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
+                                        <button onclick="eliminarProductoCarrito(<?= $itemCarrito['id'] ?>)"
                                             class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
                                             <i class="ph ph-trash text-sm"></i>
                                         </button>
@@ -183,12 +183,12 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                                 </div>
                                 <p class="text-xs font-medium pt-2">
                                     <?php
-                                    if($producto['descuento'] > 0):?>
-                                   <span class="line-through">  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2)??''; ?> </span>
-                                   <span class="text-red-500 pl-2 font-bold">  <?php echo number_format($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice]??0; ?>€ </span>
+                                    if ($itemCarrito['descuento'] > 0): ?>
+                                   <span class="line-through">  <?php echo number_format($itemCarrito['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2) ?? ''; ?> </span>
+                                   <span class="text-red-500 pl-2 font-bold">  <?php echo number_format($itemCarrito['precio'] - ($itemCarrito['precio'] * $itemCarrito['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice] ?? 0; ?>€ </span>
 
                                       <?php else:?>
-                                      <span>  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2)??0; ?>€ </span>
+                                      <span>  <?php echo number_format($itemCarrito['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2) ?? 0; ?>€ </span>
                                     <?php endif;?>
                                   
                                    
