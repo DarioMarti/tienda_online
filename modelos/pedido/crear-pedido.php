@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/ruta.php';
 $rutaRaiz = ruta_raiz();
-$rutaWeb = ruta_web();
 
 require_once $rutaRaiz . '/config/conexionDB.php';
 session_start();

@@ -5,5 +5,5 @@ function ruta_raiz()
 }
 function ruta_web()
 {
-    return 'http://localhost/tienda-muebles';
+    return 'https://norderreka.es';
 }

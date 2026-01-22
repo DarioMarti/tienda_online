@@ -45,7 +45,7 @@ if (!empty($errores)) {
         'mensaje' => $error,
         'tipo' => 'password'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 }
 
@@ -66,7 +66,7 @@ try {
             'mensaje' => 'El usuario no existe',
             'tipo' => 'password'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
         exit;
     }
 
@@ -77,7 +77,7 @@ try {
             'mensaje' => 'La nueva contraseña y la actual no coinciden',
             'tipo' => 'password'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
         exit;
     }
 
@@ -96,7 +96,7 @@ try {
         'tipo' => 'password'
     ];
 
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 
 
@@ -108,7 +108,7 @@ try {
         'mensaje' => 'Error al cambiar la contraseña',
         'tipo' => 'password'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 }
 

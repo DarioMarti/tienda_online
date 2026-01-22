@@ -176,94 +176,100 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-
-                        <?php foreach ($pedidos as $pedido): ?>
-
-                            <?php foreach ($usuarios as $usuario) {
-                                if ($usuario['id'] == $pedido['usuario_id']) {
-                                    $_email = $usuario['email'];
-                                }
-                            } ?>
-                            <tr class="bg-gray-50 border-b border-gray-200">
-                                <td class="px-6 py-4 font-bold text-fashion-black">
-                                    <?= htmlspecialchars($pedido['id']) ?>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-semibold text-fashion-black">
-                                        <?= htmlspecialchars($pedido['nombre_destinatario']) ?>
-                                    </div>
-                                    <div class="text-xs text-gray-500">
-                                        <?= htmlspecialchars($_email) ?>
-                                    </div>
-
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">
-                                    <?= htmlspecialchars($pedido['fecha']) ?>
-                                </td>
-                                <td class="px-6 py-4 font-bold text-fashion-black">
-                                    <?= htmlspecialchars($pedido['coste_total']) ?>€
-                                </td>
-                                <td class="px-6 py-4">
-                                    <?php $coloresEstado = [
-                                        'pendiente' => 'bg-yellow-100 text-yellow-700',
-                                        'pagado' => 'bg-green-100 text-green-700',
-                                        'enviado' => 'bg-blue-100 text-blue-700',
-                                        'entregado' => 'bg-purple-100 text-purple-700',
-                                        'cancelado' => 'bg-red-100 text-red-700'
-                                    ][$pedido['estado']] ?? 'bg-gray-100 text-gray-700' ?>
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $coloresEstado; ?>">
-                                        <?= htmlspecialchars($pedido['estado']) ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button onclick="cerrarModalDetallesPedido('<?= htmlspecialchars($pedido['id']) ?>')"
-                                        class="text-gray-400 hover:text-fashion-accent transition-colors cursor-pointer"
-                                        title="Ver Detalles">
-                                        <i class="ph ph-eye text-xl"></i>
-                                    </button>
-                                    <button <?php
-                                    $emailPedido = "";
-                                    foreach ($usuarios as $usuario) {
-                                        if ($usuario['id'] == $pedido['usuario_id']) {
-                                            $emailPedido = $usuario['email'];
-                                        }
+                        <?php if ($pedidos): ?>
+                            <?php foreach ($pedidos as $pedido): ?>
+                                <!--Se saca el email del usuario-->
+                                <?php foreach ($usuarios as $usuario) {
+                                    if ($usuario['id'] == $pedido['usuario_id']) {
+                                        $_email = $usuario['email'];
                                     }
-                                    $productosPedido = [];
-                                    $pedidoDetalles = mostrarDetallesPedido($pedido['id']);
-                                    foreach ($pedidoDetalles as $detalle) {
-                                        foreach ($productos as $producto) {
-                                            if ($producto['id'] == $detalle['producto_id']) {
-                                                $productosPedido[] = array_merge($detalle, $producto);
-                                                break;
+                                } ?>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <td class="px-6 py-4 font-bold text-fashion-black">
+                                        <?= htmlspecialchars($pedido['id'] ?? '') ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-semibold text-fashion-black">
+                                            <?= htmlspecialchars($pedido['nombre_destinatario'] ?? '') ?>
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            <?= htmlspecialchars($_email) ?>
+                                        </div>
+
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">
+                                        <?= htmlspecialchars($pedido['fecha'] ?? '') ?>
+                                    </td>
+                                    <td class="px-6 py-4 font-bold text-fashion-black">
+                                        <?= htmlspecialchars($pedido['coste_total'] ?? '') ?>€
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <?php $coloresEstado = [
+                                            'pendiente' => 'bg-yellow-100 text-yellow-700',
+                                            'pagado' => 'bg-green-100 text-green-700',
+                                            'enviado' => 'bg-blue-100 text-blue-700',
+                                            'entregado' => 'bg-purple-100 text-purple-700',
+                                            'cancelado' => 'bg-red-100 text-red-700'
+                                        ][$pedido['estado']] ?? 'bg-gray-100 text-gray-700' ?>
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $coloresEstado; ?>">
+                                            <?= htmlspecialchars($pedido['estado'] ?? '') ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button
+                                            onclick="cerrarModalDetallesPedido('<?= htmlspecialchars($pedido['id'] ?? '') ?>')"
+                                            class="text-gray-400 hover:text-fashion-accent transition-colors cursor-pointer"
+                                            title="Ver Detalles">
+                                            <i class="ph ph-eye text-xl"></i>
+                                        </button>
+                                        <button <?php
+                                        $emailPedido = "";
+                                        foreach ($usuarios as $usuario) {
+                                            if ($usuario['id'] == $pedido['usuario_id']) {
+                                                $emailPedido = $usuario['email'];
                                             }
                                         }
-                                    }
-                                    ?>
-                                        data-productos='<?= json_encode($productosPedido) ?>'
-                                        onclick="abrirCerrarModalCrearPedido(this,'editar', '<?= $_SESSION['usuario']['rol'] ?>', '<?= $emailPedido ?>', '<?= $pedido['coste_total'] ?>','<?= htmlspecialchars($pedido['nombre_destinatario'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['direccion_envio'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['ciudad'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['provincia'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['estado'], ENT_QUOTES) ?>','<?= $pedido['id'] ?>')"
-                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                        title="Editar">
-                                        <i class="ph ph-pencil-simple text-xl"></i>
-                                    </button>
-                                    <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
-                                        <?php if ($pedido['estado'] !== 'cancelado'): ?>
-                                            <button onclick="abrirModalConfirmarEliminar('pedido', <?= $pedido['id'] ?>)"
-                                                class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                                title="Eliminar">
-                                                <i class="ph ph-trash text-xl"></i>
-                                            </button>
-                                        <?php else: ?>
-                                            <button onclick="activarPedido(<?= $pedido['id'] ?>)"
-                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                                title="Reactivar">
-                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                            </button>
+                                        $productosPedido = [];
+                                        $pedidoDetalles = mostrarDetallesPedido($pedido['id'] ?? '');
+                                        foreach ($pedidoDetalles as $detalle) {
+                                            foreach ($productos as $producto) {
+                                                if ($producto['id'] == $detalle['producto_id']) {
+                                                    $productosPedido[] = array_merge($detalle, $producto);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                            data-productos='<?= json_encode($productosPedido) ?>'
+                                            onclick="abrirCerrarModalCrearPedido(this,'editar', '<?= $_SESSION['usuario']['rol'] ?>', '<?= $emailPedido ?>', '<?= $pedido['coste_total'] ?>','<?= htmlspecialchars($pedido['nombre_destinatario'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['direccion_envio'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['ciudad'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['provincia'], ENT_QUOTES) ?>','<?= htmlspecialchars($pedido['estado'], ENT_QUOTES) ?>','<?= $pedido['id'] ?>')"
+                                            class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                            title="Editar">
+                                            <i class="ph ph-pencil-simple text-xl"></i>
+                                        </button>
+                                        <?php if ($_SESSION['usuario']['rol'] == 'admin'): ?>
+                                            <?php if ($pedido['estado'] !== 'cancelado'): ?>
+                                                <button onclick="abrirModalConfirmarEliminar('pedido', <?= $pedido['id'] ?>)"
+                                                    class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                    title="Eliminar">
+                                                    <i class="ph ph-trash text-xl"></i>
+                                                </button>
+                                            <?php else: ?>
+                                                <button onclick="activarPedido(<?= $pedido['id'] ?>)"
+                                                    class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                    title="Reactivar">
+                                                    <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                                </button>
+                                            <?php endif; ?>
                                         <?php endif; ?>
-                                    <?php endif; ?>
-                                </td>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No hay pedidos</td>
                             </tr>
-                        <?php endforeach ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -295,58 +301,65 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <?php foreach ($usuarios as $usuario): ?>
+                        <?php if ($usuarios): ?>
+                            <?php foreach ($usuarios as $usuario): ?>
 
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 flex flex-col items-start fila-usuario">
-                                    <strong>
-                                        <?= htmlspecialchars($usuario['nombre']) ?>
-                                    </strong>
-                                    <span class="text-sm text-gray-500"><?= htmlspecialchars($usuario['email']) ?>/span>
-                                </td>
-                                <td>
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gray-100 text-gray-800">
-                                        <?= htmlspecialchars($usuario['rol']) ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $usuario['activo'] == 1 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700" ?>">
-                                        <?php echo $usuario['activo'] == 1 ? 'activo' : 'inactivo' ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <?php if ($_SESSION['usuario']['rol'] != 'admin' && $usuario['rol'] == 'cliente'): ?>
-                                        <button
-                                            onclick="abrirCerrarModalCrearUsuario('editar','<?= $_SESSION['usuario']['rol'] ?>', '<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['apellidos'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['rol'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['telefono'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['direccion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['activo'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['id'], ENT_QUOTES) ?>')"
-                                            class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                            title="Editar">
-                                            <i class="ph ph-pencil-simple text-xl"></i>
-                                        </button>
-                                    <?php endif; ?>
-                                    <?php
-                                    if ($_SESSION['usuario']['rol'] == 'admin'):
-                                        if ($usuario['activo'] == 1): ?>
-                                            <button id="btnEliminarUsuario"
-                                                onclick="abrirModalConfirmarEliminar('usuario', <?= $usuario['id'] ?>)"
-                                                class=" text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                                title="Desactivar">
-                                                <i class="ph ph-trash text-xl"></i>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 flex flex-col items-start fila-usuario">
+                                        <strong>
+                                            <?= htmlspecialchars($usuario['nombre'] ?? '') ?>
+                                        </strong>
+                                        <span
+                                            class="text-sm text-gray-500"><?= htmlspecialchars($usuario['email'] ?? '') ?>/span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-gray-100 text-gray-800">
+                                            <?= htmlspecialchars($usuario['rol'] ?? '') ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $usuario['activo'] == 1 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700" ?>">
+                                            <?php echo $usuario['activo'] == 1 ? 'activo' : 'inactivo' ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <?php if ($_SESSION['usuario']['rol'] == 'admin' || ($_SESSION['usuario']['rol'] == 'empleado' && $usuario['rol'] == 'cliente') || ($_SESSION['usuario']['nombre'] == $usuario['nombre'])): ?>
+                                            <button
+                                                onclick="abrirCerrarModalCrearUsuario('editar','<?= $_SESSION['usuario']['rol'] ?>', '<?= htmlspecialchars($usuario['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['apellidos'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['rol'], ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['telefono'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['direccion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['activo'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($usuario['id'], ENT_QUOTES) ?>')"
+                                                class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                                title="Editar">
+                                                <i class="ph ph-pencil-simple text-xl"></i>
                                             </button>
+                                        <?php endif; ?>
+                                        <?php
+                                        if ($_SESSION['usuario']['rol'] == 'admin'):
+                                            if ($usuario['activo'] == 1): ?>
+                                                <button id="btnEliminarUsuario"
+                                                    onclick="abrirModalConfirmarEliminar('usuario', <?= $usuario['id'] ?>)"
+                                                    class=" text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                    title="Desactivar">
+                                                    <i class="ph ph-trash text-xl"></i>
+                                                </button>
 
-                                        <?php else: ?>
-                                            <button onclick="activarUsuario(<?= $usuario['id'] ?>)"
-                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                                title="Activar">
-                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                            </button>
+                                            <?php else: ?>
+                                                <button onclick="activarUsuario(<?= $usuario['id'] ?>)"
+                                                    class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                    title="Activar">
+                                                    <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                                </button>
+                                            <?php endif ?>
                                         <?php endif ?>
-                                    <?php endif ?>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
 
-                        <?php endforeach ?>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No hay usuarios</td>
+                            </tr>
+                        <?php endif ?>
                     </tbody>
                 </table>
             </div>
@@ -385,60 +398,66 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <?php foreach ($productos as $producto): ?>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4">
-                                    <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>" alt="Producto"
-                                        class="w-20 h-20 object-cover">
-                                </td>
-                                <td class="px-6 py-4">
-                                    <strong><?= htmlspecialchars($producto['nombre']) ?></strong>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-xs text-gray-500 line-clamp-3">Descripcion de producto</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="font-bold text-fashion-black">
-                                        <?= $producto['precio'] ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
-                                        <?= $producto['stock'] ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm text-gray-500"><?= $producto['categoria_id'] ?></p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $producto['activo'] == 1 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' ?>">
-                                        <?= $producto['activo'] == 1 ? 'Activo' : 'Inactivo' ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button
-                                        onclick="abrirCerrarModalCrearProducto('editar', '<?= htmlspecialchars($producto['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['precio'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['stock'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['imagen'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descuento'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>')"
-                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                        title="Editar">
-                                        <i class="ph ph-pencil-simple text-xl"></i>
-                                    </button>
-                                    <?php if ($producto['activo'] == 1): ?>
-                                        <button onclick="abrirModalConfirmarEliminar('producto', <?= $producto['id'] ?>)"
-                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                            title="Desactivar">
-                                            <i class="ph ph-trash text-xl"></i>
+                        <?php if ($productos): ?>
+                            <?php foreach ($productos as $producto): ?>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>" alt="Producto"
+                                            class="w-20 h-20 object-cover">
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <strong><?= htmlspecialchars($producto['nombre'] ?? '') ?></strong>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-xs text-gray-500 line-clamp-3">Descripcion de producto</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="font-bold text-fashion-black">
+                                            <?= $producto['precio'] ?? '' ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                                            <?= $producto['stock'] ?? '' ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-500"><?= $producto['categoria_id'] ?></p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?php echo $producto['activo'] == 1 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' ?>">
+                                            <?= $producto['activo'] == 1 ? 'Activo' : 'Inactivo' ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button
+                                            onclick="abrirCerrarModalCrearProducto('editar', '<?= htmlspecialchars($producto['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['precio'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['stock'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['imagen'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['descuento'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($producto['categoria_id'], ENT_QUOTES) ?>')"
+                                            class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                            title="Editar">
+                                            <i class="ph ph-pencil-simple text-xl"></i>
                                         </button>
-                                    <?php else: ?>
-                                        <button onclick="activarProducto(<?= $producto['id'] ?>)"
-                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                            title="Activar">
-                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                        </button>
-                                    <?php endif ?>
-                                </td>
+                                        <?php if ($producto['activo'] == 1): ?>
+                                            <button onclick="abrirModalConfirmarEliminar('producto', <?= $producto['id'] ?>)"
+                                                class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                title="Desactivar">
+                                                <i class="ph ph-trash text-xl"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button onclick="activarProducto(<?= $producto['id'] ?>)"
+                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                title="Activar">
+                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                            </button>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="8" class="px-6 py-4 text-center text-gray-500">No hay productos</td>
                             </tr>
-                        <?php endforeach ?>
+                        <?php endif ?>
                     </tbody>
                 </table>
             </div>
@@ -476,48 +495,54 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($categorias as $categoria): ?>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4">
-                                    <strong><?= $categoria['nombre'] ?></strong>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-xs text-gray-500 line-clamp-3"><?= $categoria['descripcion'] ?></p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-xs text-gray-500 line-clamp-3">
-                                        <?= $categoria['categoria_padre_id'] ?>
-                                    </p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?= $categoria['activa'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?>">
-                                        <?= $categoria['activa'] ? 'Activo' : 'Inactivo' ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button
-                                        onclick="abrirCerrarModalCrearCategoria('editar', '<?= htmlspecialchars($categoria['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['categoria_padre_id'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['id'], ENT_QUOTES) ?>')"
-                                        class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
-                                        title="Editar">
-                                        <i class="ph ph-pencil-simple text-xl"></i>
-                                    </button>
-                                    <?php if ($categoria['activa']): ?>
-                                        <button onclick="abrirModalConfirmarEliminar('categoria', <?= $categoria['id'] ?>)"
-                                            class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                                            title="Desactivar">
-                                            <i class="ph ph-trash text-xl"></i>
+                        <?php if ($categorias): ?>
+                            <?php foreach ($categorias as $categoria): ?>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <strong><?= $categoria['nombre'] ?? '' ?></strong>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-xs text-gray-500 line-clamp-3"><?= $categoria['descripcion'] ?? '' ?></p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-xs text-gray-500 line-clamp-3">
+                                            <?= $categoria['categoria_padre_id'] ?? '' ?>
+                                        </p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider <?= $categoria['activa'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?>">
+                                            <?= $categoria['activa'] ? 'Activo' : 'Inactivo' ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button
+                                            onclick="abrirCerrarModalCrearCategoria('editar', '<?= htmlspecialchars($categoria['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['descripcion'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['categoria_padre_id'] ?? '', ENT_QUOTES) ?>', '<?= htmlspecialchars($categoria['id'], ENT_QUOTES) ?>')"
+                                            class="text-gray-400 hover:text-fashion-black transition-colors cursor-pointer"
+                                            title="Editar">
+                                            <i class="ph ph-pencil-simple text-xl"></i>
                                         </button>
-                                    <?php else: ?>
-                                        <button onclick="activarCategoria(<?= $categoria['id'] ?>)"
-                                            class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
-                                            title="Activar">
-                                            <i class="ph ph-arrow-u-up-left text-xl"></i>
-                                        </button>
-                                    <?php endif ?>
-                                </td>
+                                        <?php if ($categoria['activa']): ?>
+                                            <button onclick="abrirModalConfirmarEliminar('categoria', <?= $categoria['id'] ?>)"
+                                                class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                                                title="Desactivar">
+                                                <i class="ph ph-trash text-xl"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button onclick="activarCategoria(<?= $categoria['id'] ?>)"
+                                                class="text-gray-400 hover:text-green-500 transition-colors cursor-pointer"
+                                                title="Activar">
+                                                <i class="ph ph-arrow-u-up-left text-xl"></i>
+                                            </button>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">No hay categorías</td>
                             </tr>
-                        <?php endforeach ?>
+                        <?php endif ?>
                     </tbody>
                 </table>
 
@@ -568,16 +593,20 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                 <div class="bg-white p-6 rounded-lg shadow-lg">
                     <h3 class="text-lg font-bold mb-4">Productos Más Vendidos</h3>
                     <ul class="space-y-3">
-                        <?php foreach ($productosMasVendidos as $prod): ?>
-                            <li class="flex justify-between items-center border-b border-gray-100 pb-2">
-                                <span>
-                                    <?= htmlspecialchars($prod['nombre']) ?>
-                                </span>
-                                <span class="font-bold">
-                                    <?= $prod['total_vendido'] ?> uds
-                                </span>
-                            </li>
-                        <?php endforeach; ?>
+                        <?php if ($productosMasVendidos): ?>
+                            <?php foreach ($productosMasVendidos as $prod): ?>
+                                <li class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                    <span>
+                                        <?= htmlspecialchars($prod['nombre']) ?>
+                                    </span>
+                                    <span class="font-bold">
+                                        <?= $prod['total_vendido'] ?> uds
+                                    </span>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <li>No hay productos vendidos</li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -586,8 +615,10 @@ $productosMasVendidos = obtenerProductosMasVendidos();
                 <span class=" text-2xl">
                     <?php
                     $totalVentas = 0;
-                    foreach ($pedidos as $pedido) {
-                        $totalVentas += $pedido['coste_total'];
+                    if ($pedidos) {
+                        foreach ($pedidos as $pedido) {
+                            $totalVentas += $pedido['coste_total'];
+                        }
                     }
                     echo $totalVentas;
                     ?>

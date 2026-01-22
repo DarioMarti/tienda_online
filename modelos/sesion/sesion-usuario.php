@@ -26,7 +26,7 @@ try {
             'mensaje' => 'Email incorrecto. El usuario no existe.',
             'tipo' => 'login'
         ];
-        header('location:' . $urlActual);
+        header('Location: ' . rtrim($rutaWeb, '/') . $urlActual);
         exit();
     }
 
@@ -50,7 +50,7 @@ try {
 
         crearCarrito();
 
-        header('location:' . $urlActual);
+        header('Location: ' . rtrim($rutaWeb, '/') . $urlActual);
         exit();
 
     } else {
@@ -61,7 +61,7 @@ try {
             'mensaje' => 'Contraseña incorrecta.',
             'tipo' => 'login'
         ];
-        header('location:' . $urlActual);
+        header('Location: ' . rtrim($rutaWeb, '/') . $urlActual);
         exit();
     }
 
@@ -72,7 +72,7 @@ try {
         'mensaje' => 'Error al iniciar sesión',
         'tipo' => 'login'
     ];
-    header('location:' . $urlActual);
+    header('Location: ' . rtrim($rutaWeb, '/') . $urlActual);
     exit();
 }
 

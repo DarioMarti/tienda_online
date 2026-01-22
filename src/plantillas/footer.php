@@ -18,13 +18,14 @@
                 <h4 class="uppercase text-xs tracking-[0.2em] mb-6 text-gray-500 font-semibold">Explorar</h4>
                 <ul class="space-y-3 text-sm text-gray-300">
                     <li><a href="<?= $rutaWeb ?>/index.php"
-                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Inicio</a>
+                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Home</a>
                     </li>
                     <li><a href="<?= $rutaWeb ?>/src/paginas/rebajas.php"
                             class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Rebajas</a>
                     </li>
                     <li><a href="<?= $rutaWeb ?>/src/paginas/sobre-nosotros.php"
-                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Sobrenosotros</a>
+                            class="hover:text-white hover:underline decoration-fashion-accent underline-offset-4">Sobre
+                            nosotros</a>
                     </li>
                 </ul>
             </div>

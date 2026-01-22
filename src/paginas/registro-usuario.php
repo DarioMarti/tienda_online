@@ -20,7 +20,7 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
             <!-- NOMBRE DE USUARIO -->
             <div class="space-y-2">
                 <label for="username" class="text-xs uppercase tracking-widest font-semibold text-gray-700">
-                    Nombre de Usuario
+                    Nombre
                 </label>
                 <input id="username" name="nombre" type="text" required
                     class="w-full px-4 py-3 bg-[#F5F5F5] focus:border-fashion-black focus:outline-none transition-colors bg-transparent text-fashion-black placeholder-gray-400"

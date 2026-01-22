@@ -4,9 +4,9 @@ function conectar()
 {
 
     $host = "localhost";
-    $basedatos = "tienda_muebles";
-    $usuario = "root";
-    $password = "";
+    $basedatos = "u645095293_tienda";
+    $usuario = "u645095293_admin";
+    $password = "soniaMequinenza-12-5-";
 
 
     try {

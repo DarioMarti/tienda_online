@@ -3,7 +3,6 @@ session_start();
 require_once __DIR__ . '/../../config/ruta.php';
 
 $rutaRaiz = ruta_raiz();
-$rutaWeb = ruta_web();
 
 require_once $rutaRaiz . '/config/conexionDB.php';
 header('Content-Type: application/json');
@@ -11,11 +10,11 @@ header('Content-Type: application/json');
 try {
     $conn = conectar();
 
-    $id_producto = $_POST['id_producto'];
-    $rutaActual = $_POST['ruta-actual-carrito'] ?? "";
+    $id_producto = filter_input(INPUT_POST, 'id_producto', FILTER_VALIDATE_INT);
+    $rutaActual = filter_input(INPUT_POST, 'ruta-actual-carrito', FILTER_SANITIZE_URL);
 
     // Validar ID
-    if (!isset($_POST['id_producto'])) {
+    if (!$id_producto) {
         $_SESSION['mensaje'] = [
             'estado' => false,
             'mensaje' => 'No se recibió ID de producto',
@@ -48,7 +47,11 @@ try {
         // Recalcular el total desde cero para mayor seguridad
         $subtotal = 0;
         foreach ($_SESSION['carrito']['productos'] as $index => $producto) {
-            $subtotal += $producto['precio'] * $_SESSION['carrito']['cantidad'][$index];
+            $precio_final = $producto['precio'];
+            if ($producto['descuento'] > 0) {
+                $precio_final = $producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100);
+            }
+            $subtotal += $precio_final * $_SESSION['carrito']['cantidad'][$index];
         }
         $_SESSION['carrito']['total'] = $subtotal;
 

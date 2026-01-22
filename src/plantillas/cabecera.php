@@ -32,7 +32,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
     <!-- TAILWIND CSS -->
     <link rel="stylesheet" href="<?= $rutaWeb ?>/src/styles/output.css">
     <!-- FAVICON -->
-    <link rel="icon" href="<?= $rutaWeb ?>/img/globales/favicon_NordenReka.ico" type="image/x-icon">
+    <link rel="icon" href="<?= $rutaWeb ?>/img/globales/favicon_NorderReka.ico" type="image/x-icon">
     <!-- RUTA WEB -->
     <script> const RUTA_WEB = '<?= $rutaWeb ?>';</script>
 </head>
@@ -74,8 +74,8 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
             </div>
 
             <!-- LOGO -->
-            <a href="<?php echo $rutaWeb ?>/index.php" class="absolute left-1/2 transform -translate-x-1/2">
-                <img src="<?= $rutaWeb ?>/img/globales/Logotipo_NordenReka.svg" alt="Logo Norden Réka" class="h-12">
+            <a href="<?php echo $rutaWeb ?>" class="absolute left-1/2 transform -translate-x-1/2">
+                <img src="<?= $rutaWeb ?>/img/globales/Logotipo_NorderReka.svg" alt="Logo Norden Réka" class="h-8">
             </a>
 
             <!-- ICONOS DE LA DERECHA -->
@@ -85,9 +85,9 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                 if (isset($_SESSION['usuario'])): ?>
                     <div class="relative group">
                         <span
-                            class="text-xs uppercase tracking-widest hidden md:flex cursor-pointer font-medium mr-2 items-center gap-2">
+                            class="text-xs uppercase tracking-widest hidden md:flex cursor-pointer font-medium items-center gap-2">
                             <i class="ph ph-user-circle text-2xl "></i>
-                            <?php echo htmlspecialchars($_SESSION['usuario']['nombre']) ?>
+                            <?php echo htmlspecialchars($_SESSION['usuario']['nombre']) ?? "Usuario" ?>
                         </span>
                         <div
                             class="hidden group-hover:block absolute right-0  w-48 bg-white shadow-lg rounded-lg py-2 z-50">
@@ -111,7 +111,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                     </div>
                 <?php else: ?>
                     <!--USUARIO NO REGISTRADO-->
-                    <span class="text-xs uppercase tracking-widest hidden md:block cursor-pointer font-medium mr-2 login"
+                    <span class="text-xs uppercase tracking-widest hidden md:block cursor-pointer font-medium login"
                         id="btn-login">Login</span>
                 <?php endif ?>
                 <i class="ph ph-magnifying-glass cursor-pointer hover:scale-110 transition-transform search"
@@ -144,8 +144,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                     <i class="ph ph-x text-2xl"></i>
                 </button>
             </div>
-            <!-- CONTENIDO DINÁMICO DEL CARRITO -->
-            <!-- CONTENEDOR DE ITEMS DEL CARRITO -->
+            <!-- CONTENIDO DEL CARRITO -->
             <div id="contenedor-items-carrito" class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2 custom-scrollbar">
 
                 <?php if (!empty($_SESSION['carrito']['productos'])): ?>
@@ -154,14 +153,14 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                         <div class="flex gap-4 group relative ">
                             <div class="w-20 bg-gray-50 overflow-hidden rounded-md">
                                 <img src="<?= $rutaWeb .'/'. htmlspecialchars($producto['imagen'] ?? 'ruta/por/defecto.jpg'); ?>"
-                                    alt="<?php echo htmlspecialchars($producto['nombre']); ?>"
+                                    alt="<?php echo htmlspecialchars($producto['nombre'])??''; ?>"
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1 flex flex-col justify-between py-1 pl-4">
                                 <div>
                                     <div class="flex justify-between items-start">
                                         <h4 class="text-xs font-bold uppercase tracking-widest text-fashion-black pr-4">
-                                            <?php echo htmlspecialchars($producto['nombre']); ?>
+                                            <?php echo htmlspecialchars($producto['nombre'])??''; ?>
                                         </h4>
                                         <button onclick="eliminarProductoCarrito(<?= $producto['id'] ?>)"
                                             class="text-gray-300 hover:text-red-500 transition-colors cursor-pointer">
@@ -174,7 +173,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                                             <i class="ph ph-minus text-[10px]"></i>
                                         </button>
                                         <span class="text-[10px] font-bold text-fashion-black">
-                                            <?php echo $_SESSION['carrito']['cantidad'][$indice]; ?>
+                                            <?php echo $_SESSION['carrito']['cantidad'][$indice]??''; ?>
                                         </span>
                                         <button id="sumar-cantidad" onclick="editarCantidad(<?= $indice ?>, 'sumar')"
                                             class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full hover:bg-fashion-black hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
@@ -185,11 +184,11 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                                 <p class="text-xs font-medium pt-2">
                                     <?php
                                     if($producto['descuento'] > 0):?>
-                                   <span class="line-through">  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2); ?> </span>
-                                   <span class="text-red-500 pl-2 font-bold">  <?php echo number_format($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice]; ?>€ </span>
+                                   <span class="line-through">  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2)??''; ?> </span>
+                                   <span class="text-red-500 pl-2 font-bold">  <?php echo number_format($producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100), 2) * $_SESSION['carrito']['cantidad'][$indice]??0; ?>€ </span>
 
                                       <?php else:?>
-                                      <span>  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2); ?>€ </span>
+                                      <span>  <?php echo number_format($producto['precio'] * $_SESSION['carrito']['cantidad'][$indice], 2)??0; ?>€ </span>
                                     <?php endif;?>
                                   
                                    
@@ -206,7 +205,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Subtotal</span>
                         <span id="subtotal-carrito"
-                            class="text-lg font-bold"><?php echo $_SESSION['carrito']['total']?? 0 ?></span>
+                            class="text-lg font-bold"><?php echo $_SESSION['carrito']['total']?? 0 ?>€</span>
                     </div>
                     <?php
                     $cart_empty = !isset($_SESSION['carrito']) || count($_SESSION['carrito']) == 0;

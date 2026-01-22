@@ -8,7 +8,7 @@
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form id="form-usuario" action="../../modelos/usuario/crear-usuario.php" method="POST" class="p-8"
+        <form id="form-usuario" action="<?= $rutaWeb ?>/modelos/usuario/crear-usuario.php" method="POST" class="p-8"
             autocomplete="off">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <input type="hidden" name="id" id="id-usuario">
@@ -98,8 +98,8 @@
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form id="formulario-producto" action="../../modelos/producto/crear-producto.php" method="POST" class="p-8"
-            enctype="multipart/form-data">
+        <form id="formulario-producto" action="<?= $rutaWeb ?>/modelos/producto/crear-producto.php" method="POST"
+            class="p-8" enctype="multipart/form-data">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <input type="hidden" name="id" id="id-producto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-8">
@@ -145,15 +145,16 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <label for="precio-producto"
-                                class="block text-xs uppercase tracking-widest font-bold text-gray-500">Precio
-                                (€)</label>
+                                class="block text-xs uppercase tracking-widest font-bold text-gray-500">
+                                Precio (€)
+                            </label>
                             <div
                                 class="flex items-center bg-gray-50 border border-gray-200 rounded-lg overflow-hidden focus-within:border-fashion-black transition-colors">
                                 <button type="button"
                                     class="p-2  text-gray-500 border-r border-gray-100 cursor-pointer">
                                     <i class="ph ph-minus text-md pl-2"></i>
                                 </button>
-                                <input type="number" id="precio-producto" name="precio" required step="0.50" min="0"
+                                <input type="number" id="precio-producto" name="precio" required step="0.01" min="0"
                                     value="0.00"
                                     class="w-full bg-transparent text-center tracking-wider border-none px-4 py-3 focus:ring-0 text-fashion-black font-bold appearance-none ">
                                 <button type="button" class="p-2  text-gray-500 cursor-pointer">
@@ -247,7 +248,8 @@
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form id="formulario-categoria" action="../modelos/categorias/crear-categoria.php" method="POST" class="p-8">
+        <form id="formulario-categoria" action="<?= $rutaWeb ?>/modelos/categorias/crear-categoria.php" method="POST"
+            class="p-8">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <input type="hidden" name="id" id="id-categoria">
             <div>
@@ -307,7 +309,7 @@
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form id="formulario-pedido" action="../../modelos/pedido/crear-pedido.php" method="POST" class="p-8">
+        <form id="formulario-pedido" action="<?= $rutaWeb ?>/modelos/pedido/crear-pedido.php" method="POST" class="p-8">
             <input type="hidden" name="id_pedido" id="id-formulario-pedido">
             <input type="hidden" name="ruta-actual" value="<?= $_SERVER['REQUEST_URI'] ?>">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

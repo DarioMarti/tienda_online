@@ -5,11 +5,14 @@ define('STRIPE_CLAVE_SECRETA', "sk_test_51SjaCeQ2gnFM99ey7KrTW10FjeWnWxs9PICQy9t
 define('STRIPE_CLAVE_PUBLICA', "pk_test_51SjaCeQ2gnFM99eyyW9LtaYHxFUMg3PPqUaj3xetyr31veB0Bvs6oVNiFarjrJEcDJWKrSWNZRnIvClPYGga8ncp00uPfDIvD3");
 
 // DOMINIO
-define('DOMINIO_URL', 'http://localhost/tienda-muebles/');
+define('DOMINIO_URL', 'https://norderreka.es/');
 
 
 //MONEDA
 define("MONEDA_STRIPE", 'eur');
+
+// WEBHOOK SECRET (Para validación de Stripe)
+define('STRIPE_WEBHOOK_SECRET', 'whsec_tMe9v0fxmjfuWvLHfpMgwsiNNI54gp2a');
 
 
 ?>

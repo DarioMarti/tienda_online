@@ -3,16 +3,17 @@
 header('Content-Type: application/json');
 session_start();
 try {
+
+    $id_producto = filter_input(INPUT_POST, 'id_producto', FILTER_VALIDATE_INT);
+
     //Comprobaciones
-    if (!isset($_POST['id_producto'])) {
+    if (!$id_producto) {
         echo json_encode([
             'estado' => false,
             'mensaje' => 'ID de producto no recibido'
         ]);
         exit;
     }
-
-    $id_producto = $_POST['id_producto'];
 
     if (!isset($_SESSION['carrito']['productos'], $_SESSION['carrito']['cantidad'])) {
         echo json_encode([
@@ -42,7 +43,11 @@ try {
         // Recalcular el total desde cero para mayor seguridad
         $subtotal = 0;
         foreach ($_SESSION['carrito']['productos'] as $index => $producto) {
-            $subtotal += $producto['precio'] * $_SESSION['carrito']['cantidad'][$index];
+            $precio_final = $producto['precio'];
+            if ($producto['descuento'] > 0) {
+                $precio_final = $producto['precio'] - ($producto['precio'] * $producto['descuento'] / 100);
+            }
+            $subtotal += $precio_final * $_SESSION['carrito']['cantidad'][$index];
         }
         $_SESSION['carrito']['total'] = $subtotal;
 

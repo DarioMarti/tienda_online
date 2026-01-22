@@ -8,10 +8,10 @@ session_start();
 require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoClientes();
 
-$id = $_POST['id'] ?? "";
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nombre = $_POST['nombre'] ?? "";
 $descripcion = $_POST['descripcion'] ?? "";
-$categoria_padre_id = $_POST['categoria_padre_id'] ?? null;
+$categoria_padre_id = filter_input(INPUT_POST, 'categoria_padre_id', FILTER_VALIDATE_INT);
 $rutaActual = $_POST['ruta-actual'] ?? "";
 $errores = [];
 
@@ -30,9 +30,23 @@ try {
     if (!$comprobarCategoria->fetch()) {
         $errores[] = "La categoria no existe";
     }
-    if ($categoria_padre_id === "") {
+    if ($categoria_padre_id === false || $categoria_padre_id === "") {
         $categoria_padre_id = null;
     }
+
+    //Comprobar que la categoria no tenga el mismo nombre que el padre
+    if (!empty($categoria_padre_id)) {
+        $stmt = $conn->prepare('SELECT nombre FROM categorias WHERE id = ?');
+        $stmt->execute([$categoria_padre_id]);
+        $padre = $stmt->fetch();
+        if ($padre) {
+            if (strtolower($padre['nombre']) == strtolower($nombre)) {
+                $errores[] = "La categoría no puede tener el mismo nombre que su categoría padre.";
+            }
+        }
+    }
+
+
 
     if (!empty($errores)) {
         $mensajeErrores = implode(" ", $errores);
@@ -41,7 +55,7 @@ try {
             'mensaje' => $mensajeErrores,
             'tipo' => 'categoria'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -53,7 +67,7 @@ try {
         'mensaje' => 'Categoria editada correctamente',
         'tipo' => 'categoria'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 
 
@@ -64,7 +78,7 @@ try {
         'mensaje' => "No se ha podido editar la categoria",
         'tipo' => 'categoria'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 }
 

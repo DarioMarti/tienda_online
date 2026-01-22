@@ -17,12 +17,12 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
         <p class='text-gray-600 text-lg mb-8'>Has cancelado el proceso de pago.</p>
 
         <div class='flex flex-col gap-4'>
-            <a href='checkout.php'
+            <a href='<?= $rutaWeb ?>/src/paginas/checkout.php'
                 class='w-full bg-fashion-black text-white py-4 text-xs hover:bg-fashion-accent transition-colors uppercase tracking-widest font-semibold rounded-lg shadow-md'>
                 Volver al Carrito
             </a>
-            <a href='index.php'
-                class='w-full bg-white text-fashion-black border border-fashion-black py-4 text-xs hover:bg-fashion-gray transition-colors uppercase tracking-widest font-semibold rounded-lg'>
+            <a href='<?= $rutaWeb ?>' class=' w-full bg-white text-fashion-black border border-fashion-black py-4 text-xs
+                hover:bg-fashion-gray transition-colors uppercase tracking-widest font-semibold rounded-lg'>
                 Volver a la Tienda
             </a>
         </div>

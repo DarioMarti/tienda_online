@@ -68,13 +68,13 @@ function abrirCerrarCarrito() {
 //Modificar cantidad en el carrito
 
 function editarCantidad(indice, accion) {
-    urlActual = window.location.href;
     fetch(RUTA_WEB + '/modelos/carrito/editar-cantidad-producto.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'indice=' + indice + '&accion=' + accion + '&url=' + urlActual
+        body: 'indice=' + indice + '&accion=' + accion
     }).then(() => {
         localStorage.setItem('recien agregado', true)
+        localStorage.setItem('carrito abierto', true)
         window.location.reload();
     });
 }

@@ -10,7 +10,7 @@ restringirAccesoClientes();
 
 $nombre = $_POST['nombre'] ?? "";
 $descripcion = $_POST['descripcion'] ?? "";
-$categoria_padre_id = $_POST['categoria_padre_id'] ?? null;
+$categoria_padre_id = filter_input(INPUT_POST, 'categoria_padre_id', FILTER_VALIDATE_INT);
 $rutaActual = $_POST['ruta-actual'] ?? "";
 $errores = [];
 
@@ -42,9 +42,10 @@ try {
 
         if (!$categoria_padre_nombre) {
             $errores[] = "La categoria padre no existe";
-        } else if ($categoria_padre_nombre['nombre'] == $nombre) {
+        } else if (strtolower($categoria_padre_nombre['nombre']) == strtolower($nombre)) {
             $errores[] = "La categoria y la categoria padre no pueden ser la misma";
         }
+
     }
 
 
@@ -55,13 +56,13 @@ try {
             'mensaje' => $mensajeErrores,
             'tipo' => 'categoria'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
 
     // Convertir cadena vacía a NULL para que SQL no falle
-    if ($categoria_padre_id === "") {
+    if ($categoria_padre_id === false || $categoria_padre_id === "") {
         $categoria_padre_id = null;
     }
 
@@ -74,7 +75,7 @@ try {
         'tipo' => 'categoria'
     ];
 
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 
 } catch (PDOException $err) {
@@ -83,7 +84,7 @@ try {
         'mensaje' => 'Error al crear la categoria',
         'tipo' => 'categoria'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 }
 

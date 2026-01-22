@@ -44,7 +44,7 @@ if (!empty($errores)) {
         'mensaje' => $mensajeErrores,
         'tipo' => 'usuario'
     ];
-    header('location:' . $urlActual);
+    header('Location: ' . $rutaWeb . (strpos($urlActual, 'registro-usuario.php') !== false ? '/src/paginas/registro-usuario.php' : '/src/paginas/panel-administrador.php'));
     exit();
 }
 
@@ -65,7 +65,7 @@ try {
             'mensaje' => 'Este email ya está registrado.',
             'tipo' => 'usuario'
         ];
-        header('location:' . $urlActual);
+        header('Location: ' . $rutaWeb . (strpos($urlActual, 'registro-usuario.php') !== false ? '/src/paginas/registro-usuario.php' : '/src/paginas/panel-administrador.php'));
         exit();
     }
 
@@ -80,23 +80,25 @@ try {
         'tipo' => 'registro'
     ];
 
-    $_SESSION['usuario'] = [
-        'id' => $conn->lastInsertId(),
-        'nombre' => $nombre,
-        'apellido' => $apellidos,
-        'email' => $email,
-        'rol' => $rol,
-        'activo' => $activo,
-    ];
+    if (!$_SESSION['usuario']) {
+        $_SESSION['usuario'] = [
+            'id' => $conn->lastInsertId(),
+            'nombre' => $nombre,
+            'apellido' => $apellidos,
+            'email' => $email,
+            'rol' => $rol,
+            'activo' => $activo,
+        ];
+    }
 
 
 
 
     // Redirección inteligente
-    if ($urlActual == "registro-usuario.php" || strpos($urlActual, 'registro-usuario.php') !== false) {
-        header('location:' . $rutaWeb . '/src/paginas/registro-exitoso.php');
+    if (strpos($urlActual, 'registro-usuario.php') !== false) {
+        header('Location: ' . $rutaWeb . '/src/paginas/registro-exitoso.php');
     } else {
-        header('location:' . (!empty($urlActual) ? $urlActual : $rutaWeb . '/src/paginas/panel-administrador.php'));
+        header('Location: ' . $rutaWeb . '/src/paginas/panel-administrador.php');
     }
 
     exit;
@@ -107,7 +109,7 @@ try {
         'mensaje' => 'Error al crear el usuario: ' . $error->getMessage(),
         'tipo' => 'registro'
     ];
-    header('location:' . $urlActual);
+    header('Location: ' . $rutaWeb . (strpos($urlActual, 'registro-usuario.php') !== false ? '/src/paginas/registro-usuario.php' : '/src/paginas/panel-administrador.php'));
     exit;
 }
 

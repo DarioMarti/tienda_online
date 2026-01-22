@@ -29,12 +29,12 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
         <?php endif; ?>
 
         <div class='flex flex-col gap-4'>
-            <a href='mis-pedidos.php'
+            <a href='<?= $rutaWeb ?>/src/paginas/mis-pedidos.php'
                 class='w-full bg-fashion-black text-white py-4 text-xs hover:bg-fashion-accent transition-colors uppercase tracking-widest font-semibold rounded-lg shadow-md'>
                 Ver Mis Pedidos
             </a>
-            <a href='index.php'
-                class='w-full bg-white text-fashion-black border border-fashion-black py-4 text-xs hover:bg-fashion-gray transition-colors uppercase tracking-widest font-semibold rounded-lg'>
+            <a href='<?= $rutaWeb ?>' class='w-full bg-white text-fashion-black border border-fashion-black py-4 text-xs
+                hover:bg-fashion-gray transition-colors uppercase tracking-widest font-semibold rounded-lg'>
                 Volver a la Tienda
             </a>
         </div>

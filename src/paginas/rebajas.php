@@ -25,7 +25,7 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
     class="flex flex-col justify-center items-center h-[300px] w-full overflow-hidden text-center text-white px-4 bg-fashion-black relative">
     <div class="absolute inset-0 opacity-40  bg-cover bg-center grayscale"></div>
     <div class="relative z-10">
-        <p class="uppercase tracking-[0.4em] text-[10px] mb-4 text-fashion-accent font-bold">Seasonal Sale</p>
+        <p class="uppercase tracking-[0.4em] text-[10px] mb-4 text-fashion-accent font-bold">Precios especiales 2026</p>
         <h2 class="editorial-font text-4xl md:text-6xl mb-6 italic">Rebajas</h2>
 
     </div>
@@ -41,31 +41,33 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                 <div>
                     <h3 class="editorial-font text-2xl mb-6 italic">Categorías</h3>
                     <ul class="space-y-4 text-sm tracking-wide font-light text-gray-900 pb-2">
-                        <?php foreach ($categorias as $categoria):
-                            $categoriaPadre = $categoria['id'] ?>
-                            <?php if ($categoria['categoria_padre_id'] == null): ?>
-                                <li>
-                                    <span onclick="filtrarCategoria('<?= $categoria['nombre'] ?>')"
-                                        class="flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer"
-                                        id="categoria-<?php echo $categoria['nombre']; ?>">
-                                        <i class="ph ph-arrow-right"></i>
-                                        <span><?= $categoria['nombre'] ?></span>
-                                    </span>
-                                    <ul>
-                                        <?php foreach ($categorias as $categoriaHija): ?>
-                                            <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id']): ?>
-                                                <li onclick="filtrarCategoria('<?= $categoriaHija['nombre'] ?>')"
-                                                    id="categoria-<?php echo $categoriaHija['nombre']; ?>"
-                                                    class="ml-10 text-2xs text-gray-400 py-1 flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer">
-                                                    <span><?= $categoriaHija['nombre'] ?></span>
-                                                </li>
-                                            <?php endif ?>
-                                        <?php endforeach ?>
-                                    </ul>
-                                </li>
-                                <?php
-                            endif; ?>
-                        <?php endforeach; ?>
+                        <?php if (isset($categorias)): ?>
+                            <?php foreach ($categorias as $categoria):
+                                $categoriaPadre = $categoria['id'] ?>
+                                <?php if ($categoria['categoria_padre_id'] == null): ?>
+                                    <li>
+                                        <span onclick="filtrarCategoria('<?= $categoria['nombre'] ?>')"
+                                            class="flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer"
+                                            id="categoria-<?php echo $categoria['nombre']; ?>">
+                                            <i class="ph ph-arrow-right"></i>
+                                            <span><?= $categoria['nombre'] ?></span>
+                                        </span>
+                                        <ul>
+                                            <?php foreach ($categorias as $categoriaHija): ?>
+                                                <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id']): ?>
+                                                    <li onclick="filtrarCategoria('<?= $categoriaHija['nombre'] ?>')"
+                                                        id="categoria-<?php echo $categoriaHija['nombre']; ?>"
+                                                        class="ml-10 text-2xs text-gray-400 py-1 flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer">
+                                                        <span><?= $categoriaHija['nombre'] ?></span>
+                                                    </li>
+                                                <?php endif ?>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    </li>
+                                    <?php
+                                endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <!-- Precio -->
@@ -111,62 +113,66 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
             </div>
             <!-- CATÁLOGO DE PRODUCTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
-                <?php foreach ($productos as $producto): ?>
-                    <div class="group cursor-pointer">
-                        <div class="hidden id-producto-catalogo" name="id-producto-catalogo">
-                            <?php echo $producto['id']; ?>
-                        </div>
-                        <a href="#" class="block">
-                            <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
-                                <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
-                                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                    alt="<?= $producto['descripcion'] ?>">
-
-                                <!--ETIQUETA DESCUENTO -->
-                                <?php if ($producto['descuento'] > 0): ?>
-                                    <div class="absolute top-0 left-0 p-3 flex flex-col gap-2 items-start">
-                                        <span
-                                            class="bg-red-600 text-white text-xs font-bold px-3 py-1 text-center uppercase tracking-widest">-<?php echo intval($producto['descuento']); ?>%</span>
-                                    </div>
-                                <?php endif ?>
-                                <div
-                                    class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 flex flex-col justify-end">
-
-                                    <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
-                                        class=" cursor-pointer w-full bg-black text-white hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
-                                        Añadir a la cesta
-                                    </button>
-                                </div>
+                <?php if (count($productos) > 0): ?>
+                    <?php foreach ($productos as $producto): ?>
+                        <div class="group cursor-pointer">
+                            <div class="hidden id-producto-catalogo" name="id-producto-catalogo">
+                                <?php echo $producto['id']; ?>
                             </div>
-                        </a>
-                        <div>
-                            <a href="#">
-                                <h3 class="editorial-font text-xl group-hover:text-fashion-accent transition-colors">
-                                    <?php echo $producto['nombre'] ?>
-                                </h3>
-                            </a>
-                            <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1 mb-2">
-                                <?php echo $producto['descripcion'] ?>
-                            </p>
-                            <?php if ($producto['descuento'] > 0): ?>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-md text-gray-400 line-through">
-                                        <?php echo $producto['precio'] ?>€
-                                    </span>
-                                    <p class="font-medium text-md text-red-600">
-                                        <?php
-                                        $precioFinal = $producto['precio'] - ($producto['descuento'] * $producto['precio']) / 100;
-                                        echo $precioFinal ?>€
-                                    </p>
+                            <a href="#" class="block">
+                                <div class="relative overflow-hidden mb-4 bg-gray-50 aspect-[1/1]">
+                                    <img src="<?= $rutaWeb . '/' . $producto['imagen'] ?>"
+                                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        alt="<?= $producto['descripcion'] ?>">
+
+                                    <!--ETIQUETA DESCUENTO -->
+                                    <?php if ($producto['descuento'] > 0): ?>
+                                        <div class="absolute top-0 left-0 p-3 flex flex-col gap-2 items-start">
+                                            <span
+                                                class="bg-red-600 text-white text-xs font-bold px-3 py-1 text-center uppercase tracking-widest">-<?php echo intval($producto['descuento']); ?>%</span>
+                                        </div>
+                                    <?php endif ?>
+                                    <div
+                                        class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 flex flex-col justify-end">
+
+                                        <button onclick="agregarCarritoAPI(<?php echo $producto['id']; ?>)"
+                                            class=" cursor-pointer w-full bg-black text-white hover:bg-fashion-accent hover:text-white text-[10px] font-bold uppercase tracking-widest py-3 transition-colors rounded-sm shadow-xl">
+                                            Añadir a la cesta
+                                        </button>
+                                    </div>
                                 </div>
-                            <?php else: ?>
-                                <p class="text-md text-gray-400">
-                                    <?php echo $producto['precio'] ?>€
+                            </a>
+                            <div>
+                                <a href="#">
+                                    <h3 class="editorial-font text-xl group-hover:text-fashion-accent transition-colors">
+                                        <?php echo $producto['nombre'] ?>
+                                    </h3>
+                                </a>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1 mb-2">
+                                    <?php echo $producto['descripcion'] ?>
                                 </p>
-                            <?php endif ?>
+                                <?php if ($producto['descuento'] > 0): ?>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-md text-gray-400 line-through">
+                                            <?php echo $producto['precio'] ?>€
+                                        </span>
+                                        <p class="font-medium text-md text-red-600">
+                                            <?php
+                                            $precioFinal = $producto['precio'] - ($producto['descuento'] * $producto['precio']) / 100;
+                                            echo $precioFinal ?>€
+                                        </p>
+                                    </div>
+                                <?php else: ?>
+                                    <p class="text-md text-gray-400">
+                                        <?php echo $producto['precio'] ?>€
+                                    </p>
+                                <?php endif ?>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach ?>
+                    <?php endforeach ?>
+                <?php else: ?>
+                    <h2 class="text-2xl font-bold">No hay productos disponibles</h2>
+                <?php endif ?>
             </div>
         </section>
 

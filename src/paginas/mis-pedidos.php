@@ -38,7 +38,7 @@ foreach ($pedidos as $pedido) {
                     <h2 class="font-editorial text-3xl  text-fashion-black mb-4">Aún no has realizado pedidos</h2>
                     <p class="text-gray-500 text-sm uppercase tracking-widest mb-12">Te invitamos a explorar nuestra última
                         colección</p>
-                    <a href="index.php" class="bton !px-16 transition-all duration-300">
+                    <a href="<?php echo $rutaWeb; ?>" class="bton !px-16 transition-all duration-300">
                         Ir a la Tienda
                     </a>
                 </div>
@@ -213,7 +213,6 @@ foreach ($pedidos as $pedido) {
                             </tr>
                         </thead>
                         <tbody id="det-lista-items" class="divide-y divide-gray-100">
-                            <!-- Items dinámicos -->
                         </tbody>
                         <tfoot>
                             <tr>

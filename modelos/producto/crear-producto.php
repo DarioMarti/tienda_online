@@ -56,7 +56,7 @@ try {
             'mensaje' => $mensajeErrores,
             'tipo' => 'producto'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -71,7 +71,7 @@ try {
         'mensaje' => "Producto subido con exito",
         'tipo' => 'producto'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 
 } catch (PDOException $err) {
@@ -80,7 +80,7 @@ try {
         'mensaje' => "Hubo un error al subir el producto: ",
         'tipo' => 'producto'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 }
 

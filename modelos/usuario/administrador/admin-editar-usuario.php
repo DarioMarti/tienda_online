@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario'])) {
     die("Error: Se debe de estar logeado");
 }
 
-$id = $_POST['id'] ?? "";
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nombre = trim($_POST['nombre'] ?? "");
 $apellidos = trim($_POST['apellidos'] ?? "");
 $contrasena = $_POST['contrasena'] ?? "";
@@ -30,7 +30,7 @@ if ($_SESSION['usuario']['id'] == $id && $rol != 'admin') {
         'mensaje' => 'No se puede cambiar el rol de tu propio usuario',
         'tipo' => 'usuario'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit;
 }
 
@@ -55,7 +55,7 @@ if (!empty($errores)) {
         'mensaje' => $mensajeErrores,
         'tipo' => 'usuario'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 }
 
@@ -74,7 +74,7 @@ try {
             'mensaje' => 'Usuario no encontrado',
             'tipo' => 'usuario'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -92,7 +92,7 @@ try {
         'mensaje' => 'Usuario modificado con exito',
         'tipo' => 'usuario'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit;
 
 } catch (PDOException $error) {
@@ -101,7 +101,7 @@ try {
         'mensaje' => 'Error al modificar el usuario',
         'tipo' => 'usuario'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit;
 }
 

@@ -16,11 +16,4 @@ function mostrarSeccion(seccion) {
     sessionStorage.setItem('seccionActual', seccion);
 }
 
-function desactivarCuenta() {
 
-    fetch(RUTA_WEB + '/modelos/sesion/cerrar-sesion-usuario.php', {
-        method: 'POST',
-    })
-
-
-}

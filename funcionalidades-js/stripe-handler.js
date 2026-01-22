@@ -3,21 +3,17 @@ const stripe = Stripe('pk_test_51SjaCeQ2gnFM99eyyW9LtaYHxFUMg3PPqUaj3xetyr31veB0
 document.getElementById('realizar-pago-btn').addEventListener('click', async (event) => {
     event.preventDefault();
 
-    const form = document.getElementById('checkout-form');
 
     try {
-        //Se crea el pedido con los datos del formulario
+
+        const form = document.getElementById('checkout-form');
         const formData = new FormData(form);
 
-        const responsePedido = await fetch(RUTA_WEB + '/modelos/pedido/crear-pedido.php', {
+        // Inicia la sesión de Stripe enviando los datos del formulario
+        const respuestaStripe = await fetch(RUTA_WEB + '/modelos/confirmar-pago.php', {
             method: 'POST',
             body: formData
         });
-
-        if (!responsePedido.ok) throw new Error('Error de conexión con el servidor');
-
-        //Se inicia la sesión de Stripe
-        const respuestaStripe = await fetch(RUTA_WEB + '/modelos/confirmar-pago.php', { method: 'POST' });
         const session = await respuestaStripe.json();
 
         if (session.error) throw new Error(session.error);

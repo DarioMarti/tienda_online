@@ -121,7 +121,7 @@ foreach ($usuarios as $usuario) {
                             <h2 class="font-editorial text-2xl italic text-fashion-black">Mis Pedidos</h2>
                             <span class="text-xs uppercase tracking-widest text-gray-500 font-semibold">
                                 <i class="ph ph-package mr-2"></i>
-                                <?php echo count($pedidosUsuario) ?> Pedidos
+                                <?php echo count($pedidosUsuario) ?? 0 ?> Pedidos
                             </span>
                         </div>
                         <div class="overflow-x-auto">
@@ -149,16 +149,16 @@ foreach ($usuarios as $usuario) {
                                                 <td class="px-4 py-3 font-bold text-fashion-black">#<?php echo $pedido['id'] ?>
                                                 </td>
                                                 <td class="px-4 py-3 text-xs text-gray-500">
-                                                    <?php echo $pedido['fecha'] ?>
+                                                    <?php echo $pedido['fecha'] ?? "-" ?>
                                                 </td>
                                                 <td class="px-4 py-3">
                                                     <span class="px-2 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider 
                                                     bg-green-100 text-green-700">
-                                                        <?php echo $pedido['estado'] ?>
+                                                        <?php echo $pedido['estado'] ?? "-" ?>
                                                     </span>
                                                 </td>
                                                 <td class="px-4 py-3 text-right font-bold text-fashion-black">
-                                                    <?php echo $pedido['coste_total'] ?>€
+                                                    <?php echo $pedido['coste_total'] ?? "" ?>€
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -232,7 +232,7 @@ foreach ($usuarios as $usuario) {
                         <div class="flex justify-between items-center">
                             <span class="text-xs uppercase tracking-widest text-gray-500">Miembro Desde</span>
                             <span class="text-sm text-gray-600">
-                                <?php echo $usuario['fecha_creacion'] ?>
+                                <?php echo $usuario['fecha_creacion'] ?? "" ?>
                             </span>
                         </div>
                     </div>
@@ -336,7 +336,7 @@ foreach ($usuarios as $usuario) {
                 <i class="ph ph-x text-2xl"></i>
             </button>
         </div>
-        <form class="p-8" action="../../modelos/usuario/cambiar-contrasena.php" method="POST">
+        <form class="p-8" action="<?php echo $rutaWeb ?>/modelos/usuario/cambiar-contrasena.php" method="POST">
             <input type="hidden" name="ruta-actual" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <div class="space-y-4">
                 <!-- CONTRASEÑA ACTUAL -->

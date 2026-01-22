@@ -8,7 +8,7 @@ session_start();
 require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoClientes();
 
-$id_pedido = $_POST['id_pedido'] ?? '';
+$id_pedido = filter_input(INPUT_POST, 'id_pedido', FILTER_VALIDATE_INT);
 $nombre_destinatario = $_POST['nombre_destinatario'] ?? '';
 $coste_total = floatval($_POST['coste_total']) ?? 0;
 $email = $_POST['usuario_email'] ?? '';
@@ -34,7 +34,7 @@ try {
             'mensaje' => 'Email introducido no valido',
             'tipo' => 'pedido'
         ];
-        header('Location: ' . $rutaActual);
+        header('Location: ' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -64,7 +64,7 @@ try {
                 'mensaje' => 'No hay stock suficiente para el producto ID: ' . $productos[$i] . '. Disponible: ' . $totalDisponible,
                 'tipo' => 'pedido'
             ];
-            header('Location: ' . $rutaActual);
+            header('Location: ' . $rutaWeb . '/src/paginas/panel-administrador.php');
             exit();
         }
     }
@@ -108,7 +108,7 @@ try {
         'mensaje' => 'Pedido editado correctamente',
         'tipo' => 'pedido'
     ];
-    header('Location: ' . $rutaActual);
+    header('Location: ' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 
 
@@ -118,7 +118,7 @@ try {
         'mensaje' => 'Error al editar el pedido',
         'tipo' => 'pedido'
     ];
-    header('Location: ' . $rutaActual);
+    header('Location: ' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit();
 }
 ?>

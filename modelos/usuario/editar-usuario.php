@@ -38,7 +38,7 @@ try {
         'fecha_creacion' => $_SESSION['usuario']['fecha_creacion'],
         'activo' => $_SESSION['usuario']['activo']
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 
 } catch (PDOException $error) {
@@ -47,7 +47,7 @@ try {
         'mensaje' => 'Error al modificar el usuario',
         'tipo' => 'usuario'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/perfil-usuario.php');
     exit;
 }
 

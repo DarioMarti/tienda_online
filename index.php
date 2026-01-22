@@ -16,7 +16,7 @@ $categorias = mostrarCategorias();
 
 $filtroBusqueda = $_GET['busqueda'] ?? '';
 $filtroCategoria = $_GET['categoria'] ?? '';
-$filtroPrecio = $_GET['precio'] ?? '';
+$filtroPrecio = $_GET['precio'] ?? null;
 $filtroOrden = $_GET['orden'] ?? '';
 $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $filtroPrecio);
 
@@ -26,10 +26,9 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
     class="flex flex-col justify-center items-center h-[60vh] w-full overflow-hidden text-center text-white px-4 bg-gradient-to-b from-black/40 to-black/20"
     style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('<?= $heroImage ?>') center top / cover no-repeat;">
 
-    <p class="font-family-sans uppercase tracking-[0.3em] text-xs mb-4 ">Fall Winter 2025</p>
-    <h2 class="font-family-sans text-5xl md:text-7xl mb-6 italic">
-        La Colección
-    </h2>
+    <p class="font-family-sans uppercase tracking-[0.3em] text-xs mb-4 ">Descubre la nueva colección Kullen</p>
+    <h1 class="font-family-sans text-5xl md:text-7xl mb-6 font-bold">
+        Haz de tu casa un hogar </h1>
 
 </section>
 
@@ -44,31 +43,33 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                 <div>
                     <h3 class="editorial-font text-2xl mb-6 italic">Categorías</h3>
                     <ul class="space-y-4 text-sm tracking-wide font-light text-gray-900 pb-2">
-                        <?php foreach ($categorias as $categoria):
-                            $categoriaPadre = $categoria['id'] ?>
-                            <?php if ($categoria['categoria_padre_id'] == null && $categoria['activa'] == 1): ?>
-                                <li>
-                                    <span onclick="filtrarCategoria('<?= $categoria['nombre'] ?>')"
-                                        class="flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer"
-                                        id="categoria-<?php echo $categoria['nombre']; ?>">
-                                        <i class="ph ph-arrow-right"></i>
-                                        <span><?= $categoria['nombre'] ?></span>
-                                    </span>
-                                    <ul>
-                                        <?php foreach ($categorias as $categoriaHija): ?>
-                                            <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id'] && $categoriaHija['activa'] == 1): ?>
-                                                <li onclick="filtrarCategoria('<?= $categoriaHija['nombre'] ?>')"
-                                                    id="categoria-<?php echo $categoriaHija['nombre']; ?>"
-                                                    class="ml-10 text-2xs text-gray-400 py-1 flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer">
-                                                    <span><?= $categoriaHija['nombre'] ?></span>
-                                                </li>
-                                            <?php endif ?>
-                                        <?php endforeach ?>
-                                    </ul>
-                                </li>
-                                <?php
-                            endif; ?>
-                        <?php endforeach; ?>
+                        <?php if (isset($categorias)): ?>
+                            <?php foreach ($categorias as $categoria):
+                                $categoriaPadre = $categoria['id'] ?>
+                                <?php if ($categoria['categoria_padre_id'] == null && $categoria['activa'] == 1): ?>
+                                    <li>
+                                        <span onclick="filtrarCategoria('<?= $categoria['nombre'] ?>')"
+                                            class="flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer"
+                                            id="categoria-<?php echo $categoria['nombre']; ?>">
+                                            <i class="ph ph-arrow-right"></i>
+                                            <span><?= $categoria['nombre'] ?></span>
+                                        </span>
+                                        <ul>
+                                            <?php foreach ($categorias as $categoriaHija): ?>
+                                                <?php if ($categoriaHija['categoria_padre_id'] == $categoria['id'] && $categoriaHija['activa'] == 1): ?>
+                                                    <li onclick="filtrarCategoria('<?= $categoriaHija['nombre'] ?>')"
+                                                        id="categoria-<?php echo $categoriaHija['nombre']; ?>"
+                                                        class="ml-10 text-2xs text-gray-400 py-1 flex items-center gap-2 hover:text-fashion-accent transition-colors cursor-pointer">
+                                                        <span><?= $categoriaHija['nombre'] ?></span>
+                                                    </li>
+                                                <?php endif ?>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    </li>
+                                    <?php
+                                endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <!-- Precio -->
@@ -76,10 +77,11 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                     <div class="flex justify-between items-center mb-3">
                         <h4 class="uppercase text-xs tracking-widest font-semibold text-gray-400">Precio</h4>
                         <span id="valor-precio-actual" class="text-xs font-bold text-fashion-black">
-                            200€
+                            <?php echo isset($filtroPrecio) ? $filtroPrecio : '200'; ?>€
                         </span>
                     </div>
-                    <input type="range" id="filtro-precio-deslizador" min="0" max="2000" step="10" value="200"
+                    <input type="range" id="filtro-precio-deslizador" min="0" max="2000" step="10"
+                        value="<?php echo isset($filtroPrecio) ? $filtroPrecio : '200'; ?>"
                         class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-fashion-black">
                     <div class="flex justify-between text-[10px] mt-2 text-gray-400 uppercase tracking-tighter">
                         <span>0€</span>

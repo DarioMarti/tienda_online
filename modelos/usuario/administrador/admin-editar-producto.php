@@ -8,7 +8,7 @@ session_start();
 require_once $rutaRaiz . '/config/seguridad.php';
 restringirAccesoClientes();
 
-$id_producto = $_POST['id'];
+$id_producto = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $nombre = $_POST['nombre'] ?? '';
 $precio = isset($_POST['precio']) ? (float) $_POST['precio'] : 0;
 $categoria = $_POST['categoria'] ?? '';
@@ -69,7 +69,7 @@ try {
             'mensaje' => $mensajeErrores,
             'tipo' => 'producto'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -87,7 +87,7 @@ try {
             'mensaje' => 'Producto no encontrado',
             'tipo' => 'producto'
         ];
-        header('location:' . $rutaActual);
+        header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
         exit();
     }
 
@@ -104,7 +104,7 @@ try {
         'mensaje' => 'Producto modificado con exito',
         'tipo' => 'producto'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit;
 
 } catch (PDOException $err) {
@@ -113,7 +113,7 @@ try {
         'mensaje' => 'Error al modificar el producto',
         'tipo' => 'producto'
     ];
-    header('location:' . $rutaActual);
+    header('location:' . $rutaWeb . '/src/paginas/panel-administrador.php');
     exit;
 }
 

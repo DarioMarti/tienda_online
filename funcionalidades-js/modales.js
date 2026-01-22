@@ -98,7 +98,7 @@ function abrirCerrarModalCrearUsuario(accion, rolUsuario = "", nombre = "", apel
     }
 
     if (accion == 'crear') {
-        formUsuario.action = '../../modelos/usuario/crear-usuario.php';
+        formUsuario.action = RUTA_WEB + '/modelos/usuario/crear-usuario.php';
 
         tituloModalUsuario.textContent = 'Nuevo Usuario';
         // Limpiar campos
@@ -125,7 +125,7 @@ function abrirCerrarModalCrearUsuario(accion, rolUsuario = "", nombre = "", apel
         }
 
     } else if (accion == 'editar') {
-        formUsuario.action = '../../modelos/usuario/administrador/admin-editar-usuario.php';
+        formUsuario.action = RUTA_WEB + '/modelos/usuario/administrador/admin-editar-usuario.php';
 
         tituloModalUsuario.textContent = 'Editar Usuario';
 
@@ -181,7 +181,7 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
     });
 
     if (accion == 'crear') {
-        formProducto.action = '../../modelos/producto/crear-producto.php';
+        formProducto.action = RUTA_WEB + '/modelos/producto/crear-producto.php';
         tituloModalProducto.textContent = 'Nuevo Producto';
         inputId.value = '';
 
@@ -198,7 +198,7 @@ function abrirCerrarModalCrearProducto(accion, nombre = "", descripcion = "", pr
         placeholder.classList.add('block');
 
     } else if (accion == 'editar') {
-        formProducto.action = '../../modelos/usuario/administrador/admin-editar-producto.php';
+        formProducto.action = RUTA_WEB + '/modelos/usuario/administrador/admin-editar-producto.php';
         tituloModalProducto.textContent = 'Editar Producto';
         inputId.value = id;
 
@@ -233,7 +233,7 @@ function abrirCerrarModalCrearCategoria(accion, nombre = "", descripcion = "", c
     }
 
     if (accion == 'crear') {
-        formCategoria.action = '../../modelos/categoria/crear-categoria.php';
+        formCategoria.action = RUTA_WEB + '/modelos/categoria/crear-categoria.php';
         tituloModalCategoria.textContent = 'Nueva Categoria';
         inputId.value = '';
 
@@ -242,7 +242,7 @@ function abrirCerrarModalCrearCategoria(accion, nombre = "", descripcion = "", c
         document.getElementById('id-padre-categoria').value = '';
 
     } else if (accion == 'editar') {
-        formCategoria.action = '../../modelos/usuario/administrador/admin-editar-categoria.php';
+        formCategoria.action = RUTA_WEB + '/modelos/usuario/administrador/admin-editar-categoria.php';
         tituloModalCategoria.textContent = 'Editar Categoria';
         inputId.value = id;
 
@@ -356,9 +356,10 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
                 });
                 celdaProducto.appendChild(selectProducto);
 
-                celdaInputStock.value = 1;
-                celdaPrecio.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
-                celdaPrecioTotal.textContent = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio);
+                // Establecer cantidad: si es un producto existente usa su cantidad, sino usa 1
+                if (!producto || !producto.cantidad) {
+                    celdaInputStock.value = 1;
+                }
 
                 // Actualizar el precio total
                 const actualizarSubtotal = () => {
@@ -370,11 +371,17 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
                     celdaPrecioTotal.textContent = subtotal.toFixed(2) + ' €';
                 };
 
-                selectProducto.addEventListener('change', actualizarSubtotal);
+                // Cuando se cambia el producto, resetear cantidad a 1
+                selectProducto.addEventListener('change', () => {
+                    celdaInputStock.value = 1;
+                    actualizarSubtotal();
+                });
                 celdaInputStock.addEventListener('change', actualizarSubtotal);
                 selectProducto.addEventListener('change', actualizarPrecio);
                 celdaInputStock.addEventListener('change', actualizarPrecio);
 
+                // Calcular subtotal inicial
+                actualizarSubtotal();
                 actualizarPrecio();
 
                 //Eliminar la fila del producto
@@ -387,8 +394,14 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
                     celdaInputStock.disabled = true;
                     icono.style.display = 'none';
                 }
+
+
+
             })
             .catch(error => console.error('Error al cargar productos:', error));
+
+
+
 
 
     }
@@ -408,7 +421,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
     }
 
     if (accion == 'crear') {
-        formPedido.action = '../../modelos/pedido/crear-pedido.php';
+        formPedido.action = RUTA_WEB + '/modelos/pedido/crear-pedido.php';
         tituloModalPedido.textContent = 'Nuevo Pedido';
         inputId.value = '';
 
@@ -421,7 +434,7 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
         document.getElementById('estado-pedido').value = 'pendiente';
 
     } else if (accion == 'editar') {
-        formPedido.action = '../../modelos/usuario/administrador/admin-editar-pedido.php';
+        formPedido.action = RUTA_WEB + '/modelos/usuario/administrador/admin-editar-pedido.php';
         tituloModalPedido.textContent = 'Editar Pedido';
         inputId.value = id;
 
@@ -442,12 +455,12 @@ function abrirCerrarModalCrearPedido(boton = null, accion, rolUsuario = "", emai
 
         //restriccion si se es empleado
         if (rolUsuario == 'empleado') {
-            document.getElementById('email-usuario-pedido').disabled = true;
-            document.getElementById('nombre-destinatario-pedido').disabled = true;
-            document.getElementById('direccion-envio-pedido').disabled = true;
-            document.getElementById('ciudad-pedido').disabled = true;
-            document.getElementById('provincia-pedido').disabled = true;
-
+            document.getElementById('email-usuario-pedido').readOnly = true;
+            document.getElementById('nombre-destinatario-pedido').readOnly = true;
+            document.getElementById('direccion-envio-pedido').readOnly = true;
+            document.getElementById('ciudad-pedido').readOnly = true;
+            document.getElementById('provincia-pedido').readOnly = true;
+            newBtn.style.display = 'none';
         }
     }
 

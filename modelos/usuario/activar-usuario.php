@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . '/../../config/ruta.php';
 $rutaRaiz = ruta_raiz();
-$rutaWeb = ruta_web();
 
 require_once $rutaRaiz . '/config/seguridad.php';
 restringirSoloAdmin();
@@ -11,13 +10,12 @@ header('Content-Type: application/json');
 
 try {
 
-    if (!isset($_POST['id_usuario'])) {
+    $id_usuario = filter_input(INPUT_POST, 'id_usuario', FILTER_VALIDATE_INT);
+
+    if (!isset($id_usuario)) {
         echo json_encode(['exito' => false, 'mensaje' => 'No se recibió el ID']);
         exit;
     }
-
-    $id_usuario = $_POST['id_usuario'];
-
     $conn = conectar();
 
     $sentencia = $conn->prepare('UPDATE usuarios set activo = 1 WHERE id = ?');

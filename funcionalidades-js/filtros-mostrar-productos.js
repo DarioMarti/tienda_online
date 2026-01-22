@@ -36,8 +36,7 @@ inputBusqueda.addEventListener('keypress', (boton) => {
 function filtrarCategoria(categoria) {
     parametros.set('categoria', categoria);
     parametros.delete('busqueda');
-    window.location.href = categoria ? window.location.pathname + `?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
-
+    window.location.href = categoria ? `${RUTA_WEB}/index.php?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
 }
 
 
@@ -57,10 +56,8 @@ if (deslizadorPrecio) {
     })
 
     document.getElementById('filtrar-precio-btn').addEventListener('click', function () {
-
         parametros.set('precio', valor);
-        window.location.href = valor ? window.location.pathname + `?${parametros.toString()}` : 'index.php';
-
+        window.location.href = valor ? `${RUTA_WEB}/index.php?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
     })
 }
 
@@ -94,7 +91,7 @@ if (barraOrden) {
         }
 
         parametros.set('orden', orden);
-        window.location.href = orden ? window.location.pathname + `?${parametros.toString()}` : 'index.php';
+        window.location.href = orden ? `${RUTA_WEB}/index.php?${parametros.toString()}` : `${RUTA_WEB}/index.php`;
     })
 }
 
@@ -108,6 +105,6 @@ if (btnLimpiarFiltros) {
         parametros.delete('categoria');
         parametros.delete('precio');
         parametros.delete('orden');
-        window.location.href = window.location.pathname + `?${parametros.toString()}`;
+        window.location.href = `${RUTA_WEB}/index.php`;
     })
 }

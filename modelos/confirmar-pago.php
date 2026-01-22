@@ -21,7 +21,7 @@ try {
 
     $productosCarrito = $_SESSION['carrito']['productos'];
 
-    // PREPARA LOS ITEMS PARA STRIPE
+    // Prepara el producto para stripe
     $items = [];
     foreach ($productosCarrito as $indice => $productoCarrito) {
 
@@ -43,13 +43,44 @@ try {
     }
 
 
+    // Obtener datos del envío desde el formulario del checkout
+    $nombre_destinatario = filter_input(INPUT_POST, 'nombre_destinatario');
+    $direccion = filter_input(INPUT_POST, 'direccion_envio');
+    $ciudad = filter_input(INPUT_POST, 'ciudad');
+    $provincia = filter_input(INPUT_POST, 'provincia');
+    $total_con_envio = filter_input(INPUT_POST, 'coste_total');
+
+    // Preparar lista simplificada de productos
+    $resumen_productos = [];
+    foreach ($_SESSION['carrito']['productos'] as $indice => $productoCarrito) {
+        $precioFinal = $productoCarrito['precio'];
+        if ($productoCarrito['descuento'] > 0) {
+            $precioFinal = $productoCarrito['precio'] - ($productoCarrito['precio'] * $productoCarrito['descuento'] / 100);
+        }
+
+        $resumen_productos[] = [
+            'id' => $productoCarrito['id'],
+            'cantidad' => $_SESSION['carrito']['cantidad'][$indice],
+            'precio' => $precioFinal
+        ];
+    }
+
     $YOUR_DOMAIN = DOMINIO_URL;
     $checkout_session = \Stripe\Checkout\Session::create([
         'payment_method_types' => ['card'],
         'line_items' => $items,
         'mode' => 'payment',
-        'success_url' => $YOUR_DOMAIN . $rutaWeb . '/src/paginas/pago-exitoso.php',
-        'cancel_url' => $YOUR_DOMAIN . $rutaWeb . '/src/paginas/pago-cancelado.php',
+        'success_url' => $YOUR_DOMAIN . '/src/paginas/pago-exitoso.php',
+        'cancel_url' => $YOUR_DOMAIN . '/src/paginas/pago-cancelado.php',
+        'metadata' => [
+            'usuario_id' => $usuario_id,
+            'nombre_destinatario' => $nombre_destinatario,
+            'direccion_envio' => $direccion,
+            'ciudad' => $ciudad,
+            'provincia' => $provincia,
+            'productos_json' => json_encode($resumen_productos),
+            'total_pedido' => $total_con_envio
+        ]
     ]);
 
     echo json_encode(['id' => $checkout_session->id]);

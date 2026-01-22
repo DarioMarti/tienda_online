@@ -202,7 +202,7 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
                 propia elegancia."
             </h2>
             <div class="flex items-center justify-center gap-6 pt-10">
-                <a href="index.php" class="bton btn-primary !px-12 ">
+                <a href="<?php echo $rutaWeb ?>" class="bton btn-primary !px-12 ">
                     Descubrir Norden Réka
                 </a>
             </div>
