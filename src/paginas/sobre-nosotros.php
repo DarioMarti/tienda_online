@@ -53,7 +53,7 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
             </div>
 
             <!--TEXTO FLOTANTE -->
-            <div class="col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
+            <div class="hidden lg:block col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
                 <div class="relative w-full aspect-[3/4] overflow-hidden rounded-sm group shadow-2xl">
                     <img src="<?= $rutaWeb ?>/img/sobre-nosotros/filosofia-muebles.png" alt="Norden Réka detalles"
                         class="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110">

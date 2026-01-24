@@ -4,6 +4,7 @@ const menuLateralLogin = document.getElementById('barra-lateral-login');
 const iconoCarrito = document.getElementById('icono-carrito');
 const barraLateralCarrito = document.getElementById('barra-lateral-carrito');
 const botonCerrarCarrito = document.getElementById('cerrar-carrito');
+const capaSuperpuesta = document.getElementById('capa-superpuesta');
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -36,10 +37,12 @@ if (botonCerrarCarrito) { botonCerrarCarrito.addEventListener('click', abrirCerr
 function cerrarLogin() {
     menuLateralLogin.classList.remove('barra-lateral-abierto')
     menuLateralLogin.classList.add('barra-lateral-cerrado')
+    capaSuperpuesta.classList.add('hidden')
 }
 function cerrarCarrito() {
     barraLateralCarrito.classList.remove('barra-lateral-abierto')
     barraLateralCarrito.classList.add('barra-lateral-cerrado')
+    capaSuperpuesta.classList.add('hidden')
 }
 
 
@@ -50,6 +53,7 @@ function abrirCerrarLogin() {
         cerrarCarrito()
         menuLateralLogin.classList.remove('barra-lateral-cerrado')
         menuLateralLogin.classList.add('barra-lateral-abierto')
+        capaSuperpuesta.classList.remove('hidden')
     }
 }
 
@@ -60,6 +64,7 @@ function abrirCerrarCarrito() {
         cerrarLogin()
         barraLateralCarrito.classList.remove('barra-lateral-cerrado')
         barraLateralCarrito.classList.add('barra-lateral-abierto')
+        capaSuperpuesta.classList.remove('hidden')
     }
 }
 
@@ -76,5 +81,69 @@ function editarCantidad(indice, accion) {
         localStorage.setItem('recien agregado', true)
         localStorage.setItem('carrito abierto', true)
         window.location.reload();
+    });
+}
+
+
+// MENÚ MÓVIL
+const DISPARADOR_MENU_MOVIL = document.getElementById('disparador-menu-movil');
+const SIDEBAR_MENU_MOVIL = document.getElementById('barra-lateral-menu-movil');
+const CERRAR_MENU_MOVIL = document.getElementById('cerrar-menu-movil');
+const BTN_LOGIN_MOVIL = document.getElementById('btn-login-movil');
+
+
+
+
+
+
+// TOGGLE MENÚ MÓVIL
+if (DISPARADOR_MENU_MOVIL) {
+    DISPARADOR_MENU_MOVIL.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        if (SIDEBAR_MENU_MOVIL.classList.contains('hidden')) {
+            SIDEBAR_MENU_MOVIL.classList.remove('hidden');
+            SIDEBAR_MENU_MOVIL.classList.add('flex');
+        } else {
+            SIDEBAR_MENU_MOVIL.classList.remove('flex');
+            SIDEBAR_MENU_MOVIL.classList.add('hidden');
+        }
+    });
+}
+
+if (CERRAR_MENU_MOVIL) {
+    CERRAR_MENU_MOVIL.addEventListener('click', () => {
+        SIDEBAR_MENU_MOVIL.classList.remove('flex');
+        SIDEBAR_MENU_MOVIL.classList.add('hidden');
+    });
+}
+
+if (BTN_LOGIN_MOVIL) {
+    BTN_LOGIN_MOVIL.addEventListener('click', () => {
+        // Cerrar menú móvil
+        SIDEBAR_MENU_MOVIL.classList.remove('flex');
+        SIDEBAR_MENU_MOVIL.classList.add('hidden');
+
+        // Abrir login (esto también manejará el overlay y cerrará el carrito si estuviera abierto)
+        abrirCerrarLogin();
+    });
+}
+
+
+//FILTRAR PRODUCTOS MOVIL
+const FILTRAR_PRODUCTOS_MOVIL = document.getElementById('filtrosProductosMovil');
+const BARRA_FILTRAR_PRODUCTOS_MOVIL = document.getElementById('barra-lateral-filtros-productos-movil');
+
+if (FILTRAR_PRODUCTOS_MOVIL) {
+    FILTRAR_PRODUCTOS_MOVIL.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        if (BARRA_FILTRAR_PRODUCTOS_MOVIL.classList.contains('hidden')) {
+            BARRA_FILTRAR_PRODUCTOS_MOVIL.classList.remove('hidden');
+            BARRA_FILTRAR_PRODUCTOS_MOVIL.classList.add('block');
+        } else {
+            BARRA_FILTRAR_PRODUCTOS_MOVIL.classList.remove('block');
+            BARRA_FILTRAR_PRODUCTOS_MOVIL.classList.add('hidden');
+        }
     });
 }

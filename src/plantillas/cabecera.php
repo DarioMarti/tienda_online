@@ -39,13 +39,13 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
 
 <body class="antialiased">
     <!-- BARRA SUPERIOR -->
-    <div class=" top-0 w-full bg-fashion-black text-white text-[10px] py-2 text-center uppercase font-medium z-50 transition-transform duration-300 font-general tracking-widest"
+    <div class="fixed top-0 w-full bg-fashion-black text-white text-[10px] py-2 text-center uppercase font-medium z-70 transition-transform duration-300 font-general tracking-widest h-[31px] flex items-center justify-center"
         id="barra-superior">
         Envíos globales gratuitos en pedidos superiores a 300€
     </div>
 
     <!-- HEADER -->
-    <header class="sticky top-0 w-full z-[60] py-6 px-6 lg:px-12 transition-all duration-300 z-50 bg-white">
+    <header class="fixed top-[31px] w-full z-[60] py-6 px-6 lg:px-12 transition-all duration-300 bg-white shadow-sm">
         <div class="w-full flex justify-between align-middle items-center z-[50]">
 
             <!-- MENÚ DE LA IZQUIERDA -->
@@ -224,7 +224,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
         </div>
 
         <!-- LOGIN BARRA LATERAL -->
-        <div id="barra-lateral-login" class=" !absolute top-full barra-lateral barra-lateral-cerrado z-10 " <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false)
+        <div id="barra-lateral-login" class="barra-lateral barra-lateral-cerrado" <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'login' && $_SESSION['mensaje']['estado'] === false)
             echo 'data-comprobar-error="true"'; ?>>
             <div class="flex justify-between items-center mb-10">
                 <h2 class="editorial-font text-3xl font-semibold">Iniciar Sesión</h2>
@@ -283,6 +283,78 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
         </div>
     </header>
 
+    <!-- ESPACIADOR PARA COMPENSAR EL HEADER FIJO -->
+    <div class="h-[111px]"></div>
+
+    <!--MENÚ VERSIÓN MÓVIL -->
+    <div id="barra-lateral-menu-movil" class="hidden fixed inset-0 z-50 bg-white flex flex-col w-full h-full overflow-y-auto">
+        <!-- CABECERA MENÚ MÓVIL -->
+        <div class="flex justify-between items-center p-8 border-b border-gray-50">
+            <span class="editorial-font text-2xl italic">Menú</span>
+            <button id="cerrar-menu-movil" class="text-gray-400 hover:text-fashion-black transition-colors p-2">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- NAVEGACIÓN -->
+        <nav class="flex flex-col text-center divide-y divide-gray-50">
+            <a href="<?= $rutaWeb ?>"
+                class="block py-6 text-sm uppercase tracking-widest font-medium hover:bg-gray-50 transition-colors">
+                Home
+            </a>
+            <a href="<?= $rutaWeb ?>/src/paginas/rebajas.php"
+                class="block py-6 text-sm uppercase tracking-widest font-bold text-red-600 hover:bg-gray-50 transition-colors">
+                Rebajas
+            </a>
+            <a href="<?= $rutaWeb ?>/src/paginas/sobre-nosotros.php"
+                class="block py-6 text-sm uppercase tracking-widest font-medium hover:bg-gray-50 transition-colors">
+                Sobre Nosotros
+            </a>
+            <a href="<?= $rutaWeb ?>/src/paginas/contacto.php"
+                class="block py-6 text-sm uppercase tracking-widest font-medium hover:bg-gray-50 transition-colors">
+                Contacto
+            </a>
+        </nav>
+
+        <!-- AREA DE USUARIO / LOGIN -->
+        <div class="mt-auto p-8 bg-gray-50 flex flex-col space-y-4 text-center">
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <div class="flex flex-col space-y-4">
+                    <div class="flex items-center gap-3 mb-2 justify-center">
+                        <i class="ph ph-user-circle text-3xl"></i>
+                        <span class="text-xs uppercase tracking-widest font-bold">
+                            <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>
+                        </span>
+                    </div>
+                    <a href="<?= $rutaWeb ?>/src/paginas/perfil-usuario.php"
+                        class="block w-full py-4 bg-white border border-gray-200 text-center text-xs uppercase tracking-widest font-semibold">
+                        Mi Perfil
+                    </a>
+                    <a href="<?= $rutaWeb ?>/src/paginas/mis-pedidos.php"
+                        class="block w-full py-4 bg-white border border-gray-200 text-center text-xs uppercase tracking-widest font-semibold">
+                        Mis Pedidos
+                    </a>
+                    <?php if (personalAutorizado()): ?>
+                        <a href="<?= $rutaWeb ?>/src/paginas/panel-administrador.php" 
+                            class="block w-full py-4 bg-fashion-black text-white text-center text-xs uppercase tracking-widest font-semibold">
+                            Panel Control
+                        </a>
+                    <?php endif ?>
+                    <a href="<?= $rutaWeb ?>/modelos/sesion/cerrar-sesion-usuario.php"
+                        class="block w-full py-4 text-center text-xs uppercase tracking-widest font-semibold text-red-600">
+                        Cerrar Sesión
+                    </a>
+                </div>
+            <?php else: ?>
+                    <!--USUARIO NO REGISTRADO-->
+                    <span class="text-xs uppercase tracking-widest md:hidden cursor-pointer font-medium login"
+                        id="btn-login-movil">Login</span>
+            <?php endif; ?>
+        </div>
+    </div>
+
+
     <!-- OVERLAY -->
     <div id="capa-superpuesta"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] hidden transition-opacity duration-300"></div>
+

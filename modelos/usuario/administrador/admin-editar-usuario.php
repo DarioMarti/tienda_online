@@ -6,7 +6,7 @@ $rutaWeb = ruta_web();
 require_once $rutaRaiz . '/config/conexionDB.php';
 session_start();
 require_once $rutaRaiz . '/config/seguridad.php';
-restringirSoloAdmin();
+restringirAccesoClientes();
 
 if (!isset($_SESSION['usuario'])) {
     die("Error: Se debe de estar logeado");

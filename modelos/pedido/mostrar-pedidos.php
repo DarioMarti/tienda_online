@@ -4,15 +4,31 @@ $rutaRaiz = ruta_raiz();
 
 require_once $rutaRaiz . '/config/conexionDB.php';
 
-function mostrarPedidos($id = "")
+function mostrarPedidos($id = "", $nombreUsuario = "", $orden = "nombre_destinatario ASC")
 {
     try {
         $conn = conectar();
 
 
+        //Filtrado
+        $sql = 'SELECT * FROM pedidos';
+
+
+        $parametros = [];
+
+        if ($nombreUsuario != '') {
+            $sql .= ' WHERE nombre_destinatario LIKE :barraBusqueda';
+            $parametros['barraBusqueda'] = "%" . $nombreUsuario . "%";
+        }
+
+        if ($orden) {
+            $sql .= ' ORDER BY ' . $orden;
+        }
+
+
         if ($id == "") {
-            $sentencia = $conn->prepare('SELECT * FROM pedidos');
-            $sentencia->execute();
+            $sentencia = $conn->prepare($sql);
+            $sentencia->execute($parametros);
             $pedidos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
             return $pedidos;
         } else {

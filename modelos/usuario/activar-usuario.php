@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/ruta.php';
 $rutaRaiz = ruta_raiz();
 
 require_once $rutaRaiz . '/config/seguridad.php';
-restringirSoloAdmin();
+restringirAccesoClientes();
 require_once $rutaRaiz . '/config/conexionDB.php';
 header('Content-Type: application/json');
 

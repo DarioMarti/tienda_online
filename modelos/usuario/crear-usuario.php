@@ -77,7 +77,7 @@ try {
     $_SESSION['mensaje'] = [
         'estado' => true,
         'mensaje' => 'Usuario creado con exito',
-        'tipo' => 'registro'
+        'tipo' => 'usuario'
     ];
 
     if (!$_SESSION['usuario']) {

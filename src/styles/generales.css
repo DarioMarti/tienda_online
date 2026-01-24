@@ -1,6 +1,7 @@
-/* Estilo global */
-* {
+html,
+body {
     font-family: "Inter", sans-serif;
+    overflow-x: hidden;
 }
 
 /* Fuentes - tipografías */
@@ -70,15 +71,16 @@ nav li {
     position: fixed;
     background-color: white;
     right: 0;
+    top: 111px !important;
+    /* Altura de barra superior + header */
     padding: 20px;
-    height: 100vh;
+    height: calc(100vh - 111px);
     width: 100%;
     max-width: 400px;
     z-index: 50;
     transition-property: transform;
     transition-duration: 500ms;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-
 }
 
 /* Barra lateral login */
@@ -105,9 +107,10 @@ nav li {
 }
 
 /* Menú móvil a pantalla completa */
-#sidebar-menu-movil {
+#barra-lateral-menu-movil {
     max-width: none !important;
     width: 100% !important;
+    height: 100vh !important;
 }
 
 /* Carrito a pantalla completa en móvil */
@@ -130,4 +133,15 @@ input[type=number]::-webkit-outer-spin-button {
 /* Firefox apaciencia del input number */
 input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Hiding scrollbars */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

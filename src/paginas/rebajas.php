@@ -35,7 +35,10 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
 
     <main class="flex flex-col lg:flex-row gap-12">
         <!-- ASIDE - BARRA LATERAL - FILTROS -->
-        <aside class="w-full lg:w-1/5 2xl:w-1/6 hidden lg:block">
+        <span id="filtrosProductosMovil" class="lg:hidden flex items-center gap-2">
+            <i class="ph ph-faders text-2xl"></i><span class="text-lg">Filtrar productos</span>
+        </span>
+        <aside id="barra-lateral-filtros-productos-movil" class="w-full lg:w-1/5 2xl:w-1/6 hidden lg:block">
             <div class="sticky top-32 space-y-12 pr-6 border-r border-gray-100 h-full">
                 <!-- CATEGORÍAS -->
                 <div>
@@ -99,9 +102,9 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
         <section class="w-full lg:w-4/5 2xl:w-5/6">
             <div class="flex  flex-col md:flex-row justify-end mb-10 pb-4 items-baseline gap-4 mt-4 md:mt-0">
                 <span class="text-sm text-gray-500"> <?php echo count($productos) ?> Resultados</span>
-                <form method="GET">
+                <form method="GET" class="w-full sm:w-auto">
                     <select name="orden" id="ordenar-productos" onchange="this.form.submit()"
-                        class="border border-gray-200 text-sm bg-transparent font-medium focus:ring-0 cursor-pointer py-2 px-4 rounded-md">
+                        class="w-full sm:w-auto border border-gray-200 text-sm bg-transparent font-medium focus:ring-0 cursor-pointer py-2 px-4 rounded-md">
                         <option value="">Ordenar por</option>
                         <option value="precio_asc">Precio: Bajo a Alto</option>
                         <option value="precio_desc">Precio: Alto a Bajo</option>
@@ -146,6 +149,15 @@ $productos = mostrarProductos($filtroBusqueda, $filtroOrden, $filtroCategoria, $
                                     <h3 class="editorial-font text-xl group-hover:text-fashion-accent transition-colors">
                                         <?php echo $producto['nombre'] ?>
                                     </h3>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-medium">
+                                        <?php
+                                        foreach ($categorias as $categoria) {
+                                            if ($categoria['id'] == $producto['categoria_id']) {
+                                                echo '| ' . $categoria['nombre'] . ' |';
+                                            }
+                                        }
+                                        ?>
+                                    </span>
                                 </a>
                                 <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1 mb-2">
                                     <?php echo $producto['descripcion'] ?>

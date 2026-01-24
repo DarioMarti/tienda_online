@@ -5,6 +5,7 @@ $rutaRaiz = ruta_raiz();
 $rutaWeb = ruta_web();
 
 require_once $rutaRaiz . '/src/plantillas/cabecera.php';
+
 ?>
 
 <main class="min-h-screen bg-fashion-gray flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -59,11 +60,13 @@ require_once $rutaRaiz . '/src/plantillas/cabecera.php';
                         de privacidad</a>
                 </label>
             </div>
-            <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'registro' && $_SESSION['mensaje']['estado'] === false): ?>
+            <?php if (isset($_SESSION['mensaje']) && $_SESSION['mensaje']['tipo'] === 'usuario' && $_SESSION['mensaje']['estado'] === false): ?>
                 <span class="text-red-600 text-xs mt-2 block">
                     <?= $_SESSION['mensaje']['mensaje']; ?>
                 </span>
+
             <?php endif; ?>
+            <?php unset($_SESSION['mensaje']); ?>
             <!-- BOTÓN DE REGISTRO -->
             <div class="pt-4">
                 <button type="submit"

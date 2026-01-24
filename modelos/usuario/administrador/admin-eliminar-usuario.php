@@ -1,10 +1,11 @@
 <?php
 require_once __DIR__ . '/../../../config/ruta.php';
-require_once RUTA_RAIZ . '/config/conexionDB.php';
+$rutaRaiz = ruta_raiz();
+require_once $rutaRaiz . '/config/conexionDB.php';
 header('Content-Type: application/json');
 session_start();
 require_once $rutaRaiz . '/config/seguridad.php';
-restringirSoloAdmin();
+restringirAccesoClientes();
 
 try {
 
