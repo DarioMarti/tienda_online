@@ -2,9 +2,12 @@
 session_start();
 require_once __DIR__ . '/../../config/ruta.php';
 require_once __DIR__ . '/../../config/detalles-pago.php';
+require_once __DIR__ . '/../../config/seguridad.php';
 
 $rutaRaiz = ruta_raiz();
 $rutaWeb = ruta_web();
+
+restringirAccesoVisitantes();
 
 require $rutaRaiz . '/src/plantillas/cabecera.php';
 $productos = $_SESSION['carrito']['productos'];

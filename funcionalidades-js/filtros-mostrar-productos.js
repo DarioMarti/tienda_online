@@ -10,6 +10,7 @@ iconoLupa.addEventListener('click', () => {
     if (contenedorBusqueda.classList.contains('hidden')) {
         contenedorBusqueda.classList.remove('hidden');
         contenedorBusqueda.classList.add('block');
+        inputBusqueda.focus();
     } else {
         contenedorBusqueda.classList.remove('block');
         contenedorBusqueda.classList.add('hidden');

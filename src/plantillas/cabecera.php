@@ -283,7 +283,7 @@ isset($_SESSION['carrito']) ? $carrito = $_SESSION['carrito'] : $carrito = [];
         </div>
     </header>
 
-    <!-- ESPACIADOR PARA COMPENSAR EL HEADER FIJO -->
+    <!-- Espaciador para compensar el header fijo -->
     <div class="h-[111px]"></div>
 
     <!--MENÚ VERSIÓN MÓVIL -->
